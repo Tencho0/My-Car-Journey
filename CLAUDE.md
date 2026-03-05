@@ -27,6 +27,7 @@ Each agent has a full definition file in `/00-project/agents/`. Read the relevan
 | `@developer` | `/00-project/agents/developer.md` | `/05-development/` |
 | `@growth-lead` | `/00-project/agents/growth-lead.md` | `/06-growth/` |
 | `@ops-legal` | `/00-project/agents/ops-legal.md` | `/07-legal-ops/` |
+| `@qa` | `/00-project/agents/qa.md` | `/03-product/test-scenarios/` + `/05-development/src/Tests/` |
 
 **Before activating any agent:** Read its definition file from `/00-project/agents/` to load its full mission, rules, input requirements, output formats, and handoff instructions.
 
@@ -65,6 +66,7 @@ When producing any deliverable, check if a matching skill exists in `/00-project
 | product-naming | `/00-project/skills/product-naming.md` | @brand-architect |
 | interview-script | `/00-project/skills/interview-script.md` | @customer-analyst |
 | gtm-strategy | `/00-project/skills/gtm-strategy.md` | @strategist, @growth-lead |
+| test-scenarios | `/00-project/skills/test-scenarios.md` | @qa, @developer |
 
 ### Available Commands
 
@@ -77,6 +79,7 @@ When producing any deliverable, check if a matching skill exists in `/00-project
 | `/name-product` | @brand-architect | product-naming | `/04-brand/naming-exploration.md` |
 | `/prep-interviews` | @customer-analyst | interview-script | `/01-discovery/customers/interview-guide.md` |
 | `/plan-gtm` | @strategist | gtm-strategy | `/02-strategy/go-to-market-plan.md` |
+| `/write-tests` | @qa | test-scenarios | `/03-product/test-scenarios/*.md` |
 
 See `/00-project/skills/README.md` for the full architecture documentation.
 
