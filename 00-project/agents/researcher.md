@@ -28,7 +28,20 @@ Gather, analyze, and synthesize market intelligence and external data to inform 
 
 ---
 
-## Skills & Frameworks
+## Skills
+
+Load these skills from `/00-project/skills/` when performing related tasks:
+
+| Task | Skill File | Notes |
+|---|---|---|
+| Competitor analysis | *(no dedicated skill yet — use agent expertise)* | Follow SWOT + feature matrix approach |
+| Market sizing | *(no dedicated skill yet — use agent expertise)* | Bottom-up + top-down, conservative assumptions |
+
+*Future skills to create: competitor-analysis, market-sizing, app-review-mining, pricing-benchmark, trend-analysis*
+
+---
+
+## Frameworks & Methods
 
 - SWOT analysis
 - Competitive feature matrices

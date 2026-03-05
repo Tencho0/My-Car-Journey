@@ -38,6 +38,48 @@ Each agent has a full definition file in `/00-project/agents/`. Read the relevan
 - Maintain traceability between documents (reference related docs by path)
 - All outputs are structured markdown unless otherwise specified
 
+## Skills & Commands
+
+**Skills** define HOW agents do specific tasks — templates, frameworks, step-by-step methods. Stored in `/00-project/skills/`.
+
+**Commands** are user-triggered workflows that chain agent + skills into end-to-end processes. Stored in `/00-project/commands/`.
+
+When a user invokes a command (e.g., `/write-prd`):
+1. Read the command file from `/00-project/commands/`
+2. Identify the agent and skills referenced
+3. Read the agent definition from `/00-project/agents/`
+4. Read the skill file(s) from `/00-project/skills/`
+5. Follow the workflow steps in the command
+6. Produce output to the specified file path
+
+When producing any deliverable, check if a matching skill exists in `/00-project/skills/` and follow its template and quality checklist.
+
+### Available Skills
+
+| Skill | File | Used By |
+|---|---|---|
+| create-prd | `/00-project/skills/create-prd.md` | @product-architect |
+| user-stories | `/00-project/skills/user-stories.md` | @product-architect, @developer |
+| functional-spec | `/00-project/skills/functional-spec.md` | @product-architect, @developer |
+| positioning | `/00-project/skills/positioning.md` | @strategist, @brand-architect |
+| product-naming | `/00-project/skills/product-naming.md` | @brand-architect |
+| interview-script | `/00-project/skills/interview-script.md` | @customer-analyst |
+| gtm-strategy | `/00-project/skills/gtm-strategy.md` | @strategist, @growth-lead |
+
+### Available Commands
+
+| Command | Agent | Skills | Output |
+|---|---|---|---|
+| `/write-prd` | @product-architect | create-prd | `/03-product/product-requirements-document.md` |
+| `/write-stories` | @product-architect | user-stories | `/03-product/user-stories/*.md` |
+| `/write-spec` | @product-architect | functional-spec | `/03-product/functional-specs/*.md` |
+| `/define-positioning` | @strategist | positioning | `/02-strategy/positioning-strategy.md` |
+| `/name-product` | @brand-architect | product-naming | `/04-brand/naming-exploration.md` |
+| `/prep-interviews` | @customer-analyst | interview-script | `/01-discovery/customers/interview-guide.md` |
+| `/plan-gtm` | @strategist | gtm-strategy | `/02-strategy/go-to-market-plan.md` |
+
+See `/00-project/skills/README.md` for the full architecture documentation.
+
 ## Key Decisions Made
 
 - **Target market:** Bulgaria (launch), then Romania, then Western Europe
