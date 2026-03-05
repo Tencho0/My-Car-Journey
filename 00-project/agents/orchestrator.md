@@ -1,6 +1,3 @@
-# Agent Definition: Orchestrator
-## `/00-project/agents/orchestrator.md`
-
 ---
 
 ## Identity

@@ -1,6 +1,3 @@
-# Agent Definition: Product Architect
-## `/00-project/agents/product-architect.md`
-
 ---
 
 ## Identity

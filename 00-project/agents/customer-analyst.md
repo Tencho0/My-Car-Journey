@@ -1,6 +1,3 @@
-# Agent Definition: Customer Analyst
-## `/00-project/agents/customer-analyst.md`
-
 ---
 
 ## Identity

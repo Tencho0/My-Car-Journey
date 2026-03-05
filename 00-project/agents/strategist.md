@@ -1,6 +1,3 @@
-# Agent Definition: Strategist
-## `/00-project/agents/strategist.md`
-
 ---
 
 ## Identity

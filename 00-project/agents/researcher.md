@@ -1,6 +1,3 @@
-# Agent Definition: Researcher
-## `/00-project/agents/researcher.md`
-
 ---
 
 ## Identity

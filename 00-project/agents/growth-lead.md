@@ -1,6 +1,3 @@
-# Agent Definition: Growth Lead
-## `/00-project/agents/growth-lead.md`
-
 ---
 
 ## Identity

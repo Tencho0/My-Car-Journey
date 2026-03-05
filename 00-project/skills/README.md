@@ -1,6 +1,3 @@
-# Skills & Commands Architecture
-## `/00-project/skills/README.md`
-
 ---
 
 ## How Agents, Skills, and Commands Work Together

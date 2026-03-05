@@ -1,6 +1,3 @@
-# Agent Definition: Operations & Legal
-## `/00-project/agents/ops-legal.md`
-
 ---
 
 ## Identity

@@ -1,6 +1,3 @@
-# Agent Definition: Brand Architect
-## `/00-project/agents/brand-architect.md`
-
 ---
 
 ## Identity

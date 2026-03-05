@@ -1,6 +1,3 @@
-# Agent Definition: Developer
-## `/00-project/agents/developer.md`
-
 ---
 
 ## Identity
