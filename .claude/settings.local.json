@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir -p 00-project/decisions 00-project/agents 00-project/workflows 01-discovery/research 01-discovery/customers 01-discovery/data/interviews 01-discovery/data/app-store-reviews 01-discovery/data/surveys 01-discovery/data/screenshots 02-strategy 03-product/user-stories 03-product/functional-specs 03-product/technical 04-brand/landing-page/src 05-development/src 05-development/docs 06-growth 07-legal-ops)",
+      "Bash(touch 00-project/agents/orchestrator.md 00-project/agents/researcher.md 00-project/agents/customer-analyst.md 00-project/agents/strategist.md 00-project/agents/product-architect.md 00-project/agents/brand-architect.md 00-project/agents/developer.md 00-project/agents/growth-lead.md 00-project/agents/ops-legal.md 00-project/project-status.md 00-project/agent-system-architecture.md 01-discovery/research/competitor-analysis.md 01-discovery/research/market-sizing.md 01-discovery/customers/interview-guide.md 02-strategy/lean-canvas.md 02-strategy/value-proposition.md 03-product/mvp-feature-list.md)"
+    ]
+  }
+}
