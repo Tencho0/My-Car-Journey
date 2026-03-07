@@ -1,4 +1,4 @@
-# Claude Code Prompts — User Journeys & Downstream Documents
+# Claude Code Prompts — User Journeys → Specs → Stories
 
 Use these in separate Claude Code sessions for best results.
 
@@ -9,7 +9,9 @@ Use these in separate Claude Code sessions for best results.
 ```
 Read CLAUDE.md and check /00-project/project-status.md for current progress.
 
-TASK: Create user journey maps at /03-product/user-flows.md
+TASK: Create user journey maps.
+
+First, create the folder /03-product/user-journeys/ if it doesn't exist.
 
 Read these files for context:
 - /00-project/concept-document.md
@@ -21,18 +23,20 @@ Read these files for context:
 
 Agent: @product-architect
 
-Create detailed user journey maps for 7 journeys. The first 2 are the highest 
-priority — they define the core experience. Give them the most depth and detail.
+Create these files:
 
-For each journey, document:
-- Journey name and goal
-- User context (when/why they're doing this)
-- Step-by-step flow (what the user does AND what the system responds, screen by screen)
-- Emotional state at each step (what they're feeling)
-- Key moments (the moments that make or break the experience)
-- Success criteria (how we know the journey worked)
-- Drop-off risks (where users might abandon, and why)
-- Design implications (what this journey demands from the UX)
+1. /03-product/user-journeys/flows-index.md
+   — Master index listing all 7 journeys with priority, phase, user role,
+     related features, related functional specs, and status
+
+2-8. One file per journey (7 files total):
+   /03-product/user-journeys/journey-first-time-experience.md
+   /03-product/user-journeys/journey-daily-expense-logging.md
+   /03-product/user-journeys/journey-aha-moment.md
+   /03-product/user-journeys/journey-vehicle-timeline.md
+   /03-product/user-journeys/journey-premium-upgrade.md
+   /03-product/user-journeys/journey-challenge-participation.md
+   /03-product/user-journeys/journey-maintenance-reminder.md
 
 THE 7 JOURNEYS (in priority order):
 
@@ -44,7 +48,7 @@ This is the most important journey in the entire product. A user who doesn't
 complete this journey in their first session will never come back. 
 Map every screen, every decision point, every possible friction.
 
-Key questions to answer:
+Key questions to answer in this journey:
 - How fast can we get from "just downloaded" to "I see what my car costs"?
 - What's the absolute minimum info we need during onboarding?
 - Should we ask for historical expenses or start fresh?
@@ -53,15 +57,15 @@ Key questions to answer:
 
 ★ JOURNEY 2: Daily Expense Logging (CRITICAL — the core habit loop)
 Open app → quick-add expense → see updated dashboard → close app
-Total time: under 30 seconds
+Total time target: under 30 seconds
 
 This journey happens 2-5 times per week. If it's not fast and satisfying, 
 retention dies. Every extra tap is a reason to stop using the app.
 
-Key questions to answer:
+Key questions to answer in this journey:
 - What's the fastest possible flow? (target: 3 taps and under 10 seconds)
 - What smart defaults reduce input? (last category, today's date, suggested amounts)
-- What immediate feedback makes logging feel rewarding? (updated total, streak, animation)
+- What immediate feedback makes logging feel rewarding?
 - What's the "hook" that makes them glance at the dashboard after logging?
 
 JOURNEY 3: The "Aha Moment"
@@ -86,40 +90,158 @@ JOURNEY 7: Maintenance Reminder Flow
 User receives reminder notification → opens app → sees what's due → 
 completes maintenance → logs the expense → reminder resets
 
-FORMAT:
-For each journey, use this structure:
+---
 
-## Journey N: [Name]
-**Priority:** ★ Critical / High / Medium
-**Frequency:** [how often this happens]
-**Goal:** [what the user is trying to accomplish]
+FORMAT FOR EACH JOURNEY FILE:
+
+Each journey file should follow this structure:
+
+---
+journey: [journey-name]
+priority: Critical | High | Medium
+frequency: [how often this happens — once / daily / weekly / monthly]
+phase: MVP | Phase 2 | Phase 3
+user-role: driver (MVP) — note: system will support multiple roles in future phases
+related-features: [list of features involved]
+related-specs: [list of functional spec files this informs]
+---
+
+## Journey: [Name]
+
+### Goal
+[What the user is trying to accomplish]
 
 ### User Context
-[When and why does this journey start?]
+[When and why does this journey start? What state is the user in?]
+
+### Prerequisites
+[What must be true before this journey can happen?]
+
+### Flow Diagram (Mermaid)
+
+Include a mermaid flowchart showing the journey visually:
+
+```mermaid
+flowchart TD
+    A[User opens app] --> B{First time?}
+    B -->|Yes| C[Show onboarding]
+    B -->|No| D[Show dashboard]
+    C --> E[Add vehicle]
+    E --> F[Log first expense]
+    F --> G[See cost insight ✨]
+```
+
+The diagram should show:
+- Decision points (diamonds)
+- Key screens (rectangles)
+- The "aha moment" or success point (highlighted)
+- Drop-off risk points (marked with ⚠️)
+- Paths to premium features (marked with 💎)
 
 ### Step-by-Step Flow
+
 | Step | User Action | System Response | Screen | Emotional State |
 |------|------------|----------------|--------|-----------------|
+| 1 | | | | |
+| 2 | | | | |
 
 ### Key Moments
-[The 2-3 moments that make or break this journey]
-
-### Drop-Off Risks
-| Risk Point | Why They Might Leave | Mitigation |
-|-----------|---------------------|------------|
-
-### Design Implications
-[What this journey demands from the UX — speed, simplicity, delight, etc.]
-
-### Success Criteria
-[How we measure if this journey works]
+[The 2-3 moments that make or break this journey. These are the moments 
+that determine whether the user succeeds, converts, or leaves.]
 
 ### Empty States
-[What the user sees at each step when there's no data yet]
+[What the user sees at each step when there's no data yet. Critical for 
+Journey 1 where EVERYTHING is empty.]
+
+### Drop-Off Risks
+
+| Risk Point | Why They Might Leave | Severity | Mitigation |
+|-----------|---------------------|----------|------------|
+
+### Design Implications
+[What this journey demands from the UX — speed, simplicity, delight, 
+information density, etc.]
+
+### Success Criteria
+[How we measure if this journey works — specific metrics]
+
+### Connections to Other Journeys
+[How this journey leads into or depends on other journeys]
+
+### Future Role Considerations
+[How this journey might change or spawn new journeys when additional 
+user roles are added in Phase 2-3. E.g., "When garage integration is added, 
+the maintenance reminder journey will include a path where the garage 
+pushes a completed service record back to the driver."]
 
 ---
 
-After creating the journeys, update /00-project/project-status.md.
+FORMAT FOR flows-index.md:
+
+---
+produced-by: @product-architect
+date: [date]
+---
+
+## User Journeys Index
+
+### Journey Map
+
+| # | Journey | Phase | User Role | Priority | Frequency | Key Features | Functional Specs |
+|---|---------|-------|-----------|----------|-----------|-------------|-----------------|
+| 1 | First-Time Experience | MVP | Driver | ★ Critical | Once | Onboarding, vehicle profile, expense tracking, dashboard | onboarding-auth.md, vehicle-management.md, expense-tracking.md, cost-dashboard.md |
+| 2 | Daily Expense Logging | MVP | Driver | ★ Critical | 2-5x/week | Quick-add, expense categories, dashboard update | expense-tracking.md, fuel-entry.md, cost-dashboard.md |
+| ... | | | | | | | |
+
+### Journey Dependencies Diagram
+
+Include a mermaid diagram showing how journeys connect:
+
+```mermaid
+flowchart LR
+    J1[1. First-Time Experience] --> J2[2. Daily Logging]
+    J2 --> J3[3. Aha Moment]
+    J3 --> J5[5. Premium Upgrade]
+    J1 --> J4[4. Vehicle Timeline]
+    J2 --> J7[7. Maintenance Reminder]
+    J2 --> J6[6. Challenge Participation]
+    J5 -.->|unlocks| J6
+```
+
+### Future Journeys (Phase 2-3)
+
+| # | Journey | Phase | User Role | Trigger |
+|---|---------|-------|-----------|---------|
+| 8 | Garage creates work order | Phase 2 | Garage Owner | Garage module built |
+| 9 | Driver receives service record | Phase 2 | Driver | Garage integration |
+| 10 | Dealer tracks vehicle profitability | Phase 3 | Dealer | Dealer module built |
+| 11 | Fleet manager reviews dashboard | Phase 3 | Fleet Manager | Fleet module built |
+
+Note: These journeys will be created when their respective phases begin. 
+Listed here for planning and to ensure MVP architecture supports them.
+
+### Multi-Role Architecture Note
+
+The MVP serves only the "driver" role. However, the technical architecture 
+must support multiple roles from day one. When designing the data model:
+- Users should have a role/type field (driver, garage_owner, dealer, fleet_manager)
+- Data access should be role-scoped
+- Organizations/companies should be a first-class entity (even if only used in Phase 2+)
+- Vehicle ownership can transfer between users
+This note should be referenced in /03-product/technical/architecture.md 
+when the tech stack decision is made.
+
+### Coverage Check
+
+[Every MVP feature should appear in at least one journey. 
+List any features NOT covered by any journey — these might be 
+unnecessary or might need their own journey.]
+
+---
+
+After creating all 8 files (index + 7 journeys), update /00-project/project-status.md.
+Also update the status to reflect that user journeys are now in 
+/03-product/user-journeys/ folder (not the old user-flows.md).
 Tell me what the recommended next tasks are.
 ```
 
@@ -136,19 +258,18 @@ Read /00-project/commands/write-spec.md and follow its workflow.
 Load skill: /00-project/skills/functional-spec.md
 Agent: @product-architect
 
-IMPORTANT: Before writing each spec, read /03-product/user-flows.md 
-and use the relevant user journeys to inform the spec. The journeys 
-define the USER EXPERIENCE — the specs define the DETAILED BEHAVIOR 
-that makes those journeys work.
+IMPORTANT: Before writing each spec, read the relevant journey files 
+from /03-product/user-journeys/. The journeys define the USER EXPERIENCE — 
+the specs define the DETAILED BEHAVIOR that makes those journeys work.
 
-Specifically:
-- Journey 1 (First-Time Experience) → informs onboarding-auth.md
-- Journey 2 (Daily Expense Logging) → informs expense-tracking.md and fuel-entry.md
-- Journey 3 (Aha Moment) → informs cost-dashboard.md
-- Journey 4 (Vehicle Timeline) → informs vehicle-timeline.md and share-export.md
-- Journey 5 (Premium Upgrade) → informs all specs (where paywall triggers appear)
-- Journey 6 (Challenge Participation) → informs challenges-gamification.md
-- Journey 7 (Maintenance Reminder) → informs maintenance-reminders.md
+Journey-to-spec mapping:
+- journey-first-time-experience.md → informs onboarding-auth.md, vehicle-management.md
+- journey-daily-expense-logging.md → informs expense-tracking.md, fuel-entry.md
+- journey-aha-moment.md → informs cost-dashboard.md
+- journey-vehicle-timeline.md → informs vehicle-timeline.md, share-export.md
+- journey-premium-upgrade.md → informs ALL specs (where paywall triggers appear)
+- journey-challenge-participation.md → informs challenges-gamification.md
+- journey-maintenance-reminder.md → informs maintenance-reminders.md
 
 For each spec, ensure:
 - Empty states match what the journeys describe
@@ -157,6 +278,12 @@ For each spec, ensure:
 - Key moments identified in journeys get extra design attention in the spec
 - The "under 30 seconds" target for daily logging is enforced in expense-tracking.md
 - The "aha moment" design is explicitly detailed in cost-dashboard.md
+- Premium paywall triggers from journey-premium-upgrade.md are placed correctly
+- Each spec references its related journey files in the References section
+
+IMPORTANT: The tech stack has NOT been finalized yet. Do NOT specify any 
+implementation technologies. Describe behavior, not code. Where technical 
+decisions are needed, note "Tech stack TBD — see architecture decision."
 
 Generate all 9 specs in dependency order:
 1. onboarding-auth.md
@@ -187,9 +314,25 @@ Load skill: /00-project/skills/user-stories.md
 Agent: @product-architect
 
 Use the functional specs in /03-product/functional-specs/ as the primary input.
-Cross-reference /03-product/user-flows.md for journey context.
+Cross-reference the journey files in /03-product/user-journeys/ for context.
 
-Generate stories for all 7 epics.
+IMPORTANT: The tech stack has NOT been finalized yet. Write stories that 
+describe user value and acceptance criteria without specifying implementation 
+technologies. Technical notes should say "implementation approach TBD" 
+where they would normally reference specific frameworks.
+
+Generate stories for all 7 epics:
+1. epic-1-onboarding.md
+2. epic-2-vehicle-management.md
+3. epic-3-expense-tracking.md
+4. epic-4-cost-dashboard.md
+5. epic-5-vehicle-timeline.md
+6. epic-6-maintenance-reminders.md
+7. epic-7-basic-challenges.md
+
+After completing, update /00-project/project-status.md.
+
+---
 
 TASK 2: Generate all test scenarios using /write-tests all
 
@@ -197,12 +340,25 @@ Read /00-project/commands/write-tests.md and follow its workflow.
 Load skill: /00-project/skills/test-scenarios.md
 Agent: @qa
 
-Use the functional specs as input. Focus on unit test specs for:
-- Financial calculations (cost/km, monthly totals, fuel consumption)
-- Business rules (expense validation, reminder logic, challenge scoring)
-- Data transformations (currency formatting, date handling)
+Use the functional specs in /03-product/functional-specs/ as input.
 
-Generate test scenarios for all features.
+Focus unit test specs on business logic (technology-agnostic for now):
+- Financial calculations (cost/km, monthly totals, fuel consumption L/100km)
+- Business rules (expense validation, reminder trigger logic, challenge scoring)
+- Data transformations (currency formatting in лв, date handling, odometer math)
+- Input validation (required fields, boundary values, data types)
+
+Write test scenarios describing WHAT to test and expected behavior, 
+without specifying test framework or language (those come after tech decision).
+
+Generate test scenarios for all features:
+1. expense-tracking-tests.md
+2. fuel-entry-tests.md
+3. cost-dashboard-tests.md
+4. vehicle-management-tests.md
+5. vehicle-timeline-tests.md
+6. maintenance-reminders-tests.md
+7. challenges-gamification-tests.md
 
 After completing both tasks, update /00-project/project-status.md.
 Tell me what the recommended next tasks are.
@@ -212,6 +368,15 @@ Tell me what the recommended next tasks are.
 
 ## AFTER THESE 3 SESSIONS
 
-Come back to this chat for the tech stack decision session. 
-After that, Claude Code can generate all technical documents 
-(architecture, database schema, API spec, auth, deployment).
+Your product definition will be complete:
+- 8 user journey files (index + 7 journeys) with mermaid diagrams
+- 9 functional specs
+- 7 epic user story files
+- 7 test scenario files
+
+Total: ~31 new documents
+
+Come back to this chat for the tech stack decision session.
+After that, Claude Code can generate all technical documents
+(architecture, database schema, API spec, auth, deployment)
+and update stories/tests with framework-specific details.
