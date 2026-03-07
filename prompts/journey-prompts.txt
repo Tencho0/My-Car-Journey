@@ -1,0 +1,217 @@
+# Claude Code Prompts — User Journeys & Downstream Documents
+
+Use these in separate Claude Code sessions for best results.
+
+---
+
+## SESSION 1: User Journeys
+
+```
+Read CLAUDE.md and check /00-project/project-status.md for current progress.
+
+TASK: Create user journey maps at /03-product/user-flows.md
+
+Read these files for context:
+- /00-project/concept-document.md
+- /03-product/product-requirements-document.md
+- /03-product/mvp-feature-list.md
+- /02-strategy/value-proposition.md
+- /02-strategy/positioning-strategy.md
+- /02-strategy/monetization-plan.md
+
+Agent: @product-architect
+
+Create detailed user journey maps for 7 journeys. The first 2 are the highest 
+priority — they define the core experience. Give them the most depth and detail.
+
+For each journey, document:
+- Journey name and goal
+- User context (when/why they're doing this)
+- Step-by-step flow (what the user does AND what the system responds, screen by screen)
+- Emotional state at each step (what they're feeling)
+- Key moments (the moments that make or break the experience)
+- Success criteria (how we know the journey worked)
+- Drop-off risks (where users might abandon, and why)
+- Design implications (what this journey demands from the UX)
+
+THE 7 JOURNEYS (in priority order):
+
+★ JOURNEY 1: First-Time Experience (CRITICAL — highest priority, most detail)
+Download → open app → onboarding → add first car → log first expense → 
+see first cost insight → "aha moment"
+
+This is the most important journey in the entire product. A user who doesn't 
+complete this journey in their first session will never come back. 
+Map every screen, every decision point, every possible friction.
+
+Key questions to answer:
+- How fast can we get from "just downloaded" to "I see what my car costs"?
+- What's the absolute minimum info we need during onboarding?
+- Should we ask for historical expenses or start fresh?
+- What does the dashboard show when there's only 1 expense? 5? 10?
+- When does the "aha moment" happen and how do we design for it?
+
+★ JOURNEY 2: Daily Expense Logging (CRITICAL — the core habit loop)
+Open app → quick-add expense → see updated dashboard → close app
+Total time: under 30 seconds
+
+This journey happens 2-5 times per week. If it's not fast and satisfying, 
+retention dies. Every extra tap is a reason to stop using the app.
+
+Key questions to answer:
+- What's the fastest possible flow? (target: 3 taps and under 10 seconds)
+- What smart defaults reduce input? (last category, today's date, suggested amounts)
+- What immediate feedback makes logging feel rewarding? (updated total, streak, animation)
+- What's the "hook" that makes them glance at the dashboard after logging?
+
+JOURNEY 3: The "Aha Moment"
+User has 10+ expenses over 2+ weeks → opens dashboard → sees true monthly cost 
+for the first time → explores breakdown → realizes car costs more than expected → 
+considers premium for deeper insights
+
+JOURNEY 4: Vehicle Timeline
+User completes a modification or repair → opens timeline → adds entry with photos 
+and notes → scrolls through car's history → feels pride → shares card on social media
+
+JOURNEY 5: Premium Upgrade
+User encounters a premium feature tease → curiosity triggered → views premium 
+benefits → evaluates price (€2.99/month) → decides to upgrade (or not) → 
+experiences premium features for the first time
+
+JOURNEY 6: Challenge Participation
+User discovers challenges tab → sees leaderboard → joins monthly cost/km challenge → 
+tracks progress → competes → sees results at month end
+
+JOURNEY 7: Maintenance Reminder Flow
+User receives reminder notification → opens app → sees what's due → 
+completes maintenance → logs the expense → reminder resets
+
+FORMAT:
+For each journey, use this structure:
+
+## Journey N: [Name]
+**Priority:** ★ Critical / High / Medium
+**Frequency:** [how often this happens]
+**Goal:** [what the user is trying to accomplish]
+
+### User Context
+[When and why does this journey start?]
+
+### Step-by-Step Flow
+| Step | User Action | System Response | Screen | Emotional State |
+|------|------------|----------------|--------|-----------------|
+
+### Key Moments
+[The 2-3 moments that make or break this journey]
+
+### Drop-Off Risks
+| Risk Point | Why They Might Leave | Mitigation |
+|-----------|---------------------|------------|
+
+### Design Implications
+[What this journey demands from the UX — speed, simplicity, delight, etc.]
+
+### Success Criteria
+[How we measure if this journey works]
+
+### Empty States
+[What the user sees at each step when there's no data yet]
+
+---
+
+After creating the journeys, update /00-project/project-status.md.
+Tell me what the recommended next tasks are.
+```
+
+---
+
+## SESSION 2: Functional Specs (informed by journeys)
+
+```
+Read CLAUDE.md and check /00-project/project-status.md for current progress.
+
+TASK: Generate all functional specs using /write-spec all
+
+Read /00-project/commands/write-spec.md and follow its workflow.
+Load skill: /00-project/skills/functional-spec.md
+Agent: @product-architect
+
+IMPORTANT: Before writing each spec, read /03-product/user-flows.md 
+and use the relevant user journeys to inform the spec. The journeys 
+define the USER EXPERIENCE — the specs define the DETAILED BEHAVIOR 
+that makes those journeys work.
+
+Specifically:
+- Journey 1 (First-Time Experience) → informs onboarding-auth.md
+- Journey 2 (Daily Expense Logging) → informs expense-tracking.md and fuel-entry.md
+- Journey 3 (Aha Moment) → informs cost-dashboard.md
+- Journey 4 (Vehicle Timeline) → informs vehicle-timeline.md and share-export.md
+- Journey 5 (Premium Upgrade) → informs all specs (where paywall triggers appear)
+- Journey 6 (Challenge Participation) → informs challenges-gamification.md
+- Journey 7 (Maintenance Reminder) → informs maintenance-reminders.md
+
+For each spec, ensure:
+- Empty states match what the journeys describe
+- Screen flows match the journey step-by-step
+- Drop-off risk mitigations from journeys are reflected in the UX design
+- Key moments identified in journeys get extra design attention in the spec
+- The "under 30 seconds" target for daily logging is enforced in expense-tracking.md
+- The "aha moment" design is explicitly detailed in cost-dashboard.md
+
+Generate all 9 specs in dependency order:
+1. onboarding-auth.md
+2. vehicle-management.md
+3. expense-tracking.md
+4. fuel-entry.md
+5. cost-dashboard.md
+6. vehicle-timeline.md
+7. maintenance-reminders.md
+8. challenges-gamification.md
+9. share-export.md
+
+After completing all specs, update /00-project/project-status.md.
+Tell me what the recommended next tasks are.
+```
+
+---
+
+## SESSION 3: User Stories + Test Scenarios
+
+```
+Read CLAUDE.md and check /00-project/project-status.md for current progress.
+
+TASK 1: Generate all user stories using /write-stories all
+
+Read /00-project/commands/write-stories.md and follow its workflow.
+Load skill: /00-project/skills/user-stories.md
+Agent: @product-architect
+
+Use the functional specs in /03-product/functional-specs/ as the primary input.
+Cross-reference /03-product/user-flows.md for journey context.
+
+Generate stories for all 7 epics.
+
+TASK 2: Generate all test scenarios using /write-tests all
+
+Read /00-project/commands/write-tests.md and follow its workflow.
+Load skill: /00-project/skills/test-scenarios.md
+Agent: @qa
+
+Use the functional specs as input. Focus on unit test specs for:
+- Financial calculations (cost/km, monthly totals, fuel consumption)
+- Business rules (expense validation, reminder logic, challenge scoring)
+- Data transformations (currency formatting, date handling)
+
+Generate test scenarios for all features.
+
+After completing both tasks, update /00-project/project-status.md.
+Tell me what the recommended next tasks are.
+```
+
+---
+
+## AFTER THESE 3 SESSIONS
+
+Come back to this chat for the tech stack decision session. 
+After that, Claude Code can generate all technical documents 
+(architecture, database schema, API spec, auth, deployment).
