@@ -1,166 +1,143 @@
-# Functional Specification: Vehicle Management
+# Functional Specification: Vehicle Profile Management
 
 **File:** `/03-product/functional-specs/vehicle-management.md`
 **Produced by:** @product-architect
-**Date:** 2026-03-06
-**Version:** 1.0
-**Source PRD:** `/03-product/product-requirements-document.md` -- Section 6.1 (M2, M8)
+**Date:** 2026-03-07
+**Version:** 2.0 — Updated with user journey insights
+**Source PRD:** `/03-product/product-requirements-document.md` — Section 6.1 (M2, M8)
 **Related features:** M2 (Vehicle Profile Management), M8 (Multi-Vehicle Support)
+**Related journeys:** `/03-product/user-journeys/journey-first-time-experience.md`, `/03-product/user-journeys/journey-vehicle-timeline.md`, `/03-product/user-journeys/journey-premium-upgrade.md`
 
 ---
 
 ## 1. Overview
 
-**What this feature does:** Allows users to add, view, edit, and delete vehicles. Each vehicle serves as the container for all expenses, fuel entries, timeline events, and reminders. Multi-vehicle support lets users switch between cars and manage each one independently.
+**What this feature does:** Allows users to add, view, edit, and delete vehicle profiles. Each vehicle stores identifying information (make, model, year), optional details (fuel type, license plate, odometer, photo), and serves as the container for all expenses, timeline entries, and reminders. Supports multi-vehicle switching.
 
-**Why it matters:** The vehicle is the core data entity. Without it, nothing else works -- no expenses, no dashboard, no timeline. Multi-vehicle support addresses the reality that Bulgarian enthusiasts often own 2-3 cars (Pain: F6 manage multiple vehicles; Gain: G5 beautiful car record).
+**Why it matters:** The vehicle is the core data object. Every expense, timeline entry, and reminder belongs to a vehicle. Without a vehicle profile, nothing else in the app works. For enthusiasts who own 2-3 cars, multi-vehicle support is essential (Pain: F6 manage multiple vehicles; Gain: G5 beautiful car record). During onboarding, vehicle setup should feel satisfying, not bureaucratic — the user is personalizing the app, not filling out a form (Journey 1 insight).
 
-**User type:** All users.
+**User type:** All users. Free tier: up to 2 vehicles. Premium: unlimited.
 
 ---
 
 ## 2. User Flow
 
-### Happy Path -- Add a New Vehicle
+### Happy Path — Add a New Vehicle (Post-Onboarding)
 
-1. User taps "+" or "Add Vehicle" from the vehicle selector or garage screen
-2. System checks free-tier limit (2 vehicles for free users)
-3. If within limit: system shows Add Vehicle form
-4. User fills in make, model, year, fuel type (required), plus optional fields
-5. User optionally uploads a photo
-6. User taps "Save"
-7. System creates vehicle, sets it as active, navigates to its empty dashboard
-8. Vehicle appears in the vehicle selector
+1. User taps "Add Vehicle" (from vehicle switcher, settings, or empty-state CTA)
+2. System checks vehicle count against tier limit (free: 2, premium: unlimited)
+3. If under limit: shows Add Vehicle screen
+4. User selects make (popular Bulgarian makes at top: BMW, VW, Audi, Mercedes, Opel, Toyota)
+5. User selects model (filtered by make, type-ahead search)
+6. User selects year
+7. User optionally adds: fuel type, photo, license plate, current odometer, nickname
+8. User taps "Save"
+9. System creates vehicle, navigates to vehicle profile or dashboard
+10. Vehicle is now available in the vehicle switcher
 
 ### Alternative Paths
 
-- **Path A: Free-tier limit reached** -- User has 2 vehicles and tries to add a 3rd. System shows premium upsell: "Upgrade to Premium to add unlimited vehicles." Options: "Go Premium" or "Cancel."
-- **Path B: Edit existing vehicle** -- User navigates to vehicle profile, taps "Edit." Modifies fields. Taps "Save." Changes reflected immediately.
-- **Path C: Delete vehicle** -- User navigates to vehicle profile, taps "Delete." System shows destructive confirmation: "Delete [Make Model]? All expenses, timeline entries, and reminders for this vehicle will be permanently deleted. This cannot be undone." User confirms. Vehicle and all associated data are deleted.
-- **Path D: Switch active vehicle** -- User taps vehicle selector in the header/nav. Sees list of their vehicles. Taps a different vehicle. Dashboard, timeline, and reminders switch to selected vehicle.
-- **Path E: Upload/change photo** -- User taps the vehicle photo area. Chooses camera or gallery. Photo is compressed and uploaded. Previous photo is replaced.
+- **Path A: Onboarding vehicle creation** — Handled by onboarding-auth spec. Minimum fields: make, model, year only. All other fields deferred to vehicle profile editing.
+- **Path B: Edit existing vehicle** — User navigates to vehicle profile, taps "Edit." All fields editable. Save updates the vehicle.
+- **Path C: Delete vehicle** — User navigates to vehicle profile, taps "Delete." Confirmation dialog warns about cascading data loss. User confirms. Vehicle and all associated data deleted permanently.
+- **Path D: Vehicle limit reached (free tier)** — User has 2 vehicles and taps "Add Vehicle." System shows: "You've reached the free limit of 2 vehicles. Upgrade to Premium for unlimited vehicles." Tappable link to premium benefits screen. This is a premium conversion trigger (Journey 5: 10% of expected conversions).
+- **Path E: Switch vehicles** — User taps vehicle selector in header/nav. Bottom sheet shows all vehicles with photo thumbnail, make/model, year, nickname. Tap to switch. Dashboard, timeline, and reminders update instantly.
+- **Path F: Add photo later** — User navigates to vehicle profile. Photo area shows car silhouette with "Add Photo" overlay. A car with a photo feels personal; a car without one feels like a database entry (Journey 1 insight).
 
 ---
 
 ## 3. Screen Descriptions
 
-### Screen: Garage / Vehicle List
+### Screen: Vehicle Profile
 
-**Purpose:** Show all user's vehicles and allow switching between them.
-**Entry points:** Tap vehicle selector in header/navigation bar. Tap "My Cars" in bottom nav or side menu.
+**Purpose:** Display vehicle details and serve as the hub for vehicle-specific actions.
+**Entry points:** Vehicle switcher, Settings > My Vehicles, tapping vehicle name on dashboard.
 
 **Layout:**
-- "My Cars" heading
-- List of vehicle cards, each showing:
-  - Vehicle photo (or placeholder silhouette if no photo)
-  - Make + Model + Year
-  - License plate (if entered)
-  - Current odometer (if entered)
-  - Badge: "Active" on the currently selected vehicle
-- "Add Vehicle" button (bottom of list, or prominent CTA if no vehicles)
+- Hero section: vehicle photo (full-width, or silhouette placeholder if no photo)
+- Vehicle name: nickname if set, otherwise "[Make] [Model]"
+- Year and fuel type badge below name
+- Details section: license plate, current odometer
+- Quick stats section: total expenses tracked, total amount spent (лв), months tracked, photos count
+- Action buttons: "Edit," "Share Vehicle Card" (links to share-export spec), "Delete" (bottom, subtle/danger style)
 
 **Interactions:**
 
 | Element | Action | Result |
 |---------|--------|--------|
-| Vehicle card | Tap | Sets vehicle as active, navigates to its dashboard |
-| Vehicle card | Long press or swipe | Shows "Edit" and "Delete" options |
-| "Add Vehicle" button | Tap | Opens Add Vehicle form (or premium upsell if at limit) |
+| Photo area | Tap | Change/add photo (camera or gallery) |
+| "Edit" | Tap | Navigate to Edit Vehicle screen |
+| "Share Vehicle Card" | Tap | Generate shareable vehicle card (see share-export spec) |
+| "Delete" | Tap | Show confirmation dialog |
+| Quick stats | Tap on any stat | Navigate to relevant screen (expenses, timeline) |
 
-**Loading state:** Skeleton cards while fetching vehicle list.
-**Empty state:** Illustration + "No cars yet. Add your first car to start tracking!" + "Add Vehicle" prominent button. (This state only appears if user skipped onboarding.)
-**Error state:** "Could not load your vehicles. Pull down to retry." with retry action on pull-to-refresh.
-
----
-
-### Screen: Vehicle Profile / Detail
-
-**Purpose:** View and manage a single vehicle's details.
-**Entry points:** Tap vehicle name/info area on dashboard. Tap "Edit" from vehicle list.
-
-**Layout:**
-- Vehicle photo (large, top area -- tappable to change)
-- Make + Model + Year (heading)
-- Detail fields (read-only view):
-  - Fuel type
-  - License plate
-  - Current odometer + "Update" button
-  - Date added
-- Quick stats row:
-  - Total expenses to date
-  - Number of entries
-  - Months tracked
-- Action buttons:
-  - "Edit Vehicle" (primary)
-  - "Delete Vehicle" (destructive, bottom of screen)
-
-**Interactions:**
-
-| Element | Action | Result |
-|---------|--------|--------|
-| Photo | Tap | Camera/gallery picker to update photo |
-| "Update" (odometer) | Tap | Opens odometer update mini-form (number input + date) |
-| "Edit Vehicle" | Tap | Opens edit form with pre-filled fields |
-| "Delete Vehicle" | Tap | Shows destructive confirmation dialog |
-
-**Loading state:** Skeleton layout while fetching vehicle details.
-**Empty state:** N/A (vehicle always has at least make/model/year)
-**Error state:** "Could not load vehicle details. Tap to retry."
+**Loading state:** Skeleton placeholder while fetching vehicle data. Photo area shows blur placeholder during image load.
+**Empty state:** New vehicle with no expenses: stats show "0 expenses tracked, 0 лв spent, just started." CTA: "Log your first expense for this vehicle." Illustration of an empty road stretching ahead (Journey 4 empty state design).
+**Error state:** Network error: show cached data with "offline" banner.
 
 ---
 
-### Screen: Add/Edit Vehicle Form
+### Screen: Add/Edit Vehicle
 
 **Purpose:** Create a new vehicle or edit an existing one.
-**Entry points:** "Add Vehicle" button, "Edit Vehicle" button, onboarding step 1.
+**Entry points:** "Add Vehicle" CTAs, "Edit" from vehicle profile.
 
 **Layout:**
-- Photo area (tap to add/change -- camera or gallery)
-- Make field (searchable dropdown)
-- Model field (searchable dropdown, filtered by make)
-- Year field (number picker)
-- Fuel type field (dropdown: Petrol, Diesel, LPG, Hybrid, Electric)
-- License plate field (optional, text input)
-- Current odometer field (optional, number + km unit)
-- Nickname field (optional -- e.g., "My E46", shown in vehicle selector)
+- Photo area (top): tap to take photo or select from gallery. Shows current photo or car silhouette placeholder with encouraging text: "Show off your car" (Journey 1 insight: photo encouraged but not required).
+- Nickname field (optional — text, max 30 chars, e.g., "My E46," "The Daily")
+- Make field (scrollable picker/search) — **popular Bulgarian makes at top: BMW, VW, Audi, Mercedes, Opel, Toyota** (Journey 1: these account for 60%+ of target segment)
+- Model field (filtered by selected make, with type-ahead search)
+- Year field (number picker, range: 1970-current year)
+- Fuel type field (dropdown: Petrol, Diesel, LPG, Hybrid, Electric, Other)
+- License plate field (optional — text, Bulgarian format hint)
+- Current odometer field (optional — number in km)
 - "Save" primary button
-- "Cancel" secondary button (or back navigation)
+
+**For Edit mode:** All fields pre-filled with existing data.
 
 **Interactions:**
 
 | Element | Action | Result |
 |---------|--------|--------|
-| Make dropdown | Tap/search | Shows searchable make list |
-| Model dropdown | Tap/search | Shows models for selected make |
-| "Save" | Tap | Validates, saves, navigates back |
-| "Cancel" / back | Tap | Discards changes, navigates back (confirm if unsaved changes) |
+| Photo area | Tap | Opens camera/gallery picker. Compress on upload. |
+| Make picker | Tap/scroll | Scrollable list: popular BG makes first, then alphabetical. "Other" at bottom with manual text entry. |
+| Model picker | Tap/scroll | Filtered by selected make. Type-ahead search. "Other" for unlisted models. |
+| Year picker | Scroll | Number wheel: 1970-current year |
+| "Save" | Tap | Validates required fields, saves vehicle |
+| Back/Cancel | Tap | Discard changes (confirm if unsaved changes exist) |
 
 **Loading state:** "Save" button shows spinner.
-**Empty state:** (Add mode) All fields empty with placeholders. (Edit mode) Pre-filled with current values.
+**Empty state:** All fields empty with placeholder text.
 **Error state:**
-- Required fields missing: inline validation -- "Make, model, year, and fuel type are required"
-- Network error: toast -- "Could not save. Check your connection."
+- Make/model/year not filled: inline — "Make, model, and year are required"
+- Network error: toast — "Could not save. Check your connection."
+- Photo upload failed: toast — "Photo could not be uploaded. Vehicle saved without photo. You can add it later."
 
 ---
 
-### Component: Vehicle Selector (Header)
+### Screen: Vehicle Switcher
 
-**Purpose:** Quick switch between vehicles without leaving the current screen.
-**Entry points:** Always visible in the app header/navigation when user has 1+ vehicles.
+**Purpose:** Switch between vehicles in a multi-vehicle account.
+**Entry points:** Tap on vehicle name/icon in the main navigation header.
 
 **Layout:**
-- Current vehicle name (e.g., "BMW E46 2004") with dropdown arrow
-- Tap opens a dropdown/bottom sheet listing all vehicles
-- Each vehicle shows: photo thumbnail + make model year
-- "Manage Cars" link at bottom of dropdown
+- Bottom sheet overlay
+- List of vehicles: each shows photo thumbnail (or silhouette), nickname or make/model, year
+- Active vehicle highlighted with checkmark or accent color
+- "Add Vehicle" button at bottom of list
+- Tap outside or swipe down to dismiss
 
 **Interactions:**
 
 | Element | Action | Result |
 |---------|--------|--------|
-| Selector | Tap | Opens vehicle dropdown |
-| Vehicle in dropdown | Tap | Switches active vehicle, refreshes current screen data |
-| "Manage Cars" | Tap | Navigates to Garage / Vehicle List |
+| Vehicle row | Tap | Switch to that vehicle. Dashboard, timeline, reminders update instantly. Sheet dismisses. |
+| "Add Vehicle" | Tap | Navigate to Add Vehicle (or premium prompt if at limit) |
+| Outside area / swipe | Tap/swipe | Dismiss switcher |
+
+**Loading state:** Vehicle list loads from cache first, updates from API in background.
+**Empty state:** N/A (user always has at least 1 vehicle after onboarding)
+**Error state:** If vehicles can't load: show cached list with "offline" indicator.
 
 ---
 
@@ -168,17 +145,19 @@
 
 | # | Rule | Example |
 |---|------|---------|
-| BR-1 | Free-tier users can have a maximum of 2 vehicles. Premium users: unlimited. | Free user with 2 vehicles taps "Add Vehicle" -- sees premium upsell screen |
-| BR-2 | Make, model, year, and fuel type are required. All other fields are optional. | User can save a vehicle with just "BMW / 320d / 2004 / Diesel" |
-| BR-3 | Deleting a vehicle permanently deletes ALL associated data: expenses, fuel entries, timeline entries, reminders, photos. | Delete "BMW E46" removes its 47 expenses, 12 fuel entries, 3 reminders, and all photos |
-| BR-4 | Vehicle deletion requires explicit confirmation with the vehicle name visible in the confirmation dialog. | "Delete BMW 320d 2004? All data will be permanently lost." |
-| BR-5 | If the active vehicle is deleted, the system auto-selects the next remaining vehicle. If no vehicles remain, show empty state. | Delete active "BMW E46" when "Audi A4" also exists -- Audi becomes active |
-| BR-6 | Odometer readings must be monotonically increasing. A new reading cannot be lower than the previous one. | Previous reading: 152,000 km. User enters 148,000 -- error: "Odometer reading must be higher than the last recorded value (152,000 km)." |
-| BR-7 | Odometer updates are timestamped. They contribute to cost/km calculations and mileage-based reminders. | User updates odometer to 160,000 km on March 6 -- system uses this for all calculations from this date forward |
-| BR-8 | Vehicle photo is compressed on upload to max 1200px wide, JPEG quality 80%. | 5MB photo from camera is compressed to ~200-400KB before upload |
-| BR-9 | Make/model list is pre-populated with the top 50+ makes and their models common in the Bulgarian market. Users can also type custom values. | "Lada" might not be in the dropdown but user can type it manually |
-| BR-10 | One vehicle must always be "active" (selected) when the user has vehicles. The app always shows data for the active vehicle. | App opens -- shows dashboard for the last active vehicle |
-| BR-11 | Nickname is optional but, if set, is displayed in the vehicle selector instead of make/model. | Nickname "The Beast" shows as "The Beast" in selector instead of "BMW 320d 2004" |
+| BR-1 | Free tier: maximum 2 vehicles. Premium: unlimited. | User with 2 vehicles on free tier taps "Add Vehicle" — sees premium upgrade prompt |
+| BR-2 | Required fields for vehicle creation: make, model, year | All other fields are optional |
+| BR-3 | During onboarding: only make, model, year are shown. Other fields available in Edit. | Journey 1 mandates minimum input for speed |
+| BR-4 | Vehicle deletion is permanent and cascading — deletes all expenses, timeline entries, reminders, and photos | Confirmation dialog must explicitly warn about data loss |
+| BR-5 | Vehicle deletion confirmation: for vehicles with 10+ entries, require typing the vehicle name. For newer vehicles, simple "Delete" / "Cancel" buttons. | Prevents accidental deletion of rich vehicle histories |
+| BR-6 | If the active vehicle is deleted, switch to the next available vehicle. If no vehicles remain, show empty state. | Delete only vehicle — land on empty dashboard with "Add your first car" illustration |
+| BR-7 | Odometer readings must be non-decreasing. Warn if new reading is lower than last recorded. | Warning: "This is lower than your last reading (154,500 km). Are you sure?" Allow override for odometer reset situations. |
+| BR-8 | Vehicle photo is compressed on upload | Max resolution: 1920x1080. Max file size after compression: 500KB. Format: JPEG. |
+| BR-9 | Make and model list is static for MVP, covering top 50+ makes in the Bulgarian market | "Other" option for unlisted makes/models with manual text entry |
+| BR-10 | Vehicle nickname is optional. Default display: "[Make] [Model]" | Nickname appears in vehicle switcher and dashboard header when set |
+| BR-11 | Multi-vehicle switching is instant — show cached data first, refresh in background | No full page reload. Smooth transition. |
+| BR-12 | Each vehicle's data is completely isolated | Vehicle A's expenses never appear in Vehicle B's views |
+| BR-13 | Vehicle photo encouragement: show "Add Photo" prompt on profile if no photo set | A car with a photo feels personal. Nudge but don't force. (Journey 1 insight) |
 
 ---
 
@@ -186,24 +165,23 @@
 
 **Entities involved:**
 
-- `Vehicle` -- id, user_id, make, model, year, fuel_type, license_plate, nickname, photo_url, is_active, created_at, updated_at
-- `OdometerReading` -- id, vehicle_id, reading_km, recorded_at, source (manual, expense, fuel_entry)
+- `Vehicle` — id, user_id, make, model, year, fuel_type (nullable), license_plate (nullable), current_odometer_km (nullable), photo_url (nullable), nickname (nullable), created_at, updated_at, is_active (boolean)
 
-**Data read:** Vehicle list for current user. Active vehicle for all dashboard/timeline queries.
-**Data written:** Vehicle (CRUD). OdometerReading (updates).
+**Data read:** Vehicle list (switcher, profile), single vehicle details
+**Data written:** Vehicle (create, update, delete)
 
 **Validation rules:**
 
 | Field | Type | Required | Validation |
 |-------|------|----------|------------|
-| make | string | Yes | Max 50 chars |
-| model | string | Yes | Max 50 chars |
+| make | string | Yes | Max 50 chars. From static list or manual "Other" entry |
+| model | string | Yes | Max 50 chars. Filtered by make or manual "Other" entry |
 | year | integer | Yes | Range: 1970 to current year |
-| fuel_type | enum | Yes | Values: "petrol", "diesel", "lpg", "hybrid", "electric" |
-| license_plate | string | No | Max 20 chars, alphanumeric + hyphens |
+| fuel_type | enum | No | Values: "petrol", "diesel", "lpg", "hybrid", "electric", "other" |
+| license_plate | string | No | Max 15 chars |
+| current_odometer_km | integer | No | Min: 0, Max: 9,999,999 |
+| photo_url | string | No | URL to compressed image in cloud storage |
 | nickname | string | No | Max 30 chars |
-| odometer_km | integer | No | Min: 0, Max: 9,999,999. Must be >= last recorded reading. |
-| photo | image | No | Max 10MB before compression. Formats: JPEG, PNG, HEIC |
 
 ---
 
@@ -211,52 +189,54 @@
 
 | Scenario | Expected Behavior |
 |----------|-------------------|
-| User deletes their only vehicle | Dashboard shows empty state with CTA: "Add a car to start tracking." |
-| User tries to add a 3rd vehicle on free tier | Show premium upsell. Do not show the form. |
-| User downgrades from premium with 5 vehicles | Existing vehicles are NOT deleted. User keeps access to all vehicles but cannot add new ones until under the limit. |
-| Photo upload fails mid-upload | Toast: "Photo upload failed. Vehicle saved without photo." Vehicle is still created. User can add photo later. |
-| Two devices add a vehicle simultaneously | Both are created. Server assigns unique IDs. Both appear in the vehicle list. |
-| User enters a very old year (e.g., 1971 classic car) | Allowed. Year range starts at 1970 to support classic car enthusiasts. |
-| Make/model not in dropdown list | User can type a custom value. System stores whatever the user enters. |
-| Network failure during vehicle delete | Toast: "Could not delete vehicle. Check your connection." Vehicle remains. |
-| User enters odometer lower than previous | Inline error: "Odometer must be at least [X] km (your last recorded reading)." |
+| User's car make/model not in the list | "Other" option with manual text entry for both make and model |
+| Odometer entered lower than previous reading | Warning dialog. Allow override (odometer reset, engine rebuild, different dashboard). |
+| Photo upload fails | Save vehicle without photo. Toast: "Photo couldn't be uploaded. You can add it later." |
+| User deletes their only vehicle | Dashboard shows empty state with illustration and "Add your first car" CTA |
+| User tries to add 3rd vehicle on free tier | Premium upgrade prompt: "Track all your cars with Premium." Links to premium benefits. |
+| Very old car (year < 1990) | Allow it. Enthusiasts own classic cars. Year picker goes to 1970. |
+| Duplicate vehicles (same make/model/year) | Allow. Users may own two of the same model. Nickname helps differentiate. |
+| Vehicle with hundreds of expenses deleted | Requires typing vehicle name to confirm. Deletion is permanent. |
+| No internet when adding vehicle | Toast error. Form data preserved for retry. |
+| User uploads very large photo (10MB+) | Client-side compression before upload. If still too large after compression: "Photo is too large. Try a different image." |
 
 ---
 
 ## 7. Non-Functional Requirements
 
-- **Performance:** Vehicle list loads in < 1 second. Vehicle switch (data refresh) < 2 seconds.
-- **Offline behavior:** Cached vehicle list is available offline. Add/edit/delete requires internet (no offline queue in MVP).
-- **Accessibility:** Vehicle photos have alt text: "[Make] [Model] [Year]". All interactive elements meet 44x44pt minimum.
-- **Localization:** Make/model names are not translated (brand names are universal). UI labels in Bulgarian/English.
-- **Photo storage:** Compressed photos stored in cloud storage (CDN). Photo URLs served via CDN for fast loading.
+- **Performance:** Vehicle list loads in < 1 second. Vehicle switching is instant (cached data first). Photo compression happens client-side before upload.
+- **Offline behavior:** Vehicle profiles cached locally for read access. Write operations require internet for MVP. Tech stack TBD — see architecture decision.
+- **Accessibility:** All form fields labeled. Photo area has text alternative for screen readers. Minimum touch targets: 44x44pt.
+- **Localization:** Make/model names are universal (not translated). UI text in Bulgarian by default. License plate hint shows Bulgarian format.
+- **Image handling:** Photos compressed client-side. Cloud storage with CDN for retrieval. Thumbnail versions generated for list views. Tech stack TBD.
 
 ---
 
 ## 8. Dependencies
 
-- **Depends on:** Onboarding & Auth (user must be authenticated).
-- **Depended on by:** Expense Tracking, Fuel Entry, Cost Dashboard, Vehicle Timeline, Maintenance Reminders, Challenges, Share & Export. Essentially every other feature.
+- **Depends on:** Onboarding & Auth (user must exist)
+- **Depended on by:** Expense Tracking, Fuel Entry, Cost Dashboard, Vehicle Timeline, Maintenance Reminders, Challenges & Gamification, Share & Export
 - **API endpoints needed:**
-  - `POST /api/vehicles` -- create vehicle
-  - `GET /api/vehicles` -- list user's vehicles
-  - `GET /api/vehicles/{id}` -- get vehicle details
-  - `PUT /api/vehicles/{id}` -- update vehicle
-  - `DELETE /api/vehicles/{id}` -- delete vehicle (cascade)
-  - `POST /api/vehicles/{id}/photo` -- upload/replace photo
-  - `POST /api/vehicles/{id}/odometer` -- record odometer reading
-  - `PUT /api/vehicles/{id}/activate` -- set as active vehicle
+  - `GET /api/vehicles` — list user's vehicles
+  - `POST /api/vehicles` — create vehicle
+  - `GET /api/vehicles/{id}` — get vehicle details
+  - `PUT /api/vehicles/{id}` — update vehicle
+  - `DELETE /api/vehicles/{id}` — delete vehicle (cascading)
+  - `PUT /api/vehicles/{id}/photo` — upload/update vehicle photo
+  - `PUT /api/vehicles/{id}/activate` — set as active vehicle
 
 ---
 
 ## 9. Out of Scope
 
-- VIN decoder / auto-fill from VIN -- deferred to v1.1+
-- Vehicle value estimation (current market value) -- deferred
-- Insurance/registration document storage on vehicle profile -- separate feature (C3)
-- Vehicle comparison (side by side) -- not planned
-- Vehicle sharing between users (family account) -- not planned for MVP
-- Detailed vehicle specs (horsepower, weight, etc.) -- not needed for cost tracking
+- VIN decoder / auto-fill — deferred to v1.1-v1.2
+- Vehicle make/model database API (using static list for MVP)
+- Vehicle valuation or market price estimation
+- Document attachment to vehicle profile (deferred)
+- Cross-vehicle comparison dashboard
+- "Archive" vehicle (soft delete) — MVP only supports permanent deletion
+- Bulk vehicle import (fleet managers, Phase 3)
+- Aggregate "all vehicles" dashboard view — defer to v1.1
 
 ---
 
@@ -264,12 +244,20 @@
 
 | # | Question | Impact | Resolution |
 |---|----------|--------|------------|
-| OQ-1 | Should we pre-populate make/model from a static list or use a third-party vehicle database API? | Affects data quality and maintenance burden | Recommend: static list for MVP. Top 50 makes with models for Bulgarian market. Allow custom entry. |
-| OQ-2 | Should the "aggregate all vehicles" view be in MVP? | PRD marks it as "optional" for M8 | Recommend: defer to v1.1. Simplifies dashboard logic. |
-| OQ-3 | Should vehicle deletion be soft-delete (recoverable for 30 days) or hard-delete? | Affects data storage and user trust | Recommend: soft-delete with 30-day recovery window. Show "Recently Deleted" section. |
-| OQ-4 | How should we handle fuel_type "LPG" -- is it always dual-fuel (petrol + LPG)? | Affects fuel entry form and consumption calculation | Research: in Bulgaria, LPG cars run on both. May need "primary fuel" and "secondary fuel" fields. |
+| OQ-1 | Should we show an "aggregate all vehicles" view on the dashboard? | Useful for multi-car owners, adds complexity | Recommend: defer to v1.1. MVP shows one vehicle at a time with switcher. |
+| OQ-2 | How large should the static make/model list be? | App size and onboarding experience | Recommend: top 50 makes with top 20 models each. Cover 95%+ of Bulgarian market. |
+| OQ-3 | Should fuel type be asked during onboarding or deferred? | Journey 1 recommends minimum fields, but fuel type helps fuel entry | Recommend: defer to first fuel entry for this vehicle. |
 
 ---
 
-**New data entities discovered:** Vehicle, OdometerReading
-**New API endpoints discovered:** 8 vehicle endpoints (listed in Section 8)
+**Data entities discovered:** Vehicle
+**API endpoints discovered:** 7 vehicle endpoints (listed in Section 8)
+
+---
+
+## Document History
+
+| Version | Date | Changes |
+|---|---|---|
+| 1.0 | 2026-03-06 | Initial spec |
+| 2.0 | 2026-03-07 | Regenerated with user journey insights. Key changes: minimum onboarding fields (make/model/year only), photo as encouraged-not-required, popular BG makes first, vehicle deletion confirmation tiered by data volume, premium vehicle limit as conversion trigger from Journey 5, empty states with illustrations from Journey 4. |

@@ -2,102 +2,105 @@
 
 **File:** `/03-product/functional-specs/share-export.md`
 **Produced by:** @product-architect
-**Date:** 2026-03-06
-**Version:** 1.0
-**Source PRD:** `/03-product/product-requirements-document.md` -- Section 6.1 (S5, C2)
-**Related features:** S5 (Shareable Vehicle Card), C2 (PDF Service History Export -- deferred but spec'd for reference)
+**Date:** 2026-03-07
+**Version:** 2.0 — Updated with user journey insights
+**Source PRD:** `/03-product/product-requirements-document.md` — Section 6.1 (S5, C2)
+**Related features:** S5 (Shareable Vehicle Card), C2 (PDF Service History Export — deferred to v1.1)
+**Related journeys:** `/03-product/user-journeys/journey-vehicle-timeline.md`, `/03-product/user-journeys/journey-premium-upgrade.md`
 
 ---
 
 ## 1. Overview
 
-**What this feature does:** Generates a visually appealing vehicle card image with the car's photo and key stats, shareable to Instagram, WhatsApp, Facebook, and other platforms via the native share sheet. This is an organic growth driver -- every share is a mini-ad for the app.
+**What this feature does:** Generates a visual vehicle card — a designed image showing the car's photo, model, and key stats — that users can share to social media (Instagram, WhatsApp, Facebook) with one tap. Also defines the future PDF service history export (deferred to v1.1). The vehicle card is the organic growth engine for the product.
 
-**Why it matters:** Car enthusiasts love sharing their cars. A beautiful, data-rich vehicle card gives them something worth sharing -- combining their car photo with stats that show commitment and knowledge. Subtle app branding on the card drives discovery (Gain: G6 proud sharing; Social job: S1 show car to others).
+**Why it matters:** Car enthusiasts share car content on social media and in groups. A well-designed vehicle card shared to a BMW Club Bulgaria Facebook group generates curiosity: "What app is that?" (Gain G6: proud sharing). The card must be visually striking — automotive magazine quality, not a boring stat dump (Journey 4 insight). The vehicle card includes subtle app branding (logo + download link), turning every share into a potential acquisition event. This is the primary organic growth channel with near-zero cost.
 
-**User type:** All users (generate card). Card includes premium stats only for premium users.
+**User type:** All users (vehicle card generation). Premium users (PDF export, deferred to v1.1).
 
 ---
 
 ## 2. User Flow
 
-### Happy Path -- Generate and Share Vehicle Card
+### Happy Path — Generate and Share Vehicle Card
 
-1. User navigates to vehicle profile or taps "Share" from dashboard/timeline
-2. System generates a vehicle card preview
-3. Card shows: vehicle photo, make/model/year, key stats
+1. User navigates to vehicle profile or timeline and taps "Share"
+2. System generates a vehicle card preview: car photo, model name, key stats, subtle app branding
+3. User previews the card — can see how it will look when shared
 4. User taps "Share"
-5. System opens native OS share sheet (Instagram, WhatsApp, Facebook, Save to Gallery, etc.)
-6. User selects a platform and shares
-7. App tracks the share event for analytics
+5. OS share sheet opens: Instagram, WhatsApp, Facebook, Save to Gallery, etc.
+6. User selects destination and shares
+7. Friends/group members see the card. Some are curious about the app.
 
 ### Alternative Paths
 
-- **Path A: Customize card before sharing** -- User can toggle which stats to show/hide on the card. Tap "Customize" to toggle: total cost (on/off), cost/km (premium only, on/off), mods count, months tracked, fuel efficiency.
-- **Path B: Save to gallery without sharing** -- User taps "Save Image" instead of sharing to a platform. Card saved to device photo gallery.
-- **Path C: No vehicle photo** -- Card uses a placeholder silhouette or gradient background with make/model text. Still shareable but less impactful. Prompt: "Add a photo to make your card stand out!"
-- **Path D: Free user card** -- Shows: vehicle photo, make/model/year, months tracked, total entries. Does NOT show cost/km (premium). Shows app branding.
-- **Path E: Premium user card** -- Shows all stats including cost/km. Premium badge/accent on card.
+- **Path A: Share from vehicle profile** — Tap "Share Vehicle Card" on vehicle profile screen. Same flow.
+- **Path B: Share from timeline** — Tap "Share" button in timeline header. Card includes timeline highlights.
+- **Path C: Share from dashboard** — Tap share icon on dashboard. Card includes monthly cost stats.
+- **Path D: No car photo** — Card uses vehicle type silhouette placeholder. Less engaging but still functional.
+- **Path E: Save to gallery** — User taps "Save Image" instead of sharing. Card saved locally. Can share later.
+- **Path F: Customize card (future)** — Choose which stats to show, pick a card template/style. Not in MVP — auto-generated only.
 
 ---
 
 ## 3. Screen Descriptions
 
-### Screen: Vehicle Card Generator / Preview
+### Screen: Vehicle Card Preview
 
-**Purpose:** Preview and customize the shareable vehicle card before sharing.
-**Entry points:** "Share" button on vehicle profile. "Share Card" from dashboard menu. "Share" from vehicle timeline header.
+**Purpose:** Preview the generated vehicle card before sharing.
+**Entry points:** "Share" button from vehicle profile, timeline header, or dashboard.
 
 **Layout:**
-- Card preview (center of screen, rendered at share resolution):
-  - Vehicle photo (top half or background, with gradient overlay for text readability)
-  - Make + Model + Year (prominent, white text over photo)
-  - Nickname (if set, below make/model)
-  - Stats row (bottom section of card, dark background):
-    - Total cost: "12,450 лв" (label: "Total Invested")
-    - Entries count: "47 entries" (label: "Tracked")
-    - Months tracked: "8 months" (label: "Since")
-    - [Premium] Cost/km: "0.42 лв/km" (label: "Cost/km")
-    - [Premium] Avg fuel: "7.8 L/100km" (label: "Fuel Efficiency")
-  - App branding: small logo + app name + tagline at bottom edge of card
-- **Below card preview:**
-  - "Customize" button (opens stat toggles)
-  - "Share" primary button (opens native share sheet)
-  - "Save Image" secondary button (saves to gallery)
+- Full-screen preview of the generated card image
+- Card contents (auto-generated):
+  - **Vehicle photo** (full-width hero, or silhouette if no photo)
+  - **Vehicle name/model:** "BMW E46 320i" + year
+  - **Nickname** if set (e.g., "The Beast")
+  - **Key stats (2-4 items):**
+    - Total tracked (amount or "X months tracked")
+    - Expenses logged (count)
+    - Top modification or recent highlight (if timeline has entries with photos)
+    - Cost per km (only if premium and data available)
+  - **App branding:** Small app logo + "Track your car's journey — [App Name]" + download link or QR code (subtle, bottom corner)
+- Below preview:
+  - "Share" primary button (opens OS share sheet)
+  - "Save Image" secondary button
+  - "Back" to return without sharing
+
+**Card design requirements (from Journey 4):**
+- Must be designed to social-media-sharing standard — think automotive magazine layout
+- Not an app screenshot, not a boring stat table
+- Clean typography, professional feel
+- Car photo is the visual anchor — if no photo, the card is significantly less engaging (nudge: "Add a photo to make your card stand out")
+- Stats should feel impressive, not clinical
+- App branding is subtle — small logo and tagline, not a large watermark
 
 **Interactions:**
 
 | Element | Action | Result |
 |---------|--------|--------|
-| "Customize" | Tap | Opens bottom sheet with toggle switches for each stat |
-| Stat toggle | Switch | Shows/hides that stat on the card preview (real-time update) |
-| "Share" | Tap | Opens native OS share sheet with card image |
-| "Save Image" | Tap | Saves card image to device gallery |
-| Card preview | Pinch/zoom | No zoom -- fixed preview |
+| "Share" | Tap | Opens OS share sheet (Instagram, WhatsApp, Facebook, Messages, etc.) |
+| "Save Image" | Tap | Saves card image to device gallery. Toast: "Card saved to your gallery." |
+| "Back" | Tap | Return to previous screen |
 
-**Loading state:** Card preview shows skeleton/shimmer while stats are being calculated and image is being rendered.
-**Empty state:** If vehicle has no expenses at all: card shows photo + make/model + "Just started tracking!" instead of stats. Still shareable.
-**Error state:**
-- Photo fails to load: use gradient background with make/model text
-- Stats calculation fails: show card with photo + make/model only
-- Share sheet fails: toast "Could not share. Try saving the image and sharing from gallery."
+**Loading state:** Card generation shows brief progress indicator ("Creating your card..."). Target: < 2 seconds.
+**Empty state:** If vehicle has no data at all: "Log some expenses first to create a meaningful card." Don't generate empty cards.
+**Error state:** "Could not generate card. Try again." (fallback: generate with available data)
 
 ---
 
-### Component: Card Customization (Bottom Sheet)
+### Screen: Share Destination (OS Native)
 
-**Purpose:** Let user choose which stats appear on the card.
-**Entry points:** "Customize" button on card preview.
+This is the native OS share sheet — not a custom screen. The app generates an image file and passes it to the system share handler. The user chooses their destination.
 
-**Layout:**
-- "Customize Your Card" heading
-- Toggle switches:
-  - "Total Cost" (default: ON)
-  - "Entries Tracked" (default: ON)
-  - "Months Tracked" (default: ON)
-  - "Cost per km" (premium only -- locked for free with "Premium" label) (default: ON if premium)
-  - "Fuel Efficiency" (premium only) (default: ON if premium)
-- "Done" button
+**Supported platforms:**
+- Instagram (Stories or Feed)
+- Facebook (post or story)
+- WhatsApp (direct message or status)
+- Telegram
+- Save to gallery
+- Copy image
+- Other apps (any app that accepts images)
 
 ---
 
@@ -105,16 +108,16 @@
 
 | # | Rule | Example |
 |---|------|---------|
-| BR-1 | All users can generate and share vehicle cards. No premium gate on sharing itself. | Free users share cards -- cards are organic marketing for the app. |
-| BR-2 | Free user cards show: vehicle photo, make/model/year, total cost, entries count, months tracked. No cost/km or fuel efficiency (premium stats). | Free card: "BMW 320d 2004 -- 12,450 лв invested -- 47 entries -- 8 months" |
-| BR-3 | Premium user cards additionally show: cost/km, fuel efficiency, and a subtle premium badge/accent. | Premium card adds: "0.42 лв/km -- 7.8 L/100km" + premium styling |
-| BR-4 | App branding is always present on the card and cannot be removed. | Bottom of card: "[AppLogo] [App Name] -- Track your car's true cost" |
-| BR-5 | Card image is generated at 1080x1920px (Instagram story optimal) and 1080x1080px (square, for feed posts). User can choose format. | Default: story format. Toggle: "Square" option. |
-| BR-6 | The "Total Cost" stat shows lifetime total for that vehicle (all months combined), not just the current month. | Vehicle with 8 months of data: "12,450 лв" = sum of all expenses ever. |
-| BR-7 | Card image is rendered client-side (no server generation needed). Uses the locally cached vehicle photo and computed stats. | Works even with brief connectivity loss if photo is cached. |
-| BR-8 | Share events are tracked: share_initiated, share_completed (if platform reports), share_platform (Instagram, WhatsApp, etc.) | Analytics: "42% of shares go to Instagram, 35% to WhatsApp" |
-| BR-9 | If vehicle has no photo, card uses a styled gradient background with the make/model in large text. Card is still functional and shareable. | Gradient card: "BMW 320d 2004" in large text over dark gradient + stats. |
-| BR-10 | Users can toggle stats off for privacy (e.g., hide total cost but show everything else). | User shares a card with photo + make/model + months tracked, but total cost hidden. |
+| BR-1 | Vehicle card is a FREE feature. No premium gate. | Sharing drives organic growth — never gate the growth engine. |
+| BR-2 | Card requires at least 1 expense logged for the vehicle | Don't generate empty cards with 0 stats. Prompt: "Log expenses to create your vehicle card." |
+| BR-3 | Card includes app branding (logo + tagline + link) | Small, subtle. Not a watermark. "Track your car's journey — [App Name]" |
+| BR-4 | Card photo uses the vehicle's profile photo | If no photo: silhouette placeholder. Nudge: "Add a photo to make your card stand out." |
+| BR-5 | Stats shown on card are contextual — show what's most impressive | If user has modifications with photos → highlight those. If user has months of data → show total tracked. If premium with cost/km → show that. |
+| BR-6 | Card image format: PNG or JPEG, optimized for social media | Recommended dimensions: 1080x1350 (Instagram portrait) or 1080x1080 (square). High quality. |
+| BR-7 | Card generation happens client-side or server-side — tech stack TBD | If client-side: faster, works offline. If server-side: consistent quality, easier to update templates. |
+| BR-8 | One card design for MVP. Multiple templates in future. | Keep it simple — one well-designed template beats three mediocre ones. |
+| BR-9 | Cost per km stat only appears on card for premium users | Free users see: total tracked, expenses count, months tracked. Premium adds: cost/km. |
+| BR-10 | Share event is tracked in analytics | Track: share_card_generated, share_card_shared (with destination if detectable), share_card_saved. Critical for measuring organic growth channel. |
 
 ---
 
@@ -122,15 +125,19 @@
 
 **Entities involved:**
 
-- `Vehicle` -- photo, make, model, year, nickname
-- `Expense` -- aggregated for total cost and entry count
-- `FuelEntry` -- aggregated for average fuel efficiency
-- `OdometerReading` -- for cost/km calculation
+No new entities. The vehicle card is generated on-the-fly from existing data:
+- `Vehicle` — photo, make, model, year, nickname
+- `Expense` — aggregated totals (count, sum)
+- `TimelineEntry` — recent highlights (entries with photos)
+- `FuelEntry` — for cost/km (premium)
 
-**Data read:** Vehicle details, total expenses (lifetime), expense count, cost/km (if premium), fuel efficiency average (if premium), months since first expense.
-**Data written:** Analytics events (share_initiated, share_completed, share_platform).
+**Data read:**
+- Vehicle profile (photo, name, model)
+- Expense summary: total amount, expense count, months tracked
+- Timeline highlights: most recent photo entries (for card visual elements)
+- Cost per km (premium only)
 
-**No new database entities needed.** Card is generated on-the-fly from existing data.
+**Data written:** None — card is generated, not stored. Analytics events only.
 
 ---
 
@@ -138,45 +145,47 @@
 
 | Scenario | Expected Behavior |
 |----------|-------------------|
-| Vehicle with 0 expenses | Card shows photo + make/model + "Just started tracking!" No stat numbers. |
-| Vehicle with photo but no stats yet (just added) | Card shows photo + make/model + "Just started tracking!" |
-| Very large total cost (e.g., 150,000 лв) | Format with thousands separator: "150 000 лв". Ensure text fits card layout. |
-| Very long vehicle name (e.g., "Mercedes-Benz GLE 400d 4MATIC 2023") | Truncate or reduce font size to fit. Max 2 lines for make/model on card. |
-| Share sheet not available (very old OS) | Fall back to "Save Image" only. Hide share button. |
-| User takes screenshot instead of using share | Fine -- branding is on the card regardless. |
-| No internet (stats cached) | Card can be generated from cached data. Share to platforms may fail if no internet -- let the OS share sheet handle that error. |
-| Premium user downgrades -- previously shared cards with premium stats | Already-shared images are static -- no change. New cards won't show premium stats. |
+| No vehicle photo | Card uses silhouette placeholder. Still functional but less engaging. Nudge before share: "Add a car photo for a better card." |
+| Only 1 expense | Card shows: "Just started tracking — X лв tracked so far." Minimal stats but still shareable. |
+| Very large total (e.g., 50,000 лв) | Display normally. Impressive numbers make better share content. |
+| No internet (client-side generation) | If card generation is client-side: works offline. If server-side: "No connection. Try again when online." |
+| Image share fails | Toast: "Could not share. Try saving the image and sharing manually." |
+| User hasn't set a display name | Card uses "[Make] [Model] [Year]" as the vehicle name. Fine. |
+| Platform-specific image requirements | Generate card at 1080x1350 for Instagram compatibility. All other platforms accept this ratio. |
 
 ---
 
 ## 7. Non-Functional Requirements
 
-- **Performance:** Card generation < 1 second (client-side rendering). Share sheet opens immediately after tap.
-- **Image quality:** Card rendered at 2x resolution for crisp display on high-DPI screens. File size < 500KB (JPEG 90% quality).
-- **Offline behavior:** Card can be generated offline if vehicle data and photo are cached. Sharing to external platforms requires internet (handled by OS).
-- **Accessibility:** Card preview has alt text for screen readers: "[Make] [Model] [Year] vehicle card with stats: total cost [X], entries [Y]."
-- **Localization:** Stats labels in Bulgarian/English. Currency per settings. App branding tagline translated.
+- **Performance:** Card generation in < 2 seconds. Share sheet opens immediately after generation.
+- **Image quality:** High resolution (1080x1350 or 1080x1080). Text is crisp and readable at social media display sizes. Photos are not pixelated.
+- **Offline behavior:** Depends on implementation (client-side vs. server-side). Client-side preferred for offline support.
+- **Accessibility:** "Share" and "Save" buttons meet minimum touch targets. Card preview has text description for screen readers.
+- **Localization:** Stats text on card in the user's language (Bulgarian by default). App branding tagline in Bulgarian.
+- **Analytics events:** share_card_generated, share_card_preview_viewed, share_card_shared, share_card_saved, share_card_destination (if detectable).
 
 ---
 
 ## 8. Dependencies
 
-- **Depends on:** Vehicle Management (photo, make/model), Expense Tracking (total cost, entry count), Fuel Entry (efficiency), Cost Dashboard (cost/km calculation logic).
-- **Depended on by:** Nothing directly. This is a leaf feature.
+- **Depends on:** Vehicle Management (vehicle data), Expense Tracking (stats), Vehicle Timeline (photo highlights), Cost Dashboard (cost/km for premium)
+- **Depended on by:** Nothing directly — this is a growth/engagement feature.
 - **API endpoints needed:**
-  - `GET /api/vehicles/{vehicleId}/share-stats` -- aggregated stats for card (total cost, entries, months, cost/km, fuel efficiency). Single endpoint, returns everything needed for card generation.
+  - `GET /api/vehicles/{vehicleId}/share-card/data` — get all data needed to generate the card (vehicle, stats, highlights)
+  - `POST /api/vehicles/{vehicleId}/share-card/generate` — generate card image (if server-side generation)
 
 ---
 
 ## 9. Out of Scope
 
-- PDF service history export (C2) -- deferred to v1.1. Will be a separate spec when prioritized. High-level: generate a professional PDF with vehicle details + chronological expense/service list + photos. Premium feature.
-- CSV data export -- deferred
-- Sharing the dashboard or timeline (not just the card) -- deferred
-- Animated or video cards -- not planned
-- Card templates or themes -- defer to v1.1
-- Deep link from shared card back to the app (smart link for installs) -- implement in v1.1 for attribution tracking
-- QR code on card linking to app download -- consider for v1.1
+- PDF service history export — deferred to v1.1 (PRD C2). High-value premium feature for car sellers. Will be specified separately.
+- CSV data export — future feature
+- Multiple card templates/styles — MVP has one template. Multiple styles in v1.1+.
+- Interactive/animated cards — static image only
+- Direct posting to social media (API integration) — use OS share sheet
+- QR code on card linking to vehicle profile (public profiles don't exist in MVP)
+- Card customization (choose stats, pick colors) — future feature
+- Shared vehicle profiles (public URLs) — not in MVP
 
 ---
 
@@ -184,13 +193,21 @@
 
 | # | Question | Impact | Resolution |
 |---|----------|--------|------------|
-| OQ-1 | Should the card include a QR code or download link for the app? | Drives installs from shares | Recommend: include a small "Download: [short URL]" text at the bottom with the branding. QR code in v1.1. |
-| OQ-2 | Should we offer multiple card designs/templates? | Design variety increases share-worthiness | Defer to v1.1. Ship with one well-designed template for MVP. |
-| OQ-3 | Should card generation happen server-side (for consistent rendering) or client-side (for offline/speed)? | Client-side is faster, server-side ensures consistency across devices | Recommend: client-side for MVP. If rendering inconsistencies arise, add server-side option later. |
-| OQ-4 | What specific card dimensions should we support? 1080x1920 (story), 1080x1080 (square), both? | Instagram Stories vs. Feed have different optimal sizes | Recommend: default to story (1080x1920). Add square toggle. Most car content on Instagram is stories. |
-| OQ-5 | Should the "Total Cost" stat be opt-out by default for privacy? Some users may not want to share how much they spend. | Privacy concern vs. impressive stat for sharing | Recommend: all stats ON by default. User can toggle any stat off. Most users will share proudly. |
+| OQ-1 | Should card generation be client-side or server-side? | Client-side: faster, offline. Server-side: consistent quality, updatable templates. | Recommend: client-side for MVP speed. Server-side if the tech stack makes it easy. |
+| OQ-2 | Should the card include a QR code or download link? | Helps app discovery but adds visual clutter | Recommend: small text link (e.g., "app.name.com") bottom corner. QR code in v1.1 if needed. |
+| OQ-3 | How do we track app installs from shared cards? | Critical for measuring organic growth channel | Recommend: UTM-tagged link in card. Track "source=vehicle_card" in analytics. |
+| OQ-4 | Should we A/B test card designs? | Different designs may perform differently on different platforms | Recommend: single design for MVP. A/B test post-launch when share volume is sufficient. |
 
 ---
 
-**New data entities discovered:** None
-**New API endpoints discovered:** 1 share-stats endpoint (listed in Section 8)
+**Data entities discovered:** None new. Uses existing Vehicle, Expense, TimelineEntry, FuelEntry data.
+**API endpoints discovered:** 2 share-card endpoints (listed in Section 8)
+
+---
+
+## Document History
+
+| Version | Date | Changes |
+|---|---|---|
+| 1.0 | 2026-03-06 | Initial spec |
+| 2.0 | 2026-03-07 | Regenerated with user journey insights. Key changes: automotive magazine quality design requirement (Journey 4), vehicle card as free feature (never gate the growth engine), contextual stats based on user's data, car photo as visual anchor with nudge if missing, subtle app branding design guidelines, platform-specific image dimensions, analytics for tracking organic growth attribution. PDF export explicitly deferred to v1.1 as separate spec. |

@@ -2,59 +2,53 @@
 
 **File:** `/03-product/functional-specs/maintenance-reminders.md`
 **Produced by:** @product-architect
-**Date:** 2026-03-06
-**Version:** 1.0
-**Source PRD:** `/03-product/product-requirements-document.md` -- Section 6.1 (M7)
+**Date:** 2026-03-07
+**Version:** 2.0 — Updated with user journey insights
+**Source PRD:** `/03-product/product-requirements-document.md` — Section 6.1 (M7)
 **Related features:** M7 (Maintenance Reminders)
+**Related journeys:** `/03-product/user-journeys/journey-maintenance-reminder.md`, `/03-product/user-journeys/journey-first-time-experience.md`, `/03-product/user-journeys/journey-premium-upgrade.md`
 
 ---
 
 ## 1. Overview
 
-**What this feature does:** Allows users to create reminders for recurring or one-time maintenance and administrative tasks, triggered by date, mileage, or both. Sends push notifications when a reminder is due or approaching. After the task is completed, the user can log the associated expense and the reminder resets (for recurring items) or marks as done.
+**What this feature does:** Allows users to create maintenance reminders triggered by date, mileage, or both. Sends push notifications when maintenance is due. When completed, offers seamless flow to log the expense. Reminder resets for the next cycle automatically.
 
-**Why it matters:** Forgetting maintenance deadlines leads to missed oil changes, expired insurance, failed inspections, and costly consequences. This is a table-stakes feature -- competitors offer it, and users expect it. Our differentiation is tying reminders to the expense flow: complete a reminder > log the expense > see it on the dashboard (Pain: P5 forget maintenance; Gain: G4 never forget a deadline).
+**Why it matters:** Car owners forget maintenance deadlines — oil changes, insurance renewals, tire rotations (Pain P5). Smart reminders build trust and stickiness: the app reliably manages their maintenance schedule, creating a "set it and forget it" relationship. Completing a reminder naturally flows into expense logging, closing the loop between planning and tracking (Journey 7 key moment). The 3-reminder free limit is a premium conversion trigger (Journey 5: 10% of conversions).
 
-**User type:** All users.
+**User type:** All users. Free tier: 3 active reminders. Premium: unlimited.
 
 ---
 
 ## 2. User Flow
 
-### Happy Path -- Create a Date-Based Reminder
+### Happy Path — Reminder Triggers, User Acts
 
-1. User navigates to "Reminders" tab or section
-2. User taps "Add Reminder"
-3. System shows reminder creation form
-4. User selects type: "Insurance Renewal"
-5. User sets trigger: date = March 15, 2027
-6. User sets advance notice: "30 days before"
-7. User optionally adds notes: "BULSTRAD, policy #12345"
-8. User taps "Save"
-9. System creates reminder. On February 13, 2027, push notification: "Insurance renewal due in 30 days"
-10. On March 15: second notification: "Insurance renewal is due today"
-11. User taps notification > opens reminder detail > taps "Mark as Done & Log Expense"
-12. Opens expense form pre-filled: category=Insurance, date=today, notes from reminder
-
-### Happy Path -- Create a Mileage-Based Reminder
-
-1. User taps "Add Reminder"
-2. User selects type: "Oil Change"
-3. User sets trigger: every 10,000 km
-4. Current odometer: 150,000 km. Next due: 160,000 km.
-5. User sets advance notice: "500 km before"
-6. User taps "Save"
-7. When odometer reaches 159,500 km (via odometer update or fuel entry): push notification: "Oil change due in 500 km"
-8. At 160,000 km: "Oil change is due now"
+1. User previously set up a reminder: "Oil change every 10,000 km"
+2. User logs fuel with odometer 154,500 km. System detects: oil change due at 155,000 km (500 km away).
+3. Push notification: "BMW E46: Oil change due in 500 km. Your last oil change was 9,500 km ago." (Journey 7: notification must be informative, not generic)
+4. User taps notification
+5. App opens to Reminder Detail screen: what's due, when, last completed date, current status
+6. Additional context: "Average cost for oil change: 120-180 лв" (from user's historical data if available)
+7. User takes external action (calls mechanic, plans DIY)
+8. Days later: user opens app, navigates to reminder, taps "Mark as Complete"
+9. Completion dialog: "When was this done?" (date picker, default today). "Log the expense?" (Yes/No)
+10. User taps "Yes — Log expense"
+11. Quick-add opens pre-filled: category = Maintenance, subcategory = Oil Change, date = completion date, vehicle = reminder vehicle. User only enters amount.
+12. Expense saved. Timeline entry created. Dashboard updated.
+13. Reminder resets: next oil change scheduled at 165,000 km (current + 10,000)
+14. Peace of mind: "the app will remind me again"
 
 ### Alternative Paths
 
-- **Path A: Combined trigger (date AND mileage)** -- User sets both date and mileage: "Oil change: every 10,000 km OR every 12 months, whichever comes first." Reminder fires on whichever trigger is reached first.
-- **Path B: Edit reminder** -- User taps existing reminder, taps "Edit", modifies fields, saves.
-- **Path C: Delete reminder** -- User taps existing reminder, taps "Delete", confirms.
-- **Path D: Snooze reminder** -- Notification arrives, user taps "Snooze". Options: remind in 1 day, 3 days, 1 week.
-- **Path E: Mark as done without logging expense** -- User completes the task but doesn't want to log an expense (e.g., free warranty service). Taps "Mark as Done". Recurring reminder resets.
-- **Path F: Mileage reminder but no odometer updates** -- System cannot trigger mileage-based reminders. Shows persistent hint: "Update your odometer to activate mileage reminders."
+- **Path A: Date-based reminder** — Insurance renewal March 15. Notifications at 30 days, 7 days, and 1 day before.
+- **Path B: Combined reminder (date + mileage)** — "Oil change every 10,000 km OR 12 months, whichever comes first." First trigger wins.
+- **Path C: User snoozes** — Taps "Snooze" on reminder detail. Options: 1 week or 500 km. After 3 snoozes: "This has been snoozed 3 times. Do you still need this reminder? Reschedule or remove." (Journey 7: prevent snooze loop)
+- **Path D: User ignores notification** — Follow-up reminder in 3 days. If dismissed (swiped away): no follow-up for 7 days.
+- **Path E: Mark complete without logging expense** — User taps "No — just complete." Reminder marked complete, next cycle scheduled. Missed logging opportunity but not forced. (Journey 7: respect user choice)
+- **Path F: Overdue reminder** — Reminder past due date or mileage. Status changes to "Overdue" with red/orange indicator. Escalating: in-app badge on Reminders tab.
+- **Path G: Reminder limit reached (free tier)** — User has 3 reminders and tries to add 4th. Shows: "You've used all 3 free reminders. Upgrade to Premium for unlimited reminders." Existing reminders still work. (Journey 5)
+- **Path H: Setup from templates** — First-time visitor to Reminders tab sees suggestion cards: "Oil change every 10,000 km?" "Insurance renewal date?" "Annual tax?" One-tap setup. (Journey 7: reduce setup friction)
 
 ---
 
@@ -62,111 +56,134 @@
 
 ### Screen: Reminders List
 
-**Purpose:** View and manage all reminders for the active vehicle.
-**Entry points:** "Reminders" tab in bottom nav or app menu. Push notification deep link.
+**Purpose:** Overview of all maintenance reminders for the active vehicle. Peace-of-mind screen.
+**Entry points:** Bottom navigation "Reminders" tab, or from vehicle profile.
 
 **Layout:**
-- Vehicle name in header (via vehicle selector)
-- Segmented control: "Upcoming" (default) | "Completed"
-- **Upcoming tab:**
-  - Reminders sorted by urgency: overdue first (red), then due soon (orange/yellow), then future (default)
-  - Each reminder card:
-    - Icon (based on type: wrench for maintenance, shield for insurance, document for tax, etc.)
-    - Title (reminder type)
-    - Due info: "Due March 15, 2027" or "Due in 1,200 km" or "Due March 15 OR 1,200 km"
-    - Status badge: "Overdue" (red), "Due Soon" (orange), "Upcoming" (gray)
-    - Notes preview (if any)
-  - "Add Reminder" button (bottom of list or FAB)
-- **Completed tab:**
-  - Past reminders that were marked as done
-  - Each card: type, completed date, linked expense (if any)
+- Header: "Reminders" + vehicle name
+- Reminders list, sorted by urgency:
+  - Overdue items (red/orange badge) at top
+  - Due soon (within 30 days or 1,000 km) next (yellow badge)
+  - All good (green checkmark) at bottom
+- Each reminder card:
+  - Name (e.g., "Oil Change")
+  - Status badge: Overdue / Due Soon / All Good
+  - Next due: "In 500 km" or "March 15, 2026" or "In 3 weeks"
+  - Last completed: "Dec 15, 2025 at 145,000 km"
+- + button to add new reminder
+- Free tier counter: "2/3 reminders used" (subtle, bottom)
 
 **Interactions:**
 
 | Element | Action | Result |
 |---------|--------|--------|
-| Reminder card | Tap | Opens Reminder Detail |
-| Reminder card | Swipe left | Reveals "Edit" and "Delete" actions |
-| "Add Reminder" | Tap | Opens Reminder Form |
-| Segmented control | Tap | Switches between Upcoming and Completed |
+| Reminder card | Tap | Open Reminder Detail |
+| + button | Tap | Open New Reminder form (or premium prompt if at limit) |
+| Status badge | Visual only | Color-coded status indicator |
 
 **Loading state:** Skeleton cards.
-**Empty state:** Illustration + "No reminders set. Add one to never miss an oil change or insurance renewal." + "Add Reminder" button.
-**Error state:** "Could not load reminders. Pull down to retry."
 
----
+**Empty state (no reminders):**
+"Never forget an oil change or insurance renewal. Set up your first reminder." + Suggestion cards for common reminders (Journey 7 templates):
+- "Oil change every 10,000 km" — one tap to create
+- "Insurance renewal" — asks for date
+- "Annual technical inspection" — asks for date
+- "Tire swap (seasonal)" — asks for date
 
-### Screen: Reminder Form (Add/Edit)
+**All-clear state (reminders set, none due):**
+"All caught up! Your next reminder: Oil change in 3,500 km." Green checkmark icon. Calm, peaceful state. (Journey 7: reminders list as peace-of-mind screen)
 
-**Purpose:** Create or edit a maintenance reminder.
-**Entry points:** "Add Reminder" button. "Edit" from reminder detail.
-
-**Layout:**
-- Reminder type selector (dropdown or selection list):
-  - Oil Change, Tire Rotation/Swap, Brake Service, Timing Belt, Filters, Battery, Coolant Flush, Spark Plugs, Insurance Renewal, Road Tax, Annual Inspection (ГТП), Vignette, Other (custom title)
-- Custom title field (shown when "Other" is selected)
-- **Trigger section:**
-  - "Remind me by:" toggle group:
-    - Date (calendar date picker)
-    - Mileage (number input: "At [X] km" or "Every [X] km")
-    - Both (date AND mileage -- whichever comes first)
-  - For mileage: show current odometer and calculated "due at" km
-  - For recurring mileage: "Repeat every [X] km" toggle
-  - For date: "Repeat yearly" toggle
-- **Advance notice:** dropdown: "1 day before", "3 days", "1 week", "2 weeks", "1 month", "500 km before", "1,000 km before"
-- Notes field (optional, multi-line, max 300 chars)
-- "Save" primary button
-- "Cancel" / back
-
-**Interactions:**
-
-| Element | Action | Result |
-|---------|--------|--------|
-| Type selector | Select | Sets reminder type, auto-fills icon |
-| "Other" type | Select | Shows custom title field |
-| Trigger toggles | Tap | Switches between date/mileage/both |
-| "Repeat yearly" / "Repeat every X km" | Toggle | Makes reminder recurring |
-| "Save" | Tap | Validates, saves, navigates to reminders list |
-
-**Loading state:** "Save" shows spinner.
-**Empty state:** (Add mode) All fields at defaults. (Edit mode) Pre-filled with current values.
-**Error state:**
-- No type selected: inline -- "Choose a reminder type"
-- No trigger set: inline -- "Set a date or mileage trigger"
-- Mileage trigger lower than current odometer: inline -- "Mileage must be higher than current reading ([X] km)"
-- Network error: toast
+**Error state:** "Could not load reminders. Pull to refresh."
 
 ---
 
 ### Screen: Reminder Detail
 
-**Purpose:** View a single reminder's details and take action (mark done, log expense, snooze).
-**Entry points:** Tap a reminder card. Push notification deep link.
+**Purpose:** View full details of a reminder. Act on it (complete, snooze, edit, delete).
+**Entry points:** Tap reminder card, or from push notification tap.
 
 **Layout:**
-- Type icon + title (header)
-- Status: "Overdue since [date]" (red) or "Due in [X days / X km]" (orange/gray) or "Completed on [date]" (green)
-- Trigger info: "Due: March 15, 2027" and/or "Due at: 160,000 km (currently 158,800 km)"
-- Advance notice setting
-- Recurring info: "Repeats yearly" or "Repeats every 10,000 km"
-- Notes
+- Reminder name and vehicle
+- Status: Due Soon / Overdue / Scheduled / Completed (with appropriate color)
+- Trigger type icon: calendar (date), speedometer (mileage), or both
+- **Due details:**
+  - Date-based: "Due: March 15, 2026 (in 8 days)"
+  - Mileage-based: "Due: at 155,000 km (in ~500 km)"
+  - Combined: shows both, whichever is sooner highlighted
+- **Last completed:** Date and odometer when last done. "Never" if first time.
+- **Historical cost:** "Average cost for this service: 150 лв" (from user's own expense history for this subcategory, if 2+ entries exist)
 - **Action buttons:**
-  - "Mark as Done & Log Expense" (primary) -- opens pre-filled expense form
-  - "Mark as Done" (secondary) -- completes without logging expense
-  - "Snooze" -- options: 1 day, 3 days, 1 week
-  - "Edit" -- opens edit form
-  - "Delete" (destructive)
-- If recurring and previously completed: "History" section showing past completions with dates and linked expenses
+  - "Mark as Complete" (primary)
+  - "Snooze" (secondary)
+  - "Edit" and "Delete" (bottom, subtle)
 
 **Interactions:**
 
 | Element | Action | Result |
 |---------|--------|--------|
-| "Mark as Done & Log Expense" | Tap | Opens expense form pre-filled from reminder |
-| "Mark as Done" | Tap | Marks complete. If recurring, resets to next occurrence. |
-| "Snooze" | Tap | Shows snooze options, reschedules notification |
-| "Edit" | Tap | Opens edit form |
-| "Delete" | Tap | Confirmation, then deletes |
+| "Mark as Complete" | Tap | Opens completion dialog |
+| "Snooze" | Tap | Options: "1 week" or "500 km". Snooze count tracked. |
+| "Edit" | Tap | Open edit form |
+| "Delete" | Tap | Confirmation: "Delete this reminder?" |
+
+**Loading state:** Minimal — most data is cached.
+**Error state:** "Could not load reminder. Pull to refresh."
+
+---
+
+### Screen: Completion Dialog
+
+**Purpose:** Mark a reminder as complete and optionally log the expense.
+**Entry points:** "Mark as Complete" from Reminder Detail.
+
+**Layout:**
+- "When was this done?" — date picker, default today
+- "Update odometer?" — optional, number field (shows current known odometer as hint)
+- "Log the expense?" — prominent Yes/No buttons
+  - Yes → transitions to pre-filled quick-add
+  - No → completes reminder, schedules next cycle
+
+If "Yes — Log expense":
+- Quick-add opens pre-filled: category = Maintenance (or appropriate), subcategory = reminder name, date = completion date, vehicle = reminder vehicle
+- User only needs to enter amount (Journey 7: pre-filled expense on completion is seamless)
+
+---
+
+### Screen: New/Edit Reminder
+
+**Purpose:** Create or edit a maintenance reminder.
+**Entry points:** + button from reminders list, "Edit" from reminder detail, template suggestion tap.
+
+**Layout:**
+- **Template suggestions** (only on new reminder, collapsed after first reminder created):
+  - Common maintenance items with pre-filled intervals. One-tap setup. (Journey 7 templates)
+- **Name field** — text (e.g., "Oil Change", "Insurance Renewal", "Tire Rotation")
+- **Trigger type toggle:** Date / Mileage / Both
+- **Date trigger fields** (if Date or Both selected):
+  - Next due date (date picker)
+  - Repeat interval: None, Monthly, Quarterly, Semi-annually, Annually, Custom (days)
+- **Mileage trigger fields** (if Mileage or Both selected):
+  - Next due at (km) — or "Every X km" with interval
+  - Current odometer display: "Current: 154,500 km" (from vehicle record)
+- **Notification timing:**
+  - Date: notify at 30 days, 7 days, 1 day before (customizable)
+  - Mileage: notify at 1,000 km, 500 km before threshold
+- **Notes field** (optional) — free text for additional context
+- "Save" primary button
+
+**Interactions:**
+
+| Element | Action | Result |
+|---------|--------|--------|
+| Template card | Tap | Pre-fills name, trigger type, and interval. User confirms/adjusts. |
+| Trigger type toggle | Tap | Shows/hides relevant fields |
+| "Save" | Tap | Creates/updates reminder |
+
+**Loading state:** "Save" shows spinner.
+**Error state:**
+- No name entered: inline — "Give your reminder a name"
+- No trigger configured: inline — "Set a date or mileage trigger"
+- Network error: toast
 
 ---
 
@@ -174,19 +191,22 @@
 
 | # | Rule | Example |
 |---|------|---------|
-| BR-1 | Free tier: max 3 active (upcoming) reminders. Premium: unlimited. | Free user with 3 reminders taps "Add Reminder" -- premium upsell: "Upgrade for unlimited reminders." |
-| BR-2 | Completed reminders don't count toward the free tier limit. | Free user completes 1 of 3 reminders -- now has 2 active, can add 1 more. |
-| BR-3 | Mileage-based reminders trigger when a new odometer reading (from any source: manual update, expense, fuel entry) reaches or exceeds the trigger threshold minus advance notice. | Trigger: 160,000 km. Advance: 500 km. Odometer updated to 159,600 km -- reminder fires. |
-| BR-4 | If no odometer updates occur, mileage-based reminders cannot fire. System shows a persistent hint on the reminders list: "Update your odometer to activate mileage reminders." | User has a mileage reminder but hasn't updated odometer in 3 months -- reminder stays "pending, waiting for odometer update." |
-| BR-5 | Date-based reminders fire at the configured advance notice time. A second notification fires on the due date itself. | Advance: 30 days. Due: March 15. First notification: Feb 13. Second: March 15. |
-| BR-6 | Combined triggers (date AND mileage) fire on whichever condition is met first. | "Oil change: 160,000 km or March 2027." If 160,000 km is reached in January, reminder fires then (before March). |
-| BR-7 | Recurring date reminders reset by adding the interval to the original due date (not the completion date). | Insurance due March 15, 2027 (yearly). Completed March 20. Next due: March 15, 2028 (not March 20, 2028). |
-| BR-8 | Recurring mileage reminders reset by adding the interval to the trigger mileage. | Oil change due at 160,000 km (every 10,000 km). Completed at 160,500 km. Next due: 170,000 km (not 170,500 km). |
-| BR-9 | "Mark as Done & Log Expense" pre-fills the expense form: category = mapped from reminder type, date = today, notes = reminder notes. User can modify before saving. | Insurance reminder completed: opens expense with category=Insurance, notes="BULSTRAD, policy #12345". |
-| BR-10 | Overdue reminders appear at the top of the list with red status and are surfaced in the dashboard as a badge: "1 overdue reminder." | Dashboard header shows a small red badge icon next to the reminders shortcut. |
-| BR-11 | Push notifications require device permission. If denied, reminders still appear in-app but no push. | Show in-app prompt explaining why push is needed: "Allow notifications to never miss a maintenance deadline." |
-| BR-12 | Snoozing reschedules the notification only. The due date/mileage doesn't change. | Reminder due March 15. Snoozed 3 days. New notification on March 18. Status still shows "Overdue since March 15." |
-| BR-13 | Reminder type-to-expense category mapping: Oil Change/Brake Service/Timing Belt/Filters/Battery/Coolant/Spark Plugs -> Maintenance. Insurance -> Insurance. Road Tax -> Tax. Inspection (ГТП) -> Tax. Vignette -> Tax. Tire Rotation/Swap -> Tires. Other -> Other. | Auto-mapping reduces friction when logging the expense from a completed reminder. |
+| BR-1 | Free tier: 3 active reminders. Premium: unlimited. | 4th reminder attempt shows premium prompt. Existing 3 still work. |
+| BR-2 | Reminder types: date-based, mileage-based, or combined (whichever triggers first) | Oil change: every 10,000 km OR 12 months |
+| BR-3 | Date-based notifications fire at 30 days, 7 days, and 1 day before due date | Insurance renewal March 15 → notifications Feb 13, March 8, March 14 |
+| BR-4 | Mileage-based notifications fire at 1,000 km and 500 km before threshold | Due at 155,000 km → notifications at 154,000 and 154,500 |
+| BR-5 | Mileage-based reminders depend on odometer updates (primarily from fuel entries) | If user hasn't logged fuel with odometer recently: prompt "Update your odometer to check reminders" |
+| BR-6 | After completion, reminder automatically resets for next cycle | Oil change completed at 155,200 km → next due at 165,200 km (155,200 + 10,000) |
+| BR-7 | Snooze options: 1 week or 500 km | Snooze postpones the notification, not the due date. Reminder still shows "due" status. |
+| BR-8 | After 3 snoozes, offer to reschedule or remove | "This has been snoozed 3 times. Reschedule or remove?" |
+| BR-9 | Maximum 1 reminder notification per day | If multiple reminders are due, combine into one notification: "2 maintenance items need attention" |
+| BR-10 | Respect notification quiet hours | No notifications between 22:00-08:00 (from user settings) |
+| BR-11 | Overdue reminders show in-app badge on Reminders tab | Badge count = number of overdue items |
+| BR-12 | Completing a reminder and logging the expense creates a timeline entry | Full chain: reminder complete → expense logged → timeline entry created |
+| BR-13 | Reminder notification content must be informative | "BMW E46: Oil change due in 500 km" — NOT "You have a reminder" (Journey 7 design) |
+| BR-14 | Push notifications require device permission. If denied: in-app badges only. | Prompt for notifications contextually when user creates first reminder. |
+| BR-15 | Reminder source field for future multi-source support | Values: "user_created" (MVP), future: "system_suggested", "garage_created", "fleet_policy" |
+| BR-16 | Odometer update from reminder completion updates the vehicle's current_odometer_km | Keeps vehicle odometer current for other reminders |
 
 ---
 
@@ -194,26 +214,21 @@
 
 **Entities involved:**
 
-- `Reminder` -- id, vehicle_id, user_id, type, custom_title, trigger_type (date/mileage/both), due_date, due_mileage_km, repeat_interval_months, repeat_interval_km, advance_notice_days, advance_notice_km, notes, status (active/completed/snoozed), snoozed_until, completed_at, linked_expense_id, created_at, updated_at
-- `ReminderHistory` -- id, reminder_id, completed_at, linked_expense_id (for recurring reminders that have been completed multiple times)
+- `Reminder` — id, vehicle_id, user_id, name, trigger_type (enum: date, mileage, combined), next_due_date (nullable), mileage_interval_km (nullable), next_due_mileage_km (nullable), notification_days_before (array, default: [30, 7, 1]), notification_km_before (array, default: [1000, 500]), last_completed_date (nullable), last_completed_odometer_km (nullable), snooze_count (default: 0), status (enum: active, snoozed, overdue, completed), source (enum: user_created, system_suggested, garage_created, fleet_policy — default: user_created), notes (nullable), created_at, updated_at
 
-**Data read:** Reminders for active vehicle. Current odometer reading (for mileage triggers). Expense link (for completed reminders).
-**Data written:** Reminder (CRUD). ReminderHistory (on recurring completion).
+**Data read:** Reminders for vehicle (list, detail), vehicle's current odometer (for mileage comparison)
+**Data written:** Reminder (create, update, delete, complete, snooze)
 
 **Validation rules:**
 
 | Field | Type | Required | Validation |
 |-------|------|----------|------------|
-| type | enum | Yes | One of the predefined types or "other" |
-| custom_title | string | Only if type="other" | Max 100 chars |
-| trigger_type | enum | Yes | "date", "mileage", "both" |
-| due_date | date | If trigger includes date | Must be in the future (for new reminders) |
-| due_mileage_km | integer | If trigger includes mileage | Must be > current odometer |
-| repeat_interval_months | integer | No | 1-120 (if recurring date) |
-| repeat_interval_km | integer | No | 1,000-100,000 (if recurring mileage) |
-| advance_notice_days | integer | No | 0-90 (default: 7) |
-| advance_notice_km | integer | No | 0-5,000 (default: 500) |
-| notes | string | No | Max 300 chars |
+| name | string | Yes | Max 100 chars |
+| trigger_type | enum | Yes | Values: "date", "mileage", "combined" |
+| next_due_date | date | Yes (if date/combined) | Must be in the future |
+| mileage_interval_km | integer | Yes (if mileage/combined) | > 0, <= 999,999 |
+| next_due_mileage_km | integer | Yes (if mileage/combined) | > current odometer |
+| notes | string | No | Max 500 chars |
 
 ---
 
@@ -221,52 +236,55 @@
 
 | Scenario | Expected Behavior |
 |----------|-------------------|
-| User creates a mileage reminder but has never set an odometer reading | Show warning: "Set your current odometer reading first so we know when to remind you." Link to vehicle profile odometer update. |
-| Push notification permission denied | Show in-app reminders only. Persistent banner on reminders screen: "Enable notifications in settings for push alerts." |
-| User has overdue reminders across multiple vehicles | Dashboard badge shows total overdue count across all vehicles. Reminder list shows only active vehicle's reminders. |
-| Recurring reminder completed early (e.g., oil change at 155,000 km instead of 160,000 km) | Next reminder resets to 170,000 km (original interval from trigger point, not completion point). Per BR-8. |
-| User deletes a vehicle with reminders | All reminders for that vehicle are cascade-deleted. |
-| Two reminders for the same task (user creates duplicate) | Allowed. No dedup logic. User manages their own reminders. |
-| Snooze past the next occurrence of a recurring reminder | Edge case unlikely but possible. System should not stack notifications. Snoozed reminder fires once at snooze time. |
-| Free user downgrades from premium with 10 active reminders | Existing reminders are NOT deleted. User keeps them but cannot add new ones until under the limit (3). |
-| No internet | Cached reminders viewable. Status changes (mark done) require internet. |
+| Mileage-based reminder but no recent odometer data | Reminder stays in "unknown" status. Prompt: "Update your odometer (log fuel with odometer) to check if maintenance is due." |
+| User never updates odometer | Mileage-based reminders can't fire. Show in-app nudge: "Your mileage reminders need an odometer update." Weekly nudge, max once per week. |
+| Push notifications disabled on device | In-app badge on Reminders tab shows overdue count. Periodic in-app prompt: "Enable notifications to get reminded on time." |
+| Reminder for a deleted vehicle | Cascade delete: when vehicle is deleted, all its reminders are also deleted. |
+| User completes reminder but doesn't log expense | Fine — reminder resets, next cycle scheduled. Expense logging is encouraged, not forced. |
+| Combined trigger: date passes but mileage not yet reached | Reminder fires on date (whichever comes first). User can snooze if mileage hasn't been reached. |
+| User edits a completed reminder's interval | Next due recalculates from last completion date/mileage. |
+| Reminder due date is today | Status: "Due today." Notification fires at the usual morning time. |
+| Multiple reminders due on the same day | Single grouped notification: "2 items need attention for your BMW E46." |
+| User has exactly 3 reminders (free limit) and deletes one | Count drops to 2/3. Can add one more. |
 
 ---
 
 ## 7. Non-Functional Requirements
 
-- **Performance:** Reminders list loads < 1 second. Creating a reminder < 1 second.
-- **Push notifications:** Must work reliably on both iOS (APNs) and Android (FCM). Schedule notifications server-side for date-based. Mileage-based triggers require server-side processing when odometer updates arrive.
-- **Offline behavior:** Cached reminders viewable offline. Actions (create, complete, delete) require internet.
-- **Accessibility:** Overdue status is communicated via text and color (not color alone). Screen reader announces: "[Type] reminder, overdue since [date]" or "[Type] reminder, due in [X] days."
-- **Localization:** Reminder type names translated. Date format per locale. "ГТП" (Bulgarian annual inspection) is a locale-specific type.
+- **Performance:** Reminders list loads in < 1 second. Notification scheduling is server-side and reliable.
+- **Push notifications:** Server-side scheduling via APNs (iOS) + FCM (Android). Notifications must be delivered reliably — maintenance reminders are high-trust features. Tech stack TBD for notification service.
+- **Offline behavior:** Reminders list is cached for offline viewing. Creating/editing reminders requires internet.
+- **Accessibility:** Status badges have descriptive text (not color alone): "Overdue", "Due soon", "All clear". Reminder detail is fully accessible.
+- **Localization:** Reminder names can be in any language (user input). System-generated text (status, notifications) in Bulgarian by default. Date format: dd.MM.yyyy.
+- **Analytics events:** reminder_created, reminder_completed, reminder_completed_with_expense, reminder_completed_without_expense, reminder_snoozed, reminder_deleted, reminder_notification_sent, reminder_notification_tapped, reminder_limit_hit.
 
 ---
 
 ## 8. Dependencies
 
-- **Depends on:** Onboarding & Auth, Vehicle Management (vehicle + odometer data), Expense Tracking (for "log expense" flow after completion).
-- **Depended on by:** Dashboard (overdue badge), Push notification system.
+- **Depends on:** Onboarding & Auth, Vehicle Management (reminders belong to a vehicle), Expense Tracking (completion can log expense), Fuel Entry (odometer updates from fuel entries trigger mileage checks)
+- **Depended on by:** Vehicle Timeline (completed reminders create timeline entries)
 - **API endpoints needed:**
-  - `POST /api/vehicles/{vehicleId}/reminders` -- create reminder
-  - `GET /api/vehicles/{vehicleId}/reminders` -- list reminders (filter: active/completed)
-  - `GET /api/vehicles/{vehicleId}/reminders/{id}` -- get reminder detail
-  - `PUT /api/vehicles/{vehicleId}/reminders/{id}` -- update reminder
-  - `DELETE /api/vehicles/{vehicleId}/reminders/{id}` -- delete reminder
-  - `POST /api/vehicles/{vehicleId}/reminders/{id}/complete` -- mark as done (with optional expense_id link)
-  - `POST /api/vehicles/{vehicleId}/reminders/{id}/snooze` -- snooze (body: snooze_days)
-  - `GET /api/users/me/reminders/overdue-count` -- overdue count across all vehicles (for dashboard badge)
+  - `GET /api/vehicles/{vehicleId}/reminders` — list reminders
+  - `POST /api/vehicles/{vehicleId}/reminders` — create reminder
+  - `GET /api/vehicles/{vehicleId}/reminders/{id}` — get reminder details
+  - `PUT /api/vehicles/{vehicleId}/reminders/{id}` — update reminder
+  - `DELETE /api/vehicles/{vehicleId}/reminders/{id}` — delete reminder
+  - `POST /api/vehicles/{vehicleId}/reminders/{id}/complete` — mark as complete (with date, odometer)
+  - `POST /api/vehicles/{vehicleId}/reminders/{id}/snooze` — snooze reminder
+  - `GET /api/vehicles/{vehicleId}/reminders/templates` — get suggested templates
 
 ---
 
 ## 9. Out of Scope
 
-- Automatic maintenance schedule detection from vehicle make/model/year (e.g., "BMW E46 recommends oil change every 15,000 km") -- deferred to v1.1+
-- Integration with mechanic/garage booking -- not planned for MVP
-- Reminders shared between users (e.g., family sharing a car) -- not planned
-- Reminder templates or suggested reminders for new vehicles -- deferred to v1.1
-- Location-based reminders (e.g., "remind me when near a mechanic") -- not planned
-- Estimated cost on reminder (e.g., "expected cost: ~200 лв") -- deferred
+- Predictive reminders based on driving patterns — Phase 3-4
+- Garage-created reminders — Phase 2
+- Fleet-wide reminder policies — Phase 3
+- Integration with vehicle OBD for automatic odometer updates — future
+- Calendar export (sync reminders to phone calendar) — v1.1
+- Cost estimation for upcoming reminders (beyond historical average) — future
+- Automatic reminder creation based on vehicle make/model service schedules — v1.1
 
 ---
 
@@ -274,12 +292,20 @@
 
 | # | Question | Impact | Resolution |
 |---|----------|--------|------------|
-| OQ-1 | Should we suggest default reminders when a user adds a new vehicle? (e.g., "Add oil change reminder? Insurance reminder?") | Improves activation of reminder feature | Recommend: yes for v1.0 if effort is small. Show a one-time prompt after vehicle creation: "Want to set up common reminders?" with checkboxes for oil change, insurance, inspection. |
-| OQ-2 | How frequently should we check mileage triggers? On every odometer update only, or also periodic prompts to update odometer? | Mileage reminders are useless without odometer updates | Recommend: check on every odometer update (from any source). Also: prompt user monthly if no odometer update in 30+ days: "Update your odometer to keep mileage reminders accurate." |
-| OQ-3 | Should notifications include action buttons (e.g., "Log Expense" directly from notification)? | Reduces friction for marking reminders complete | Platform dependent. Recommend: include "View" and "Snooze" actions in notification. "Log Expense" requires opening the app. |
-| OQ-4 | Is 3 free reminders the right limit? | Too low might frustrate; too high reduces premium conversion | Validate with interviews. A car typically needs: oil change, insurance, road tax, inspection = 4 basic reminders. Limit of 3 forces premium for full coverage. Consider 4 or 5 if feedback says 3 is too restrictive. |
+| OQ-1 | Should the app suggest reminders based on the vehicle's make/model? | Reduces setup friction significantly | Recommend: yes for v1.1. MVP uses generic templates. Future: model-specific schedules. |
+| OQ-2 | How do we handle mileage estimation for users who rarely update odometer? | Many users may not log fuel with odometer regularly | Recommend: weekly in-app nudge to update odometer. "Estimate your current mileage" option. Don't block reminders — just note that accuracy depends on odometer updates. |
+| OQ-3 | Should completed reminders be archived or hidden? | Clutters the list if all historical completions shown | Recommend: show only active/upcoming reminders in the main list. "History" section at bottom shows last 3 completions per reminder. |
 
 ---
 
-**New data entities discovered:** Reminder, ReminderHistory
-**New API endpoints discovered:** 8 reminder endpoints (listed in Section 8)
+**Data entities discovered:** Reminder (with source field, snooze_count, notification arrays)
+**API endpoints discovered:** 8 reminder endpoints (listed in Section 8)
+
+---
+
+## Document History
+
+| Version | Date | Changes |
+|---|---|---|
+| 1.0 | 2026-03-06 | Initial spec |
+| 2.0 | 2026-03-07 | Regenerated with user journey insights. Key changes: informative notification content (Journey 7), completion-to-expense seamless flow with pre-filled fields, template suggestions for first-time setup, snooze loop prevention (3-snooze limit), overdue escalation (gentle not aggressive), reminders list as peace-of-mind screen, grouped notifications (max 1/day), reminder source field for future multi-source, premium 3-reminder limit as conversion trigger (Journey 5). |

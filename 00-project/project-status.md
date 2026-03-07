@@ -9,7 +9,7 @@
 |---|---|---|
 | Phase 1: Discovery & Validation | In Progress | 75% |
 | Phase 2: Strategy & Planning | In Progress | 80% |
-| Phase 3: Product Definition | In Progress | 75% |
+| Phase 3: Product Definition | In Progress | 85% |
 | Phase 4: Brand & Identity | Not Started | 0% |
 | Phase 5: Development | Not Started | 0% |
 | Phase 6: Growth & Launch | Not Started | 0% |
@@ -31,15 +31,15 @@
 | `/02-strategy/monetization-plan.md` | @strategist | 2026-03 |
 | `/03-product/mvp-feature-list.md` | @product-architect | 2026-03-06 |
 | `/03-product/product-requirements-document.md` | @product-architect | 2026-03-06 |
-| `/03-product/functional-specs/onboarding-auth.md` | @product-architect | 2026-03-06 |
-| `/03-product/functional-specs/vehicle-management.md` | @product-architect | 2026-03-06 |
-| `/03-product/functional-specs/expense-tracking.md` | @product-architect | 2026-03-06 |
-| `/03-product/functional-specs/fuel-entry.md` | @product-architect | 2026-03-06 |
-| `/03-product/functional-specs/cost-dashboard.md` | @product-architect | 2026-03-06 |
-| `/03-product/functional-specs/vehicle-timeline.md` | @product-architect | 2026-03-06 |
-| `/03-product/functional-specs/maintenance-reminders.md` | @product-architect | 2026-03-06 |
-| `/03-product/functional-specs/challenges-gamification.md` | @product-architect | 2026-03-06 |
-| `/03-product/functional-specs/share-export.md` | @product-architect | 2026-03-06 |
+| `/03-product/functional-specs/onboarding-auth.md` | @product-architect | 2026-03-07 (v2.0) |
+| `/03-product/functional-specs/vehicle-management.md` | @product-architect | 2026-03-07 (v2.0) |
+| `/03-product/functional-specs/expense-tracking.md` | @product-architect | 2026-03-07 (v2.0) |
+| `/03-product/functional-specs/fuel-entry.md` | @product-architect | 2026-03-07 (v2.0) |
+| `/03-product/functional-specs/cost-dashboard.md` | @product-architect | 2026-03-07 (v2.0) |
+| `/03-product/functional-specs/vehicle-timeline.md` | @product-architect | 2026-03-07 (v2.0) |
+| `/03-product/functional-specs/maintenance-reminders.md` | @product-architect | 2026-03-07 (v2.0) |
+| `/03-product/functional-specs/challenges-gamification.md` | @product-architect | 2026-03-07 (v2.0) |
+| `/03-product/functional-specs/share-export.md` | @product-architect | 2026-03-07 (v2.0) |
 | `/03-product/functional-specs/README.md` | @product-architect | 2026-03-06 |
 | `/03-product/user-journeys/flows-index.md` | @product-architect | 2026-03-07 |
 | `/03-product/user-journeys/journey-first-time-experience.md` | @product-architect | 2026-03-07 |
@@ -64,7 +64,7 @@
 | API specification | @product-architect | Tech stack decision, database schema |
 | User journeys | @product-architect | DONE — 7 journeys + index in `/03-product/user-journeys/` |
 | User stories per epic | @product-architect | — (PRD done, journeys done) |
-| Functional specs per feature | @product-architect | DONE — all 9 specs in `/03-product/functional-specs/` |
+| Functional specs per feature | @product-architect | DONE — all 9 specs v2.0 (updated with journey insights) in `/03-product/functional-specs/` |
 | Go-to-market plan | @strategist | — |
 | Product naming | @brand-architect | Positioning strategy (done), value proposition (done) |
 | Brand identity | @brand-architect | Product naming |
@@ -83,13 +83,13 @@
 ## Next Recommended Tasks
 
 1. **Conduct customer interviews** — @customer-analyst — Recruit from Bulgarian car Facebook groups and car meets. Use `/01-discovery/customers/interview-guide.md`. Target: 15-20 interviews. This validates every assumption in the strategy documents.
-2. **Decide tech stack** — @product-architect — Evaluate cross-platform options. Produce decision document. This unblocks all technical deliverables.
-3. **Name the product** — @brand-architect — Use `/name-product` command. Inputs ready: positioning strategy, value proposition.
-4. **Write user stories** — @product-architect — Use `/write-stories` command. PRD is done — ready to start.
-5. **Write user stories** — @product-architect — Use `/write-stories` command. Functional specs are done — break each into implementable stories.
-6. **Design database schema** — @product-architect — 14 entities identified across functional specs. Requires tech stack decision.
-7. **Design API specification** — @product-architect — 52 endpoints identified across functional specs. Requires tech stack decision.
-8. **Plan go-to-market** — @strategist — Use `/plan-gtm` command. Can proceed now but stronger after interview validation.
+2. **Decide tech stack** — @product-architect — Evaluate cross-platform options. Produce decision document at `/03-product/technical/architecture.md`. This unblocks all technical deliverables.
+3. **Write user stories** — @product-architect — Use `/write-stories` command. PRD + functional specs (v2.0) + user journeys are all done. Break each epic into implementable stories with acceptance criteria.
+4. **Name the product** — @brand-architect — Use `/name-product` command. Inputs ready: positioning strategy, value proposition.
+5. **Design database schema** — @product-architect — 12 entities identified across functional specs v2.0 (User, AuthToken, PasswordResetToken, LoginAttempt, Vehicle, Expense, FuelEntry, TimelineEntry, TimelinePhoto, Reminder, Challenge, ChallengeParticipant, ChallengeBadge). Requires tech stack decision.
+6. **Design API specification** — @product-architect — 50+ endpoints identified across functional specs v2.0. Requires tech stack decision and database schema.
+7. **Plan go-to-market** — @strategist — Use `/plan-gtm` command. Can proceed now but stronger after interview validation.
+8. **Write test scenarios** — @qa — Use `/write-tests` command. Functional specs v2.0 provide comprehensive acceptance criteria for test coverage.
 
 ---
 

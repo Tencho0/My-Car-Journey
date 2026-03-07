@@ -2,115 +2,146 @@
 
 **File:** `/03-product/functional-specs/cost-dashboard.md`
 **Produced by:** @product-architect
-**Date:** 2026-03-06
-**Version:** 1.0
-**Source PRD:** `/03-product/product-requirements-document.md` -- Section 6.1 (M5, S2, S7)
-**Related features:** M5 (Cost Dashboard), S2 (Spending Trends), S7 (Currency Formatting)
+**Date:** 2026-03-07
+**Version:** 2.0 — Updated with user journey insights
+**Source PRD:** `/03-product/product-requirements-document.md` — Section 6.1 (M5, S2)
+**Related features:** M5 (Cost Dashboard), S2 (Spending Trends)
+**Related journeys:** `/03-product/user-journeys/journey-aha-moment.md`, `/03-product/user-journeys/journey-daily-expense-logging.md`, `/03-product/user-journeys/journey-premium-upgrade.md`, `/03-product/user-journeys/journey-first-time-experience.md`
 
 ---
 
 ## 1. Overview
 
-**What this feature does:** Displays the user's total car cost for the current month as a prominent number, with a category breakdown chart, monthly trend bars, and (for premium users) cost per kilometer, year-over-year comparisons, and spending forecasts. This is the "hero screen" of the app -- the "aha moment."
+**What this feature does:** Displays the user's true car cost at a glance — monthly total, category breakdown, annualized projection, and (premium) cost per kilometer, spending trends, and model benchmarks. This is the primary screen of the app, the home screen, and the destination after every expense save.
 
-**Why it matters:** The entire product exists for this screen. The moment a user sees "Your car costs you 847 лв this month" is the moment they understand the app's value. This screen converts free users into retained users, and retained users into premium subscribers (Pain: P1 don't know true cost, P2 surprised by costs; Gain: G1 see exact monthly cost, G2 cost per kilometer).
+**Why it matters:** The dashboard IS the product. The entire app exists so users can see this screen with meaningful data. The monthly total is the "aha moment" that creates retention — users are typically shocked when they see their real car costs for the first time: "I had no idea my car cost me THAT much" (Journey 3). The dashboard transforms the app from a logging tool into a cost intelligence platform. It drives premium conversion through contextual, subtle teases for cost/km, trends, and benchmarks (Journey 5 — premium teases are whispers, not shouts).
 
-**User type:** All users. Free and premium tiers show different levels of detail.
+**User type:** All users. Free tier: monthly total + basic category breakdown. Premium: adds cost/km, trends, forecasts, benchmarks.
 
 ---
 
 ## 2. User Flow
 
-### Happy Path -- Monthly Review
+### Happy Path — Aha Moment (2-4 Weeks After Signup)
 
-1. User opens app (dashboard is the default home screen)
-2. System shows current month's total cost (big number, top of screen)
-3. User sees category breakdown (donut chart) below the total
-4. User taps a category slice to see expenses in that category
-5. User scrolls down to see monthly trend (bar chart, last 6 months)
-6. User taps a past month's bar to see that month's details
-7. (Premium) User sees cost/km metric, YoY comparison, and forecast section
+1. User opens app (routine check-in or after notification: "You've tracked 15 expenses this month. See your monthly total.")
+2. Dashboard loads with accumulated data. Monthly total is prominent: "**847 лв** this month"
+3. User processes the number — it's higher than expected
+4. App reinforces with annualized projection below: "~10,164 лв per year" (Journey 3 amplification strategy)
+5. User taps category breakdown (pie/donut chart)
+6. Breakdown expands: Fuel 380 лв (45%), Maintenance 250 лв (30%), Parking 95 лв (11%), etc.
+7. User taps a category to see that category's expenses
+8. User scrolls down past breakdown
+9. Encounters premium section: "Your cost per km: [lock icon] Unlock with Premium" — subtle, below the fold
+10. User closes app or explores further
 
 ### Alternative Paths
 
-- **Path A: First-time user (just completed onboarding)** -- Dashboard shows the first expense they just logged. Small total. Motivational message: "Keep tracking to see your real monthly cost."
-- **Path B: User with no expenses this month** -- Dashboard shows "0 лв" for current month with a CTA: "Log your first expense for [month]."
-- **Path C: User switches vehicle** -- Dashboard refreshes with the selected vehicle's data.
-- **Path D: Premium upsell interaction** -- Free user sees locked "Cost per km" section with blurred value and "Unlock with Premium" CTA. Tapping opens the premium paywall.
-- **Path E: User taps "See All Expenses"** -- Navigates to the full expense list for the current month.
+- **Path A: Post-onboarding (1 expense)** — Dashboard shows single amount: "Your [Car Model] has cost you **127.50 лв** so far. Keep tracking to see your monthly total." Single category at 100%. No charts with 1 data point.
+- **Path B: Building data (5-9 expenses)** — Growing total, 2-3 categories forming proportions. "You're getting close to your first full monthly view."
+- **Path C: After expense save** — User just saved an expense. Dashboard updates instantly. Monthly total animation: number counts up to new total (micro-reward from Journey 2).
+- **Path D: Premium user** — Dashboard shows additional sections: cost/km, spending trends (line chart), model benchmarks (if available), forecast.
+- **Path E: Month navigation** — User swipes or taps to view previous months. Each month shows its own total and breakdown.
+- **Path F: FAB (+) button** — Always visible. Tapping opens quick-add sheet (expense-tracking spec).
 
 ---
 
 ## 3. Screen Descriptions
 
-### Screen: Cost Dashboard (Main)
+### Screen: Dashboard (Main Screen)
 
-**Purpose:** Show the user their car's true cost at a glance -- the app's core value delivery.
-**Entry points:** App launch (default screen). Bottom nav "Dashboard" tab. After onboarding completion.
+**Purpose:** Show the user their true car cost at a glance. This is the hero screen of the entire product.
+**Entry points:** App launch (default screen), after expense save, bottom navigation "Dashboard" tab.
 
 **Layout (top to bottom):**
 
-**Section 1: Vehicle & Month Header**
-- Vehicle selector (header component -- see Vehicle Management spec)
-- Month selector: "< March 2026 >" (left/right arrows to navigate months)
+**Header:**
+- Vehicle selector (active vehicle name + photo thumbnail, tap to switch)
+- Current month label ("March 2026")
 
-**Section 2: Total Cost (The Hero Number)**
-- Current month total: large, bold, prominent (e.g., "847.50 лв")
-- Subtitle: "Total car costs in March 2026"
-- Change indicator vs. previous month: "+12%" or "-8%" with arrow (green = lower, red = higher)
+**Hero Section — THE MONTHLY TOTAL:**
+- **The number** — largest, most prominent element on the entire screen. Large typography. Bold. Centered. No clutter around it. Example: "**847 лв**"
+- Vehicle model below: "BMW E46 320i"
+- Annualized projection (free feature): "~10,164 лв per year" in smaller text below the monthly total
 
-**Section 3: Cost per Kilometer [Premium]**
-- "Cost per km: 0.42 лв/km" (calculated from total expenses / km driven this month)
-- Free tier: show blurred "0.XX лв/km" with lock icon and "Unlock with Premium" label
-- Tap (free): opens premium paywall
-- Tap (premium): shows cost/km trend detail
+**Design mandate (from Journey 3):** The monthly total is sacred. It must always be the largest, most prominent element on the dashboard. No competing elements. No visual clutter. This number IS the product.
 
-**Section 4: Category Breakdown**
-- Donut/pie chart showing expense distribution by category
-- Legend below chart: category icon + name + amount + percentage
-- Only categories with expenses are shown
-- Tap a slice or legend item: navigates to filtered expense list for that category
+**Category Breakdown Section:**
+- Pie/donut chart showing expense categories with proportions
+- Legend below chart: each category with icon, name, amount, percentage
+- Tap any category to drill into expenses for that category this month
 
-**Section 5: Monthly Trend**
-- Bar chart: last 6 months (or fewer if user hasn't tracked that long)
-- Each bar shows the month's total cost
-- Current month's bar is highlighted/colored differently
-- Tap a bar: shows that month's total in a tooltip, tap again to drill into that month's expenses
-- Free tier: 6 months shown
-- [Premium] Extended to 12 months + trend line
+**Monthly Trend Section (visible after 2+ months):**
+- Bar chart: monthly totals for last 6 months
+- Current month highlighted
+- Swipe to see older months
+- If < 2 months: "Track for 2 months to see your spending trends"
 
-**Section 6: Spending Trends [Premium -- S2]**
-- Year-over-year comparison: "March 2026 vs March 2025: +15%"
-- Category trend: "Maintenance costs are rising -- up 23% over 3 months"
-- Free tier: this section shows a preview card: "See how your spending changes over time -- Go Premium"
-- (Requires 2+ months of data to display)
+**Premium Tease Section (free users only):**
+- Subtle, below the fold, separated from free content with soft divider
+- "Your cost per kilometer: [lock icon] Unlock with Premium" — tappable
+- "See how your [model] compares to other owners → [lock icon]" — tappable
+- "Spending trends over time → [lock icon]" — tappable
+- Design: small lock icons, soft "Unlock with Premium" links. NOT a banner. NOT a modal. NOT aggressive. (Journey 5 anti-patterns: never full-screen paywall, never "are you sure?")
 
-**Section 7: Quick Actions**
-- "Add Expense" button (opens Quick-Add)
-- "Add Fuel" button (opens Fuel Entry)
-- "See All Expenses" link (opens expense list for current month)
+**Premium Sections (premium users only):**
+- **Cost per kilometer:** "**0.42 лв/km**" — prominent number with trend indicator (up/down vs. previous month). Requires odometer data from fuel entries.
+- **Spending trends:** Line chart — monthly totals over 6-12 months. Category trend lines toggleable.
+- **Model benchmarks:** "Your BMW E46 costs X% more/less than average" (when sufficient community data exists). If no benchmark data: "Benchmarks for your model are coming soon."
+- **Spending forecast:** "Based on your patterns, expect ~900 лв next month" (requires 3+ months of data). If < 3 months: "Forecasts available after 3 months of tracking."
+
+**FAB (+) Button:**
+- Always visible, bottom-right. Large touch target. Most prominent interactive element.
+- The gateway to expense logging. Never hidden by scrolling.
 
 **Interactions:**
 
 | Element | Action | Result |
 |---------|--------|--------|
-| Month selector arrows | Tap | Navigate to previous/next month |
-| Total cost number | Tap | Navigates to expense list for that month |
-| Cost/km (free) | Tap | Opens premium paywall |
-| Cost/km (premium) | Tap | Shows cost/km detail with trend |
-| Donut chart slice | Tap | Navigates to expense list filtered by that category |
-| Legend item | Tap | Same as tapping the chart slice |
-| Bar chart bar | Tap | Shows tooltip with month total; second tap drills into month |
-| Spending trends preview (free) | Tap | Opens premium paywall |
-| "Add Expense" | Tap | Opens Quick-Add sheet |
-| "Add Fuel" | Tap | Opens Fuel Entry form |
-| "See All Expenses" | Tap | Opens expense list |
-| Pull down | Gesture | Refresh dashboard data |
+| Vehicle selector | Tap | Open vehicle switcher |
+| Monthly total | Tap | No action (it's the hero — nothing to drill into from here) |
+| Annualized projection | Tap | No action (informational) |
+| Category in breakdown | Tap | Navigate to expense list filtered by that category for current month |
+| Pie/donut chart segment | Tap | Same as tapping category legend |
+| Monthly trend bar | Tap | Switch dashboard view to that month |
+| Premium tease link | Tap | Navigate to premium benefits screen (Journey 5) |
+| FAB (+) | Tap | Open quick-add sheet (expense-tracking spec) |
+| Month label | Tap/swipe | Navigate to previous/next month |
 
-**Loading state:** Skeleton layout: gray placeholder for hero number, shimmer animation for chart areas, skeleton bars for trend chart. Full skeleton loads < 0.5s, data populates < 2s.
-**Empty state (no expenses ever):** Hero number shows "0 лв". Charts replaced with illustration + "Start tracking your car costs to see the real picture." + "Add Your First Expense" prominent button.
-**Empty state (no expenses this month):** Hero number shows "0 лв" for this month. Charts show from previous months if available. Message: "No expenses logged in [month] yet."
-**Error state:** "Could not load your dashboard. Pull down to refresh." Retry on pull-to-refresh.
+**Loading state:** Show last-known cached state immediately. Refresh from API in background. If first load: skeleton with pulsing placeholder for the big number.
+**Empty state — see Progressive Data Richness section below.**
+**Error state:** If API fails: show cached data with subtle "Last updated: [time]" indicator. If no cached data: "Could not load your dashboard. Pull to refresh."
+
+---
+
+### Progressive Data Richness (Journey 3 Design)
+
+The dashboard must feel like it's "filling up" as the user logs more expenses. This is NOT a single empty state — it's a progression:
+
+| Data Level | Monthly Total | Category Breakdown | Monthly Trend | Premium Teases | Design Goal |
+|------------|--------------|-------------------|---------------|---------------|-------------|
+| **0 expenses** | "Add your first expense to start tracking" + illustration + CTA button | Not shown | Not shown | Not shown | Invite action. Make emptiness feel like a beginning. Never show empty charts. |
+| **1 expense** | "Your [model] has cost you **X лв** so far. Keep tracking to see your monthly total." | Single category at 100%. Minimal but intentional — not lonely. | Not shown | Not shown | Celebrate the start. Set expectation: "this will grow." |
+| **2-4 expenses** | Actual total, becoming more meaningful. | 1-2 categories with proportions forming. | Not shown | Not shown | Encourage more: "Add a few more to see the bigger picture." |
+| **5-9 expenses** | Growing total. "You're getting close to your first full monthly view." | 3+ categories. Breakdown starting to be useful. | Not shown | Not yet (too early) | Build anticipation. The breakdown is forming. |
+| **10+ expenses (1 month)** | **FULL AHA MOMENT.** Monthly total, bold and prominent. Annualized projection visible. | Complete pie/donut chart. User can see where money goes. | Single bar for current month. | Premium teases now visible: cost/km, benchmarks | **Maximize impact.** This is THE moment. Everything is designed for this. |
+| **2+ months** | Monthly total with comparison to last month (arrow + delta). | Full breakdown. | Monthly trend bars visible. Comparison possible. | Full premium tease set. | Reinforce with patterns. The aha evolves into ongoing insight. |
+| **6+ months** | Full dashboard with all elements active. | Rich breakdown with history. | 6-month trend chart fully populated. | All premium features rich with data. | The dashboard is now a genuine cost intelligence tool. |
+
+---
+
+### Aha Moment Amplification Strategies (Journey 3)
+
+These strategies are explicitly designed into the dashboard to maximize the emotional impact:
+
+| Strategy | Implementation | Location |
+|----------|---------------|----------|
+| **Annualized projection** | "~X лв per year" below monthly total | Always visible (free), after 1+ expenses |
+| **Monthly summary notification** | Push: "Your [model] cost you 847 лв in February." | End of each month (if user has 5+ expenses that month) |
+| **Milestone celebrations** | At 10, 25, 50, 100 expenses: "You've tracked 50 expenses! You know more about your car costs than 95% of owners." | Inline celebration card on dashboard, dismissable |
+| **Category surprise** | Highlight unexpected category: "Parking cost you 95 лв this month — more than you might think" | Below breakdown, when a minor category exceeds 10% of total |
+| **Year-to-date total** | "Since you started tracking: **4,235 лв** total" | Below monthly total, shown after 2+ months |
+| **Month-over-month delta** | "12% more than last month" with up/down arrow | Next to monthly total, after 2+ months |
 
 ---
 
@@ -118,20 +149,20 @@
 
 | # | Rule | Example |
 |---|------|---------|
-| BR-1 | Monthly total includes ALL expense categories for the active vehicle, including fuel entries. | 5 fuel entries (640 лв) + 2 maintenance (350 лв) + 1 insurance (200 лв) = 1,190 лв total |
-| BR-2 | Month boundaries follow calendar months (1st to last day). | March total = all expenses dated March 1-31. |
-| BR-3 | Cost per kilometer = total expenses for the month / total kilometers driven that month. | March expenses: 847 лв. Odometer March 1: 150,000. Odometer March 31: 152,000. Cost/km: 847 / 2,000 = 0.42 лв/km |
-| BR-4 | Cost/km is a Premium feature. Free users see a blurred/locked version. | Free user sees: "0.XX лв/km [lock icon]" |
-| BR-5 | Cost/km requires at least 2 odometer readings in the selected month (or spanning the month boundaries). If missing, show "Add odometer readings to see cost/km" instead of a number. | No odometer data -- premium users see a prompt, not a wrong number |
-| BR-6 | Change indicator compares current month total to previous month total. | March: 847 лв. February: 756 лв. Change: +12% (red arrow up, costs increased) |
-| BR-7 | Change indicator color: green (costs decreased or same), red (costs increased). | -8% = green arrow down. +12% = red arrow up. 0% = gray, no arrow. |
-| BR-8 | Donut chart only shows categories that have expenses. Empty categories are omitted. | If only Fuel and Maintenance have expenses, the chart has 2 slices. |
-| BR-9 | Monthly trend bar chart shows the last 6 months (free) or 12 months (premium). If user has fewer months, show only available months. | User registered in January: March dashboard shows Jan, Feb, Mar bars only. |
-| BR-10 | Spending trends (S2) require at least 2 months of data. Not shown for new users. | User with 1 month of data: trends section hidden. After month 2: trends appear. |
-| BR-11 | Year-over-year comparison requires same month data from previous year. If not available, show "Track for a full year to see YoY comparison." | No March 2025 data: message instead of comparison. |
-| BR-12 | Dashboard data refreshes on: app open, pull-to-refresh, vehicle switch, month switch, and after saving an expense. | User saves an expense via Quick-Add, returns to dashboard -- total is updated. |
-| BR-13 | Currency formatting follows user settings. Default: amount followed by лв (e.g., "847.50 лв"). EUR format: "847.50 EUR". | Consistent across all dashboard elements. |
-| BR-14 | Dashboard always shows data for the ACTIVE vehicle only (no aggregate view in MVP). | User with 2 vehicles sees data for whichever is currently selected. |
+| BR-1 | Monthly total includes ALL expense categories for the active vehicle in the selected month | Fuel + maintenance + insurance + everything else = one total |
+| BR-2 | Annualized projection = monthly total * 12 (simple multiplication, not forecasting) | 847 лв/month → "~10,164 лв per year" |
+| BR-3 | Annualized projection is a FREE feature | It amplifies the aha moment and drives retention. Never gate this. (Journey 3 insight) |
+| BR-4 | Category breakdown shows all categories with at least 1 expense this month | Categories with 0 expenses are hidden, not shown as 0% |
+| BR-5 | Cost per kilometer is PREMIUM only | Calculation: total expenses this period / total km driven. Requires odometer data. Primary paywall trigger (Journey 5: 35% of conversions). |
+| BR-6 | Premium teases are visible only after 10+ expenses (or 2+ weeks active) | Don't show premium to new users — let them experience free value first (Journey 5 anti-pattern: no premium during onboarding) |
+| BR-7 | Monthly total updates instantly after expense save | Optimistic UI update. Number animation: counts up from old total to new total. Visible change is the micro-reward. (Journey 2 key moment) |
+| BR-8 | Dashboard shows data for the active vehicle only | Vehicle switcher in header to change vehicle |
+| BR-9 | Monthly trend chart shows last 6 months | Scrollable to see older months. Minimum 2 months needed before showing. |
+| BR-10 | Model benchmarks require community data | If < 50 data points for the user's make/model: "Benchmarks for your model are coming as our community grows." Show seeded data for popular models if available. |
+| BR-11 | Spending forecast requires 3+ months of data | Simple pattern matching, not ML. "Based on patterns, expect ~X лв next month." Premium only. |
+| BR-12 | Month-over-month comparison shows delta (amount and percentage) | "12% more than January" or "180 лв less than January" with color-coded arrow |
+| BR-13 | Dashboard caches last-known state for instant display on app open | Show cached data immediately. Refresh from API in background. User sees current data within 1-2 seconds. |
+| BR-14 | Milestone celebrations (10, 25, 50, 100 expenses) show once and are dismissable | Don't re-show dismissed milestones. Track milestone_shown in user preferences. |
 
 ---
 
@@ -139,46 +170,32 @@
 
 **Entities involved:**
 
-- `Expense` -- aggregated for totals, category breakdown
-- `FuelEntry` -- included in totals (via linked Expense), consumption data
-- `OdometerReading` -- for cost/km calculation
-- `Vehicle` -- active vehicle context
+- `Expense` — aggregated by vehicle_id, month, category
+- `FuelEntry` — for cost/km calculation (odometer data)
+- `Vehicle` — for model name, photo in header
+
+**No new entities created by the dashboard — it reads and aggregates existing data.**
 
 **Data read:**
-- Monthly expense summary: total, by-category totals, expense count
-- Monthly odometer readings: for cost/km
-- Historical monthly totals: for trend chart (6-12 months)
-- Fuel consumption average: for fuel section (if displayed)
+- Monthly expense totals (sum by vehicle + month)
+- Category breakdown (sum by vehicle + month + category)
+- Monthly trend (totals for last 6-12 months)
+- Cost per km (total expenses / odometer delta for the period) — premium
+- Fuel consumption trend (from FuelEntry) — premium
+- Model benchmark data (aggregated community data) — premium, future
 
-**Data written:** None -- dashboard is read-only.
+**Calculated fields (server-side or client-side):**
 
-**API data shape (expected response from summary endpoint):**
-
-```json
-{
-  "month": "2026-03",
-  "vehicle_id": 1,
-  "total": 847.50,
-  "currency": "BGN",
-  "previous_month_total": 756.00,
-  "change_percent": 12.1,
-  "cost_per_km": 0.42,
-  "km_driven": 2000,
-  "categories": [
-    { "category": "fuel", "total": 480.00, "percent": 56.6, "count": 5 },
-    { "category": "maintenance", "total": 250.00, "percent": 29.5, "count": 2 },
-    { "category": "insurance", "total": 117.50, "percent": 13.9, "count": 1 }
-  ],
-  "monthly_trend": [
-    { "month": "2025-10", "total": 620.00 },
-    { "month": "2025-11", "total": 890.00 },
-    { "month": "2025-12", "total": 1250.00 },
-    { "month": "2026-01", "total": 710.00 },
-    { "month": "2026-02", "total": 756.00 },
-    { "month": "2026-03", "total": 847.50 }
-  ]
-}
-```
+| Calculation | Formula | Tier |
+|-------------|---------|------|
+| Monthly total | SUM(expenses.amount) WHERE vehicle_id AND month | Free |
+| Category breakdown | SUM(expenses.amount) GROUP BY category WHERE vehicle_id AND month | Free |
+| Annualized projection | Monthly total * 12 | Free |
+| Year-to-date total | SUM(expenses.amount) WHERE vehicle_id AND year = current_year | Free |
+| Month-over-month delta | Current month total - previous month total | Free (after 2 months) |
+| Cost per km | SUM(expenses.amount in period) / (max_odometer - min_odometer in period) | Premium |
+| Consumption trend | From FuelEntry consumption_l_per_100km over time | Premium |
+| Spending forecast | Average of last 3 months + known upcoming (reminders) | Premium |
 
 ---
 
@@ -186,52 +203,51 @@
 
 | Scenario | Expected Behavior |
 |----------|-------------------|
-| Brand new user (0 expenses) | Hero: "0 лв". No charts. CTA: "Add your first expense to see your dashboard come alive." |
-| User has expenses only in 1 month | Show that month's data. Trend chart shows 1 bar. No change indicator (no previous month). |
-| All expenses in one category | Donut chart shows a full circle in one color. Legend shows only that category. |
-| Very large total (e.g., 15,000 лв from a major repair) | Display full number. No truncation. Consider "15 000 лв" format with space as thousands separator (Bulgarian standard). |
-| Very small total (e.g., 2.50 лв) | Display as "2.50 лв". No rounding issues. |
-| Month with 0 expenses but previous months have data | Hero: "0 лв". Change: "-100%" (green). Trend bar for this month is zero-height. Charts empty for this month, historical data visible in trend. |
-| Cost/km calculation with 0 km driven (no odometer updates) | Don't show cost/km. Show: "Update your odometer to see cost per km." |
-| Division by zero in cost/km (0 km) | Prevented by not displaying when km = 0. |
-| User rapidly switches months | Debounce API calls. Show loading state between fetches. Cancel previous request. |
-| No internet on app open | Show last cached dashboard data with "Offline -- showing last updated data" banner. Pull-to-refresh retries. |
+| No expenses at all | Empty state with illustration and CTA: "Add your first expense to start tracking." Never show empty charts. |
+| Only 1 expense | Show the amount with encouraging message. No pie chart (100% of one category isn't useful as a chart). Show category name instead. |
+| No expenses this month (but has history) | "0 лв this month. New month, fresh start!" Show previous month's total for reference. FAB (+) prominent. |
+| All expenses in one category | Pie chart shows 100% for that category. Note: "All your expenses this month are [category]. Log other types to see your full breakdown." |
+| No odometer data (can't calculate cost/km for premium) | Premium cost/km section: "Add odometer readings to your fuel entries to see your cost per km." |
+| Network error on dashboard load | Show cached data with "Last updated: [time]" subtle indicator. Pull-to-refresh available. |
+| User views very old month (e.g., 6 months ago) | Load from API. Show that month's total and breakdown. If no data: "No expenses tracked in [month]." |
+| Number feels inaccurate (user forgot expenses) | Below total: "Missing any expenses? Add older ones to see a more accurate total." Tappable — opens quick-add with date picker visible. (Journey 3 drop-off mitigation) |
+| Number is depressing (very high) | Frame positively. Never judge or suggest spending less. "Knowledge is power. Now you can make informed decisions." (Journey 3 insight) |
+| Premium tease tapped | Smooth transition to premium benefits screen. No jarring popup. |
 
 ---
 
 ## 7. Non-Functional Requirements
 
-- **Performance:** Dashboard load < 2 seconds on first open. Month switch < 1 second. Charts render smoothly (60fps animations).
-- **Caching:** Cache the last viewed month's data locally. Pre-fetch previous month for fast switching.
-- **Offline behavior:** Show cached dashboard data with offline banner. No stale data indicator needed beyond the banner.
-- **Accessibility:** Hero number readable by screen readers with context: "Total car cost in March 2026: 847 лева and 50 stotinki." Charts have text alternatives in legend.
-- **Localization:** Month names in Bulgarian (Март, Април, etc.). Currency per settings. Thousands separator: space (Bulgarian standard: "1 847.50 лв"). Decimal separator: period or comma per locale.
-- **Charts:** Must support: donut/pie chart (category breakdown), bar chart (monthly trend), line chart (consumption trend if shown). Smooth animations on load and data change. Touch-interactive (tap for details).
+- **Performance:** Dashboard loads (from cache) in < 500ms on app open. Fresh data from API in < 2 seconds. Monthly total number animation is smooth (60fps). Charts render in < 1 second.
+- **Offline behavior:** Dashboard shows cached data when offline. Fully functional for viewing. FAB (+) leads to quick-add (which may or may not save offline depending on tech stack).
+- **Accessibility:** Monthly total announced to screen readers: "Your BMW E46 cost you 847 лева this month." Chart has accessible alternative (text list of categories and amounts). Premium teases have descriptive labels.
+- **Localization:** Currency in лв. Numbers use Bulgarian formatting. Month names in Bulgarian. Category names in Bulgarian.
+- **Analytics events:** dashboard_viewed, category_breakdown_tapped, category_drilled, month_navigated, premium_tease_impressed, premium_tease_tapped, milestone_shown, milestone_dismissed. Track session duration on dashboard.
 
 ---
 
 ## 8. Dependencies
 
-- **Depends on:** Onboarding & Auth, Vehicle Management, Expense Tracking (data source), Fuel Entry (data source).
-- **Depended on by:** Premium paywall (cost/km is a conversion trigger), Challenges (references dashboard metrics), Share & Export (shareable stats).
+- **Depends on:** Onboarding & Auth, Vehicle Management, Expense Tracking (data source), Fuel Entry (for cost/km data)
+- **Depended on by:** Share & Export (vehicle card stats come from dashboard data), Challenges (displays challenge rank on dashboard)
 - **API endpoints needed:**
-  - `GET /api/vehicles/{vehicleId}/dashboard?month=2026-03` -- full dashboard data for a month
-  - `GET /api/vehicles/{vehicleId}/dashboard/trend?months=12` -- monthly trend data
-  - `GET /api/vehicles/{vehicleId}/dashboard/cost-per-km?month=2026-03` -- cost/km detail (premium)
-  - `GET /api/vehicles/{vehicleId}/dashboard/spending-trends` -- YoY and category trends (premium)
+  - `GET /api/vehicles/{vehicleId}/dashboard` — monthly total, category breakdown, annualized projection, milestones
+  - `GET /api/vehicles/{vehicleId}/dashboard/trend` — monthly totals for last N months
+  - `GET /api/vehicles/{vehicleId}/dashboard/cost-per-km` — cost/km calculation (premium)
+  - `GET /api/vehicles/{vehicleId}/dashboard/benchmark` — model benchmark comparison (premium)
+  - `GET /api/vehicles/{vehicleId}/dashboard/forecast` — spending forecast (premium)
 
 ---
 
 ## 9. Out of Scope
 
-- Aggregate "all vehicles" dashboard -- deferred (single vehicle view only in MVP)
-- Spending forecasts / predictions (C4) -- deferred to v1.2
-- Model benchmarks on dashboard (C1) -- deferred to v1.1
-- Keep vs. sell insights (C5) -- deferred to v1.2
-- Custom date ranges (e.g., "last 90 days") -- MVP is strictly monthly
-- Budget setting / budget vs. actual tracking -- not planned
-- Dashboard widgets on device home screen -- deferred
-- Export dashboard as image -- covered in Share & Export spec
+- "All vehicles" aggregate dashboard — defer to v1.1
+- Custom date ranges (e.g., "last 90 days") — MVP shows by calendar month
+- Budget setting and tracking ("I want to spend max 800 лв/month") — future feature
+- PDF export of dashboard — see share-export spec
+- Interactive chart drilling (pinch-to-zoom on charts) — simple tap to drill for MVP
+- Real-time model benchmarks — requires community data. Seed with public data for popular models.
+- Weekly or daily views — monthly is the primary view for MVP
 
 ---
 
@@ -239,13 +255,21 @@
 
 | # | Question | Impact | Resolution |
 |---|----------|--------|------------|
-| OQ-1 | Should the dashboard show a "yearly total" in addition to monthly? | Users may want annual perspective without premium | Recommend: show "Year to date: X лв" below the monthly total for free users. Adds high impact with minimal effort. |
-| OQ-2 | What chart library should we use? | Must support donut, bar, and line charts with touch interaction and smooth animation on mobile. | Tech stack dependent. Evaluate during architecture phase. |
-| OQ-3 | Should cost/km on the free tier be completely hidden or teased with a blurred number? | Blurred number is a stronger conversion trigger ("I can almost see it") vs. hidden ("I don't know what I'm missing") | Recommend: blurred number with lock icon. More effective for premium conversion. |
-| OQ-4 | How should we handle months where the user tracked inconsistently (e.g., logged 2 expenses but clearly spent more)? | Misleading totals could damage trust | No action for MVP. Trust the user's data. In v1.1, consider: "Looks like you might be missing some expenses this month." |
-| OQ-5 | Should the donut chart show amounts or percentages as default labels? | Both are useful but showing both clutters | Recommend: show percentages on chart, amounts in legend below. Tap for details. |
+| OQ-1 | Should the annualized projection adjust based on available data (e.g., use average if < 12 months of data)? | Avoids misleading projections from 1-month data | Recommend: always multiply current month by 12. Simple and clear. Add note: "Based on this month's spending." |
+| OQ-2 | Should cost/km be calculated per month or cumulative (lifetime)? | Monthly is more actionable. Lifetime is more stable. | Recommend: show both. Monthly as primary, lifetime as secondary context. |
+| OQ-3 | When should premium teases first appear? | Too early = aggressive. Too late = missed conversion window. | Recommend: after 10+ expenses OR 2+ weeks active, whichever comes first. (Journey 5 prerequisite) |
+| OQ-4 | Should category breakdown use a pie/donut chart or a horizontal bar chart? | Pie charts can be hard to read with many small categories | Recommend: donut chart for visual impact (dashboard hero), with text legend below showing exact amounts. Consider horizontal bars as alternative if usability testing shows issues. |
 
 ---
 
-**New data entities discovered:** None (dashboard is read-only, consumes existing entities)
-**New API endpoints discovered:** 4 dashboard endpoints (listed in Section 8)
+**Data entities discovered:** None new (dashboard reads existing entities). Dashboard-specific API endpoints: 5.
+**API endpoints discovered:** 5 dashboard endpoints (listed in Section 8)
+
+---
+
+## Document History
+
+| Version | Date | Changes |
+|---|---|---|
+| 1.0 | 2026-03-06 | Initial spec |
+| 2.0 | 2026-03-07 | Regenerated with user journey insights. Key changes: progressive data richness stages explicitly defined (Journey 3), aha moment amplification strategies (annualized projection, milestones, category surprises, monthly summaries), premium teases as "whispers not shouts" (Journey 5 anti-patterns), monthly total as sacred design element, number animation on update (Journey 2 micro-reward), delayed premium tease visibility (10+ expenses), month-over-month comparison design, empty states that invite rather than show blank charts. |

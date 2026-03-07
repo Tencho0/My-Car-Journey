@@ -2,46 +2,49 @@
 
 **File:** `/03-product/functional-specs/fuel-entry.md`
 **Produced by:** @product-architect
-**Date:** 2026-03-06
-**Version:** 1.0
-**Source PRD:** `/03-product/product-requirements-document.md` -- Section 6.1 (M4)
-**Related features:** M4 (Fuel Entry -- Specialized)
+**Date:** 2026-03-07
+**Version:** 2.0 — Updated with user journey insights
+**Source PRD:** `/03-product/product-requirements-document.md` — Section 6.1 (M4)
+**Related features:** M4 (Fuel Entry — Specialized)
+**Related journeys:** `/03-product/user-journeys/journey-daily-expense-logging.md`, `/03-product/user-journeys/journey-aha-moment.md`, `/03-product/user-journeys/journey-challenge-participation.md`
 
 ---
 
 ## 1. Overview
 
-**What this feature does:** Provides a dedicated fuel logging flow with specialized fields: liters, price per liter, total cost, odometer, full/partial fill indicator, and optional station name. Automatically calculates fuel consumption (L/100km) between fill-ups.
+**What this feature does:** Provides a dedicated fuel logging form that captures liters, price per liter, total cost, odometer reading, and fill type (full/partial). Auto-calculates fuel consumption (L/100km) between fill-ups and shows consumption trends. Fuel is the most frequent expense type for car owners.
 
-**Why it matters:** Fuel is the most frequent car expense. A dedicated flow reduces entry time vs. the generic expense form and enables consumption tracking -- a key differentiator. Bulgarian enthusiasts care about fuel efficiency, especially with rising fuel prices (Pain: F2 track fuel efficiently; Gain: G2 cost per kilometer understanding).
+**Why it matters:** Fuel is logged 2-4 times per month — the most frequent single expense category. A specialized form reduces friction for this common action and enables consumption calculations that generic expense tracking can't provide. Fuel efficiency is also the basis for the "Best Fuel Efficiency" challenge (Journey 6) and contributes to the cost-per-km calculation that drives premium conversion (Journey 5). The fuel entry should provide immediate consumption feedback — "8.2 L/100km" with a trend arrow — creating a micro-aha moment every time they fill up (Journey 2 insight).
 
-**User type:** All users.
+**User type:** All users who drive fuel/LPG vehicles. Unlimited entries in both free and premium tiers.
 
 ---
 
 ## 2. User Flow
 
-### Happy Path -- Log a Full Fill-Up
+### Happy Path — Detailed Fuel Entry
 
-1. User taps "+" FAB, then taps "Fuel" icon in Quick-Add (or navigates to Fuel tab)
-2. System shows Fuel Entry form
-3. User enters price per liter (e.g., 2.85 лв/L)
-4. User enters liters (e.g., 45.2 L)
-5. System auto-calculates total cost (128.82 лв)
-6. User enters current odometer reading (e.g., 155,200 km)
-7. User selects "Full tank" (toggle -- default ON)
-8. User optionally enters station name
-9. User taps "Save"
-10. System saves fuel entry, calculates consumption if possible, shows success toast: "128.82 лв -- 7.8 L/100km"
-11. User returns to previous screen
+1. User opens app, taps + (FAB)
+2. Quick-add sheet appears. User taps Fuel category icon.
+3. System offers: "Quick add (amount only)" or "Detailed fuel entry" — user taps "Detailed"
+4. Fuel entry screen opens with fields pre-filled: today's date, active vehicle
+5. User enters liters (e.g., 42.5)
+6. User enters price per liter (e.g., 2.85 лв) — total cost auto-calculates (121.13 лв)
+7. User enters current odometer (e.g., 155,200 km)
+8. If previous odometer exists: consumption auto-calculates: "8.2 L/100km" with trend arrow (up/down vs. last fill-up)
+9. User selects fill type: Full tank / Partial fill
+10. Optionally enters station name
+11. User taps "Save"
+12. Expense saved. Dashboard updates. Consumption trend updates.
+13. Subtle feedback: "Your consumption: 8.2 L/100km (improved from 8.7)" (Journey 2 insight: immediate consumption feedback)
 
 ### Alternative Paths
 
-- **Path A: Enter total cost instead of per-liter** -- User taps "Total" toggle. Enters total cost (128.82 лв) + liters (45.2 L). System auto-calculates price per liter (2.85 лв/L).
-- **Path B: Partial fill** -- User toggles "Full tank" OFF. Consumption is NOT calculated (needs two consecutive full fills). System stores entry but marks it as partial.
-- **Path C: No odometer** -- User skips odometer field. Fuel entry is saved but consumption cannot be calculated. System shows hint: "Add your odometer reading to track fuel consumption."
-- **Path D: Edit existing fuel entry** -- User taps a fuel entry in timeline or fuel log. Taps "Edit." Modifies fields. Saves. Consumption recalculated for affected entries.
-- **Path E: View fuel history and consumption trend** -- User navigates to Fuel tab (or section within dashboard). Sees list of fuel entries + consumption chart.
+- **Path A: Quick fuel add** — User taps Fuel category, selects "Quick add." Enters total amount only (like a regular expense). No liters, no consumption calculation. Fastest path.
+- **Path B: Enter total cost + liters (calculate price/liter)** — User enters total cost (121.13 лв) and liters (42.5). Price per liter auto-calculates (2.85 лв/L). Either direction of auto-calculation works.
+- **Path C: Partial fill** — User selects "Partial fill." Consumption is NOT calculated for this fill-up (partial fills break the calculation). Next full-fill calculation spans the partial.
+- **Path D: No previous odometer** — First fuel entry or no prior odometer reading. No consumption calculated. Message: "Add your odometer reading to start tracking consumption."
+- **Path E: From challenge context** — User participating in "Best Fuel Efficiency" challenge navigates to fuel entry. After save, rank update shown: "Fuel Efficiency Challenge: you moved to #34!" (Journey 6 connection)
 
 ---
 
@@ -49,77 +52,41 @@
 
 ### Screen: Fuel Entry Form
 
-**Purpose:** Log a fuel fill-up with specialized fields for consumption calculation.
-**Entry points:** "Fuel" icon in Quick-Add sheet. "Add Fuel" from Fuel log/tab. "Fuel" shortcut (if implemented).
+**Purpose:** Specialized fuel logging with consumption calculation.
+**Entry points:** "Detailed fuel entry" from quick-add when Fuel category is selected.
 
 **Layout:**
-- "Log Fuel" heading
-- Input mode toggle: "Per Liter" (default) | "Total"
-- **Per Liter mode:**
-  - Price per liter field (numeric, 2 decimal, лв/L)
-  - Liters field (numeric, 1 decimal, L)
-  - Total cost (auto-calculated, displayed prominently, read-only)
-- **Total mode:**
-  - Total cost field (numeric, 2 decimal, лв)
-  - Liters field (numeric, 1 decimal, L)
-  - Price per liter (auto-calculated, displayed, read-only)
-- Odometer field (numeric, km -- with hint showing last recorded reading)
-- Full tank toggle (switch, default: ON, label: "Full tank")
-- Station name field (optional, text, with autocomplete from previous entries)
-- Date field (pre-filled: today, tappable to change)
-- Vehicle selector (pre-filled: active vehicle)
-- Notes field (optional, single line)
+- Header: "Log Fuel" with vehicle name/model
+- Date field (pre-filled: today, tap to change)
+- **Liters field** — numeric with 1 decimal (e.g., 42.5). Large, prominent.
+- **Price per liter field** — numeric with 2 decimals (e.g., 2.85 лв/L)
+- **Total cost field** — auto-calculated from liters x price/liter. Editable (triggers reverse calculation). Shows in лв.
+- Auto-calculation indicator: when user enters 2 of 3 fields, the third auto-fills with a subtle "calculated" badge
+- **Odometer field** — numeric (km). Shows last recorded reading as hint: "Last: 154,500 km"
+- **Consumption result** (if calculable): "**8.2 L/100km**" with trend arrow (green down = improved, red up = worsened, gray dash = first entry or unchanged). Shows comparison: "vs. last fill: 8.7 L/100km"
+- **Fill type toggle:** Full tank (default) / Partial fill
+- **Station name field** — optional, free text (max 50 chars)
 - "Save" primary button
+- "Cancel" / back navigation
 
 **Interactions:**
 
 | Element | Action | Result |
 |---------|--------|--------|
-| Per Liter / Total toggle | Tap | Switches input mode, recalculates derived field |
-| Price per liter | Type | Auto-calculates total (if liters entered) |
-| Liters | Type | Auto-calculates total or price per liter |
-| Total cost | Type (Total mode) | Auto-calculates price per liter |
-| Full tank toggle | Toggle | ON: consumption will be calculated. OFF: partial fill noted. |
-| Station name | Type | Autocomplete from previous station entries |
-| "Save" | Tap | Validates, saves, shows consumption in toast |
+| Liters field | Type | If price/liter filled: total auto-calculates |
+| Price/liter field | Type | If liters filled: total auto-calculates |
+| Total cost field | Type | If liters filled: price/liter auto-calculates. If price/liter filled: liters auto-calculates. |
+| Odometer field | Type | If previous reading exists: consumption calculates and displays immediately |
+| Fill type toggle | Tap | Switches between Full/Partial. If Partial: consumption result hides with note "Consumption calculated on next full fill" |
+| "Save" | Tap | Validates, saves fuel entry + expense, returns to dashboard |
 
 **Loading state:** "Save" shows spinner.
-**Empty state:** All input fields empty. Hint below odometer: "Last reading: [X] km on [date]" (or "No odometer recorded yet").
+**Empty state:** All fields empty except date (today) and vehicle (active).
 **Error state:**
-- No liters entered: inline -- "Enter the number of liters"
-- No price/total entered: inline -- "Enter the price per liter" or "Enter the total cost"
-- Odometer lower than last reading: warning (not blocking) -- "This is lower than your last reading ([X] km). Continue?"
-- Network error: toast with retry
-
----
-
-### Screen: Fuel Log / History
-
-**Purpose:** View all fuel entries and consumption trend for the active vehicle.
-**Entry points:** "Fuel" tab or section in the app. "See all fuel entries" from dashboard.
-
-**Layout:**
-- Consumption summary card (top):
-  - Current average consumption: "X.X L/100km" (calculated from last 5 full-tank entries)
-  - Trend arrow: up (getting worse), down (improving), flat
-  - "Last fill: [date] at [station]"
-- Consumption trend chart (line chart, last 10-20 entries, L/100km over time)
-- Fuel entry list (newest first):
-  - Each row: date | liters + лв/L | total cost | consumption (if calculated) | station
-  - Partial fills marked with a "Partial" badge
-- "Add Fuel" FAB
-
-**Interactions:**
-
-| Element | Action | Result |
-|---------|--------|--------|
-| Fuel entry row | Tap | Opens fuel entry detail/edit |
-| Chart | Tap data point | Shows tooltip: date, L/100km, station |
-| "Add Fuel" | Tap | Opens Fuel Entry Form |
-
-**Loading state:** Skeleton card + list.
-**Empty state:** Illustration + "No fuel entries yet. Log your first fill-up to start tracking consumption." + "Add Fuel" button.
-**Error state:** "Could not load fuel history. Pull down to retry."
+- No liters or total cost entered: inline — "Enter liters or total cost"
+- Odometer lower than last reading: warning — "This is lower than your last reading (154,500 km). Are you sure?"
+- Negative values: inline — "Value must be greater than zero"
+- Network error: toast — "Could not save. Check your connection."
 
 ---
 
@@ -127,17 +94,18 @@
 
 | # | Rule | Example |
 |---|------|---------|
-| BR-1 | Fuel consumption (L/100km) is calculated only between two consecutive FULL-TANK fill-ups for the same vehicle. | Fill 1: full, 150,000 km. Fill 2: partial, 150,300 km. Fill 3: full, 150,600 km. Consumption calculated for fills 1-to-3 combined. |
-| BR-2 | Consumption formula: (liters at fill N) / (odometer at fill N - odometer at fill N-1) * 100 | Fill at 150,000 km. Next full fill: 45.2 L at 150,600 km. Consumption: 45.2 / 600 * 100 = 7.53 L/100km |
-| BR-3 | If multiple partial fills exist between two full fills, sum the liters for consumption calculation. | Full at 150,000. Partial: 20L. Partial: 25L. Full: 40L at 150,800. Total liters: 20+25+40 = 85L. Consumption: 85/800*100 = 10.63 L/100km |
-| BR-4 | Consumption is not calculated if odometer is missing from either the current or previous full fill. | Fill without odometer -- no consumption displayed. Hint: "Add odometer for consumption tracking." |
-| BR-5 | Average consumption is calculated from the last 5 full-tank fill-up intervals. | If user has 3 intervals, average of 3. If user has 10 intervals, average of the most recent 5. |
-| BR-6 | Fuel entries are also stored as Expenses (category: "fuel") so they appear in the cost dashboard and timeline. | A 128.82 лв fuel entry appears both in the fuel log and in the expense list/timeline under "Fuel" category |
-| BR-7 | Price per liter and total cost auto-calculate from each other. User can edit either one. | Enter 2.85 лв/L and 45.2L = 128.82 лв total. User changes total to 130 лв = 2.88 лв/L recalculated. |
-| BR-8 | Station name autocomplete suggests from the user's previous entries only (not a global database). | User has logged "Shell Младост" and "OMV Люлин" before. Typing "Sh" suggests "Shell Младост". |
-| BR-9 | Fuel type is inherited from the vehicle profile. If a vehicle is "Diesel", the fuel entry is implicitly diesel. | No fuel-type selector on the fuel form. Vehicle fuel type is shown as context: "Diesel -- BMW 320d" |
-| BR-10 | For LPG dual-fuel vehicles: fuel entries should distinguish between petrol and LPG fills. | Show a fuel-type selector ONLY for LPG vehicles: "Petrol" or "LPG". Consumption tracked separately per fuel type. |
-| BR-11 | Liters must be > 0 and <= 999.9. Price per liter must be > 0 and <= 99.99. Total must be > 0 and <= 99,999.99. | 0 liters = rejected. 1000 liters = rejected. |
+| BR-1 | Auto-calculation: any 2 of 3 fields (liters, price/liter, total cost) auto-calculates the third | Enter liters (42.5) + price/liter (2.85) → total auto-fills (121.13 лв). Or: enter total (120) + liters (42) → price/liter auto-fills (2.86 лв/L). |
+| BR-2 | Consumption calculation: (liters / (current_odometer - previous_odometer)) * 100 = L/100km | Liters: 42.5, Current: 155,200, Previous: 154,680 → (42.5 / 520) * 100 = 8.17 L/100km |
+| BR-3 | Consumption only calculated on full-tank fill-ups | Partial fills are excluded. If fill A is full, fill B is partial, fill C is full: consumption for C uses total liters from B+C and odometer delta from A to C. |
+| BR-4 | If no previous odometer reading exists, consumption cannot be calculated | Show: "Add your odometer reading to start tracking consumption" |
+| BR-5 | Fuel entry creates both a FuelEntry record and an Expense record | The expense record has category = "fuel" and amount = total cost. Both are linked. |
+| BR-6 | Consumption trend arrow: green down arrow if improved (lower L/100km), red up arrow if worsened, gray dash if unchanged or first entry | Threshold for change: ±0.1 L/100km |
+| BR-7 | Price per liter is stored with 3 decimal places for accuracy | Display with 2 decimals (2.85 лв), store with 3 (2.850). Bulgarian fuel prices sometimes have 3 decimals. |
+| BR-8 | Station name is optional and free-text | No station database for MVP. Could be structured in future. |
+| BR-9 | Fill type defaults to "Full tank" | Most users fill up completely. Partial is the exception. |
+| BR-10 | Quick fuel add (amount only) creates an Expense with category = "fuel" but NO FuelEntry record | No consumption data. Faster but less insightful. |
+| BR-11 | Odometer from fuel entry updates the vehicle's current_odometer_km | Keeps vehicle odometer current — critical for mileage-based maintenance reminders |
+| BR-12 | Consumption feedback is immediate after entering odometer | No need to save first — calculate and display in real-time as the user types |
 
 ---
 
@@ -145,26 +113,23 @@
 
 **Entities involved:**
 
-- `FuelEntry` -- id, vehicle_id, user_id, liters, price_per_liter, total_cost, currency, odometer_km, is_full_tank, station_name, fuel_type (for dual-fuel vehicles), date, notes, created_at, updated_at
-- `Expense` -- A corresponding Expense record is created for every FuelEntry (category="fuel", amount=total_cost). The fuel_entry_id links them.
-- `OdometerReading` -- Created/updated when odometer is provided.
+- `FuelEntry` — id, expense_id, vehicle_id, liters, price_per_liter, total_cost, odometer_km, fill_type (enum: full, partial), station_name (nullable), consumption_l_per_100km (nullable — calculated), created_at, updated_at
+- `Expense` — linked via expense_id (category = "fuel", amount = total_cost)
 
-**Data read:** Previous fuel entries (for consumption calculation, station autocomplete). Last odometer reading (for hint display). Vehicle fuel type.
-**Data written:** FuelEntry, Expense (auto-created), OdometerReading.
+**Data read:** Previous fuel entry for same vehicle (for consumption calculation), vehicle's last odometer reading
+**Data written:** FuelEntry (create, update, delete), Expense (create, update, delete), Vehicle.current_odometer_km (update)
 
 **Validation rules:**
 
 | Field | Type | Required | Validation |
 |-------|------|----------|------------|
-| liters | decimal(6,1) | Yes | > 0, <= 999.9 |
-| price_per_liter | decimal(5,2) | Yes (or derived) | > 0, <= 99.99 |
-| total_cost | decimal(10,2) | Yes (or derived) | > 0, <= 99,999.99 |
-| odometer_km | integer | No (recommended) | > 0, <= 9,999,999, >= last reading (soft warning) |
-| is_full_tank | boolean | Yes | Default: true |
-| station_name | string | No | Max 100 chars |
-| fuel_type | enum | Only for LPG vehicles | "petrol", "lpg" |
-| date | date | Yes | <= today |
-| notes | string | No | Max 500 chars |
+| liters | decimal | Yes (or total_cost) | > 0, <= 999.9, 1 decimal place |
+| price_per_liter | decimal | No (auto-calculated) | > 0, <= 99.999, 3 decimal places |
+| total_cost | decimal | Yes (or liters) | > 0, <= 999,999.99, 2 decimal places |
+| odometer_km | integer | No (strongly encouraged) | Min: 0, Max: 9,999,999. Should be >= last recorded. |
+| fill_type | enum | Yes (default: full) | Values: "full", "partial" |
+| station_name | string | No | Max 50 chars |
+| date | date | Yes (default: today) | Not in future. Not > 5 years in past. |
 
 ---
 
@@ -172,50 +137,52 @@
 
 | Scenario | Expected Behavior |
 |----------|-------------------|
-| First ever fuel entry (no previous data) | No consumption calculated. Show: "Log your next full fill-up to see your consumption." |
-| Only partial fills logged (never a full tank) | No consumption calculated. Show hint: "Mark a fill as 'Full tank' to calculate consumption." |
-| Odometer goes backwards (e.g., gauge reset, typo) | Soft warning: "This reading is lower than your last ([X] km). Save anyway?" Allow override. |
-| Very high consumption calculated (> 30 L/100km) | Display normally but show a note: "Unusually high -- double-check your odometer and liters." Likely data entry error. |
-| Very low consumption (< 2 L/100km) | Display normally but show note: "Unusually low -- double-check your entries." |
-| User edits a past fuel entry's odometer or liters | Recalculate consumption for this entry and the next one in sequence. |
-| User deletes a fuel entry | Remove entry. Recalculate consumption for surrounding entries if affected. |
-| Price per liter has 3+ decimals (some stations price at 2.849) | Allow up to 3 decimal places for price per liter input. Display rounded to 2 decimals. Store full precision. |
-| No internet | Toast: "No connection. Entry not saved." Form data preserved. |
+| User enters total cost and liters but not price/liter | Auto-calculate price/liter. Show with "calculated" badge. |
+| User enters only total cost (no liters) | Valid — treated as a simple fuel expense. No consumption calculation. |
+| All 3 fields entered manually and conflict | Last-edited field takes priority. The other auto-recalculates. Example: user enters liters (42), price (2.85 = 119.70), then changes total to 120. Price recalculates to 2.857. |
+| Odometer reading lower than previous | Warning dialog. Allow override. |
+| Very high consumption (e.g., 25 L/100km) | Allow it — could be a heavy vehicle, spirited driving, or city traffic. No upper limit warning. |
+| Very low consumption (e.g., 2 L/100km) | Allow it — could be a hybrid or error. No lower limit warning. |
+| Partial fill after partial fill after partial fill | No consumption calculated until a full fill. Liters accumulate across partial fills for the eventual full-fill calculation. |
+| First ever fuel entry (no history) | No consumption calculated. Message: "Great start! Track your next fill-up to see your fuel consumption." |
+| User edits a past fuel entry's odometer | Recalculate consumption for this entry and the NEXT entry (cascade). Only recalculate adjacent entries, not the entire history. |
+| Network error during save | Toast error. Form data preserved. Retry available. |
 
 ---
 
 ## 7. Non-Functional Requirements
 
-- **Performance:** Fuel entry save < 1 second. Consumption calculation is instant (client-side from cached data). Fuel log loads < 1.5 seconds.
-- **Offline behavior:** No offline saves in MVP. Cached fuel log viewable offline.
-- **Accessibility:** Numeric keypads for all number fields. Full tank toggle is labeled for screen readers.
-- **Localization:** Price format follows locale (2.85 лв/L for BG). Liters abbreviated as "L". Consumption unit: "L/100km" (standard in Europe).
+- **Performance:** Auto-calculation is instant (client-side math). Save completes in < 1 second. Consumption display appears within 100ms of odometer entry.
+- **Offline behavior:** Same as expense tracking. Requires internet for save in MVP. Calculations are all client-side and work offline.
+- **Accessibility:** All fields labeled. Auto-calculated fields announce "calculated" to screen readers. Consumption result has descriptive text: "8.2 liters per 100 kilometers, improved from 8.7."
+- **Localization:** Liters (not gallons — Bulgaria uses metric). Price in лв per liter. Consumption in L/100km (European standard, not MPG). Decimal separator: accept both period and comma.
+- **Analytics events:** fuel_entry_started, fuel_entry_saved, fuel_quick_add_used, fuel_detailed_used, consumption_calculated, odometer_entered.
 
 ---
 
 ## 8. Dependencies
 
-- **Depends on:** Onboarding & Auth, Vehicle Management (vehicle with fuel_type).
-- **Depended on by:** Cost Dashboard (fuel costs in totals, consumption display), Vehicle Timeline (fuel entries as events), Challenges (fuel efficiency challenge).
+- **Depends on:** Onboarding & Auth, Vehicle Management, Expense Tracking (fuel entry creates an expense)
+- **Depended on by:** Cost Dashboard (fuel is a category in breakdown), Vehicle Timeline (fuel entries appear), Challenges (fuel efficiency challenge uses L/100km data), Maintenance Reminders (odometer updates from fuel entries trigger mileage-based reminders)
 - **API endpoints needed:**
-  - `POST /api/vehicles/{vehicleId}/fuel-entries` -- create fuel entry (also creates Expense)
-  - `GET /api/vehicles/{vehicleId}/fuel-entries` -- list fuel entries (with pagination)
-  - `GET /api/vehicles/{vehicleId}/fuel-entries/{id}` -- get fuel entry detail
-  - `PUT /api/vehicles/{vehicleId}/fuel-entries/{id}` -- update fuel entry
-  - `DELETE /api/vehicles/{vehicleId}/fuel-entries/{id}` -- delete fuel entry (also deletes linked Expense)
-  - `GET /api/vehicles/{vehicleId}/fuel-entries/consumption` -- get consumption stats (average, trend)
-  - `GET /api/vehicles/{vehicleId}/fuel-entries/stations` -- autocomplete station names
+  - `POST /api/vehicles/{vehicleId}/fuel-entries` — create fuel entry (also creates linked expense)
+  - `GET /api/vehicles/{vehicleId}/fuel-entries` — list fuel entries (for consumption history/trend)
+  - `GET /api/vehicles/{vehicleId}/fuel-entries/{id}` — get fuel entry details
+  - `PUT /api/vehicles/{vehicleId}/fuel-entries/{id}` — update fuel entry
+  - `DELETE /api/vehicles/{vehicleId}/fuel-entries/{id}` — delete fuel entry (also deletes linked expense)
+  - `GET /api/vehicles/{vehicleId}/fuel-entries/consumption-trend` — consumption over time (for trend display)
 
 ---
 
 ## 9. Out of Scope
 
-- Fuel price comparison / cheapest station finder -- not planned
-- Fuel price trends (national average tracking) -- not planned
-- Multiple fuel types per single entry (e.g., petrol + LPG in one trip) -- not needed
-- CO2 emissions calculation -- deferred
-- Trip-based fuel tracking (fuel per specific route) -- deferred
-- Integration with fuel station APIs / loyalty cards -- not planned
+- Fuel price database or station finder — not in MVP
+- LPG dual-fuel tracking (separate LPG + petrol in one fill) — v1.1+
+- Fuel cost optimization recommendations — future intelligence feature
+- Electric vehicle charging tracking (kWh, charging station) — deferred. MVP focuses on combustion/LPG vehicles.
+- Fuel receipts OCR — deferred (PRD NG2)
+- Station reviews or ratings — not planned
+- Fuel price comparison between stations — not planned
 
 ---
 
@@ -223,12 +190,20 @@
 
 | # | Question | Impact | Resolution |
 |---|----------|--------|------------|
-| OQ-1 | Should consumption be calculated client-side or server-side? | Affects data consistency if entries are edited on multiple devices | Recommend: server-side calculation triggered on save/edit/delete. Return calculated value in API response. |
-| OQ-2 | For LPG vehicles, should we track petrol and LPG consumption separately on the fuel log? | Affects chart display and average calculation | Recommend: yes, separate consumption tracking per fuel type. Show toggle on fuel log: "All / Petrol / LPG" |
-| OQ-3 | Should we show fuel price trends over time (what the user paid per liter)? | Nice for cost awareness but low priority | Defer to v1.1. Simple to add once data exists. |
-| OQ-4 | How do we handle electric vehicles? They don't use liters. | EV charging: kWh, price/kWh, range added | Recommend: for MVP, treat EV fuel entries as: kWh (instead of liters), price/kWh, total cost. Consumption: kWh/100km. Adapt labels but same form structure. |
+| OQ-1 | Should consumption data be free or premium? | L/100km is valuable data. But gating it might reduce fuel entry adoption. | Recommend: consumption is FREE. This encourages detailed fuel logging. Premium gets consumption trends over time and efficiency comparison with other owners. |
+| OQ-2 | How do we handle LPG vehicles that use both LPG and petrol? | Some Bulgarian cars switch between fuels | Recommend: allow selecting fuel type per entry (Petrol/Diesel/LPG) within the fuel form. Separate consumption calculations per fuel type. Defer to v1.1 if complex. |
+| OQ-3 | Should we build a station name autocomplete from user data over time? | Reduces typing, improves data consistency | Recommend: free text for MVP. Build autocomplete from aggregated user entries in v1.1+. |
 
 ---
 
-**New data entities discovered:** FuelEntry
-**New API endpoints discovered:** 7 fuel entry endpoints (listed in Section 8)
+**Data entities discovered:** FuelEntry (linked to Expense)
+**API endpoints discovered:** 6 fuel entry endpoints (listed in Section 8)
+
+---
+
+## Document History
+
+| Version | Date | Changes |
+|---|---|---|
+| 1.0 | 2026-03-06 | Initial spec |
+| 2.0 | 2026-03-07 | Regenerated with user journey insights. Key changes: immediate consumption feedback with trend arrow (Journey 2 micro-aha), quick-add vs. detailed fuel entry choice, running total hint, odometer updates vehicle and triggers reminders, consumption as free feature to encourage detailed logging, challenge connection for fuel efficiency, partial fill accumulation logic. |
