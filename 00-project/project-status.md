@@ -1,5 +1,5 @@
 # Project Status
-## Last updated: 2026-03-06
+## Last updated: 2026-03-07
 
 ---
 
@@ -9,7 +9,7 @@
 |---|---|---|
 | Phase 1: Discovery & Validation | In Progress | 75% |
 | Phase 2: Strategy & Planning | In Progress | 80% |
-| Phase 3: Product Definition | In Progress | 65% |
+| Phase 3: Product Definition | In Progress | 75% |
 | Phase 4: Brand & Identity | Not Started | 0% |
 | Phase 5: Development | Not Started | 0% |
 | Phase 6: Growth & Launch | Not Started | 0% |
@@ -41,6 +41,14 @@
 | `/03-product/functional-specs/challenges-gamification.md` | @product-architect | 2026-03-06 |
 | `/03-product/functional-specs/share-export.md` | @product-architect | 2026-03-06 |
 | `/03-product/functional-specs/README.md` | @product-architect | 2026-03-06 |
+| `/03-product/user-journeys/flows-index.md` | @product-architect | 2026-03-07 |
+| `/03-product/user-journeys/journey-first-time-experience.md` | @product-architect | 2026-03-07 |
+| `/03-product/user-journeys/journey-daily-expense-logging.md` | @product-architect | 2026-03-07 |
+| `/03-product/user-journeys/journey-aha-moment.md` | @product-architect | 2026-03-07 |
+| `/03-product/user-journeys/journey-vehicle-timeline.md` | @product-architect | 2026-03-07 |
+| `/03-product/user-journeys/journey-premium-upgrade.md` | @product-architect | 2026-03-07 |
+| `/03-product/user-journeys/journey-challenge-participation.md` | @product-architect | 2026-03-07 |
+| `/03-product/user-journeys/journey-maintenance-reminder.md` | @product-architect | 2026-03-07 |
 
 ---
 
@@ -54,7 +62,8 @@
 | Technical architecture | @product-architect | Tech stack decision |
 | Database schema design | @product-architect | Tech stack decision |
 | API specification | @product-architect | Tech stack decision, database schema |
-| User stories per epic | @product-architect | — (PRD done) |
+| User journeys | @product-architect | DONE — 7 journeys + index in `/03-product/user-journeys/` |
+| User stories per epic | @product-architect | — (PRD done, journeys done) |
 | Functional specs per feature | @product-architect | DONE — all 9 specs in `/03-product/functional-specs/` |
 | Go-to-market plan | @strategist | — |
 | Product naming | @brand-architect | Positioning strategy (done), value proposition (done) |
