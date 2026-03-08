@@ -1,5 +1,5 @@
 # Project Status
-## Last updated: 2026-03-07
+## Last updated: 2026-03-09
 
 ---
 
@@ -49,6 +49,11 @@
 | `/03-product/user-journeys/journey-premium-upgrade.md` | @product-architect | 2026-03-07 |
 | `/03-product/user-journeys/journey-challenge-participation.md` | @product-architect | 2026-03-07 |
 | `/03-product/user-journeys/journey-maintenance-reminder.md` | @product-architect | 2026-03-07 |
+| `/00-project/decisions/DEC-007-mobile-framework.md` | @product-architect + @developer | 2026-03-08 |
+| `/00-project/decisions/DEC-008-web-framework.md` | @product-architect + @developer | 2026-03-08 |
+| `/00-project/decisions/DEC-009-backend-approach.md` | @product-architect + @developer | 2026-03-08 |
+| `/00-project/decisions/DEC-010-database.md` | @product-architect + @developer | 2026-03-09 |
+| `/00-project/decisions/DEC-011-authentication.md` | @product-architect + @developer | 2026-03-09 |
 
 ---
 
@@ -58,7 +63,7 @@
 |---|---|---|
 | Customer interviews (15-20 needed) | @customer-analyst | Recruitment — guide is ready, interviews not yet conducted |
 | Product Requirements Document (PRD) | @product-architect | DONE — `/03-product/product-requirements-document.md` |
-| Tech stack decision | @product-architect | Pending evaluation — **BLOCKER for all technical documents** |
+| Tech stack decision — Core stack (DEC-007 to DEC-011) | @product-architect + @developer | **DONE** — Decisions 1-5 complete. Session B pending (hosting, CI/CD, image storage, analytics, monitoring). |
 | Technical architecture | @product-architect | Tech stack decision |
 | Database schema design | @product-architect | Tech stack decision |
 | API specification | @product-architect | Tech stack decision, database schema |
@@ -75,7 +80,7 @@
 
 | Blocker | Impact | Resolution Path |
 |---|---|---|
-| **Tech stack not finalized** | Blocks: technical architecture, database schema, API spec, deployment strategy, effort estimates refinement | @product-architect to evaluate options and produce `/03-product/technical/architecture.md` with stack recommendation |
+| **Tech stack — core decisions DONE, infrastructure pending** | Core stack decided (DEC-007 to DEC-011). Remaining: hosting details, CI/CD, image storage, analytics, monitoring (Session B). Core decisions unblock: technical architecture, database schema, API spec. | Session B to finalize infrastructure decisions. Core stack no longer a blocker for schema and API design. |
 | **Customer interviews not conducted** | All strategy documents are pre-validation; assumptions remain unvalidated | @customer-analyst to recruit 15-20 Bulgarian car enthusiasts and conduct interviews using the ready guide |
 
 ---
@@ -103,13 +108,17 @@
 | 4 | Monetization model | Freemium — no ads, €2.99/month or €24.99/year premium | @strategist | 2026-03 | Active |
 | 5 | MVP scope | 10 Must Have features (auth, vehicles, expenses, fuel, dashboard, timeline, reminders, multi-vehicle, profile, onboarding) | @product-architect | 2026-03-06 | Active |
 | 6 | Positioning category | "Car ownership intelligence platform" (internal); "car expense tracker" for discoverability | @strategist | 2026-03 | Active |
-| 7 | Tech stack | **TBD — pending decision** | — | — | Pending |
+| 7 | Mobile framework | Flutter (Dart) + Riverpod | @product-architect + @developer | 2026-03-08 | Active |
+| 8 | Web framework | Blazor WebAssembly + MudBlazor | @product-architect + @developer | 2026-03-08 | Active |
+| 9 | Backend approach | ASP.NET Core Web API — Modular Monolith, Controllers, VPS | @product-architect + @developer | 2026-03-08 | Active |
+| 10 | Database | PostgreSQL — self-hosted on VPS, EF Core + Npgsql | @product-architect + @developer | 2026-03-09 | Active |
+| 11 | Authentication | ASP.NET Identity + JWT (email+password MVP, Google/Apple OAuth later) | @product-architect + @developer | 2026-03-09 | Active |
 
 ---
 
 ## Open Questions
 
-1. What is the right tech stack? — **Blocker for technical documents**
+1. ~~What is the right tech stack?~~ — **RESOLVED (core stack):** Flutter + Blazor WASM + ASP.NET Core + PostgreSQL + ASP.NET Identity. Infrastructure decisions (hosting, CI/CD, image storage, analytics, monitoring) pending Session B.
 2. Will customers actually track expenses regularly? — Validate through interviews
 3. Is €2.99/month acceptable in the Bulgarian market? — Validate through interviews
 4. How critical is offline functionality for MVP? — Validate through interviews
