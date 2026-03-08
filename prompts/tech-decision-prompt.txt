@@ -1,0 +1,505 @@
+## SPLIT INTO 3 SESSIONS:
+## 
+## Session A: Decisions 1-5 (Core stack — mobile, web, backend, database, auth)
+## Session B: Decisions 6-9 (Infrastructure — hosting, storage, notifications, analytics)
+## Session C: Decisions 10-12 (Tooling — IAP, CI/CD, error monitoring) + architecture doc
+##
+## Start a new Claude Code session for each one.
+## After Session A and B, tell Claude Code to save all decisions before ending.
+
+---
+
+# SESSION A: Core Stack Decisions (1-5)
+
+```
+Read CLAUDE.md and check /00-project/project-status.md for current progress.
+
+TASK: Facilitate Tech Stack Decisions — Part 1: Core Stack (Decisions 1-5).
+
+You are acting as @product-architect and @developer together. Your job is to:
+1. Extract all technical requirements from existing project documents
+2. Present options for each technology decision with pros/cons
+3. Ask the user clarifying questions to make the right choices
+4. Document each decision in /00-project/decisions/
+
+---
+
+STEP 1: Read all relevant project files to understand requirements.
+
+Read these files:
+- /00-project/concept-document.md
+- /03-product/product-requirements-document.md
+- /03-product/mvp-feature-list.md
+- /03-product/user-journeys/flows-index.md
+- /02-strategy/monetization-plan.md
+- /02-strategy/positioning-strategy.md
+- /02-strategy/market-sizing.md
+
+Extract and summarize:
+- All technical requirements mentioned across documents
+- Scale requirements (expected users Year 1, Year 2, Year 3)
+- Features that have technical implications (image uploads, real-time leaderboards, 
+  push notifications, subscription billing, analytics, etc.)
+- Multi-role architecture requirement (MVP = driver only, but must support 
+  garage_owner, dealer, fleet_manager roles later)
+- Data requirements (what entities exist, rough data volume)
+- The "Tech stack TBD" notes scattered across documents
+- Budget constraints (solo bootstrapped founder)
+- Timeline constraints (MVP in 10-14 weeks)
+
+CRITICAL CONTEXT — MULTI-PROJECT ARCHITECTURE:
+
+This is NOT a single mobile app. The system consists of multiple applications 
+that share a backend:
+
+1. **Mobile App** (Android + iOS) — The consumer-facing driver app. This is 
+   the MVP's primary interface. Car enthusiasts use this daily.
+
+2. **Web Application** — For MVP, this is admin-only (the founder uses it to 
+   manage users, view analytics, moderate content, manage challenges). In future 
+   phases, this becomes user-facing — drivers can optionally use the web version,
+   and B2B users (garages, dealers, fleet managers) will primarily use the web app.
+
+3. **Backend API** — Shared API that serves both mobile and web. Must be designed 
+   as a single source of truth that multiple clients consume.
+
+4. **Database** — Single database shared across all applications.
+
+This multi-project architecture affects every tech decision:
+- The API must be client-agnostic (mobile and web consume the same endpoints)
+- Auth must work across mobile and web
+- The web framework choice is a separate decision from the mobile framework
+- Code sharing between projects (shared models, validation logic) is desirable
+- The solo developer must maintain all projects — simplicity and consistency matter
+
+Present this summary to the user before proceeding. Ask them to confirm or 
+correct the multi-project scope.
+
+---
+
+STEP 2: For each technology decision below, do the following:
+
+a) State what the project needs based on the documents (not assumptions)
+b) Present 2-4 options with pros and cons evaluated against:
+   - Developer's existing skills (ASK the user about their experience)
+   - Cost at small scale (0-1,000 users)
+   - Cost at medium scale (1,000-10,000 users) 
+   - Solo developer productivity (speed of development)
+   - Cross-platform quality (Android + iOS)
+   - Scalability path (from MVP to Phase 3)
+   - Community and ecosystem (documentation, packages, support)
+   - Claude Code compatibility (how well can AI assist with this tech)
+c) Give your recommendation with clear reasoning
+d) Ask the user any clarifying questions needed
+e) Wait for the user's decision before moving to the next area
+
+THE 12 TECHNOLOGY DECISIONS:
+
+### Decision 1: Mobile Framework
+Options to evaluate:
+- .NET MAUI (C#, XAML)
+- Flutter (Dart)
+- React Native (JavaScript/TypeScript)
+- Kotlin Multiplatform (Kotlin)
+
+Questions to ask the user:
+- What languages are you most experienced with? (C#, Dart, JavaScript, Kotlin, other)
+- Have you built a mobile app before? With which framework?
+- Do you have strong preferences for any language or ecosystem?
+
+### Decision 2: Web Framework
+Options to evaluate:
+- Blazor (C# — shares code with .NET backend and potentially MAUI)
+- Next.js (React — large ecosystem, good for admin + future user-facing)
+- Angular (TypeScript — enterprise-grade, good for complex admin panels)
+- Vue.js / Nuxt (lightweight, easy to learn)
+- Razor Pages / MVC (if staying full .NET)
+
+Consider: For MVP, this is admin-only. But it WILL become user-facing and 
+B2B-facing in Phase 2-3. Choose something that scales from "simple admin panel" 
+to "full B2B application for garages, dealers, fleet managers."
+
+Questions to ask the user:
+- Do you have frontend web experience? Which frameworks?
+- How important is code sharing between mobile and web?
+- Would you prefer the same language across mobile, web, and backend?
+
+### Decision 3: Backend Approach
+Options to evaluate:
+- Custom API with ASP.NET Core
+- Custom API with Node.js/Express or Fastify
+- Backend-as-a-Service: Supabase (Postgres + Auth + Storage + Realtime)
+- Backend-as-a-Service: Firebase (Firestore + Auth + Storage + Functions)
+- Hybrid: BaaS for auth/storage + custom API for business logic
+
+IMPORTANT: The backend must serve BOTH the mobile app AND the web application 
+through the same API. Design it as client-agnostic from day one.
+
+Questions to ask the user:
+- How comfortable are you writing and maintaining a backend API?
+- Do you prefer full control over the backend or faster time-to-market with BaaS?
+- Are you comfortable with serverless/cloud functions?
+
+### Decision 4: Database
+Options to evaluate:
+- PostgreSQL (self-hosted or managed)
+- SQL Server (if staying in .NET ecosystem)
+- Supabase Postgres (managed, includes API layer)
+- Firebase Firestore (NoSQL, document-based)
+- PlanetScale / Neon (serverless Postgres)
+
+Consider: The data model includes users, organizations, vehicles, expenses, 
+maintenance records, reminders, challenges, leaderboards. This is relational data.
+Multi-role architecture requires proper data isolation.
+Single database shared by mobile app, web app, and backend.
+
+### Decision 5: Authentication
+Options to evaluate:
+- ASP.NET Identity (if using .NET backend)
+- Firebase Auth
+- Supabase Auth
+- Auth0
+- Clerk
+
+Requirements from documents:
+- Email + password registration
+- Must support multiple user roles from day one (driver now, garage_owner/dealer/fleet_manager later)
+- Social login (Google, Apple) — nice to have for MVP
+- Session management for BOTH mobile app AND web app
+- Single auth system across all applications
+
+### Decision 6: Hosting & Deployment
+Options to evaluate:
+- Azure (App Service + managed DB)
+- AWS (ECS/Lambda + RDS)
+- Railway
+- Fly.io
+- Render
+- Supabase (if using BaaS)
+- Vercel + Supabase (if using Next.js API routes)
+
+Consider: Need to host backend API + web application + database.
+Mobile app is deployed via App Stores (separate process).
+
+Questions to ask the user:
+- Do you have existing cloud accounts or credits?
+- Budget for infrastructure per month? (The monetization plan estimates €50-200/month post-launch)
+
+### Decision 7: Image Storage
+Options to evaluate:
+- Azure Blob Storage
+- AWS S3
+- Cloudflare R2 (S3-compatible, no egress fees)
+- Supabase Storage
+- Firebase Storage
+
+Requirements: Vehicle timeline photos, compressed to max 1MB each. 
+At 5,000 users with avg 20 photos = ~100K images = ~100GB.
+Images must be accessible from both mobile and web apps.
+
+### Decision 8: Push Notifications
+Options to evaluate:
+- Firebase Cloud Messaging (FCM) + Apple Push Notification Service (APNs) directly
+- OneSignal (wrapper, free tier available)
+- Azure Notification Hubs
+- Expo Push (if using React Native)
+
+Requirements: Maintenance reminders, challenge updates. 
+Not real-time critical — scheduled notifications.
+Mobile only (web notifications can come later).
+
+### Decision 9: Analytics & Telemetry
+Options to evaluate:
+- PostHog (open source, self-hostable)
+- Mixpanel
+- Firebase Analytics
+- Amplitude
+- Custom events to own database
+
+Requirements from documents:
+- Must track journey success metrics (activation, retention, feature usage)
+- Must track paywall trigger conversion rates
+- Must track which features drive premium conversion
+- Track across BOTH mobile and web
+- GDPR compliant
+
+### Decision 10: In-App Purchases & Subscription Management
+Options to evaluate:
+- RevenueCat (wraps Apple/Google billing, free tier up to $2.5K MRR)
+- Direct Apple StoreKit + Google Play Billing
+- Adapty
+- Qonversion
+
+Requirements: €2.99/month and €24.99/year premium subscription.
+Apple and Google take 30% (15% for small business program).
+Web-based subscription purchase may be considered in future (to avoid store fees).
+
+### Decision 11: CI/CD Pipeline
+Options to evaluate:
+- GitHub Actions
+- Azure DevOps Pipelines
+- Bitrise (mobile-focused)
+- Codemagic (Flutter/mobile focused)
+- Fastlane (mobile deployment automation)
+
+Consider: Need CI/CD for mobile builds (Android + iOS), web deployment, 
+and backend deployment. Ideally one pipeline system for all projects.
+
+Questions:
+- Are you using GitHub, GitLab, or Azure DevOps for source control?
+
+### Decision 12: Error Monitoring
+Options to evaluate:
+- Sentry (free tier: 5K events/month)
+- Firebase Crashlytics (free)
+- AppCenter (Microsoft, being retired — avoid)
+- Bugsnag
+
+Requirements: Solo developer needs automatic crash reporting.
+Can't rely on users reporting bugs.
+Need error tracking on mobile AND web AND backend.
+
+---
+
+STEP 3: After Decisions 1-5 are made, create their decision documents.
+
+Create these files in /00-project/decisions/ following the decision log format 
+from /00-project/agents/strategist.md:
+
+- /00-project/decisions/DEC-007-mobile-framework.md
+- /00-project/decisions/DEC-008-web-framework.md
+- /00-project/decisions/DEC-009-backend-approach.md
+- /00-project/decisions/DEC-010-database.md
+- /00-project/decisions/DEC-011-authentication.md
+
+Each decision file should include:
+- Context (why this decision matters, requirements from documents)
+- Options considered with pros/cons
+- Decision made and rationale
+- User's stated reasoning
+- Cost implications
+- Review trigger (when to revisit this decision)
+
+Update /00-project/project-status.md.
+Tell the user: "Core stack decisions complete. Start a new session for Session B."
+```
+
+---
+
+# SESSION B: Infrastructure Decisions (6-9)
+
+```
+Read CLAUDE.md and check /00-project/project-status.md for current progress.
+Read all existing decision files in /00-project/decisions/ to understand 
+the core stack choices already made.
+
+TASK: Facilitate Tech Stack Decisions — Part 2: Infrastructure (Decisions 6-9).
+
+Continue the tech decision process. The core stack (mobile, web, backend, 
+database, auth) has already been decided. Read those decisions to ensure 
+infrastructure choices are compatible.
+
+STEP 2 (continued): Walk through Decisions 6-9 one at a time.
+
+For each decision:
+a) State what the project needs based on documents AND the core stack already chosen
+b) Present 2-4 options with pros/cons
+c) Give your recommendation (considering compatibility with chosen core stack)
+d) Ask clarifying questions
+e) Wait for the user's decision before moving to the next area
+
+### Decision 6: Hosting & Deployment
+Options to evaluate:
+- Azure (App Service + managed DB)
+- AWS (ECS/Lambda + RDS)
+- Railway
+- Fly.io
+- Render
+- Supabase (if using BaaS)
+- Vercel + Supabase (if using Next.js API routes)
+
+Consider: Need to host backend API + web application + database.
+Mobile app is deployed via App Stores (separate process).
+Must be compatible with the backend and database already chosen.
+
+Questions to ask the user:
+- Do you have existing cloud accounts or credits?
+- Budget for infrastructure per month? (The monetization plan estimates €50-200/month post-launch)
+
+### Decision 7: Image Storage
+Options to evaluate:
+- Azure Blob Storage
+- AWS S3
+- Cloudflare R2 (S3-compatible, no egress fees)
+- Supabase Storage
+- Firebase Storage
+
+Requirements: Vehicle timeline photos, compressed to max 1MB each. 
+At 5,000 users with avg 20 photos = ~100K images = ~100GB.
+Images must be accessible from both mobile and web apps.
+
+### Decision 8: Push Notifications
+Options to evaluate:
+- Firebase Cloud Messaging (FCM) + Apple Push Notification Service (APNs) directly
+- OneSignal (wrapper, free tier available)
+- Azure Notification Hubs
+- Expo Push (if using React Native)
+
+Requirements: Maintenance reminders, challenge updates. 
+Not real-time critical — scheduled notifications.
+Mobile only (web notifications can come later).
+
+### Decision 9: Analytics & Telemetry
+Options to evaluate:
+- PostHog (open source, self-hostable)
+- Mixpanel
+- Firebase Analytics
+- Amplitude
+- Custom events to own database
+
+Requirements from documents:
+- Must track journey success metrics (activation, retention, feature usage)
+- Must track paywall trigger conversion rates
+- Must track which features drive premium conversion
+- Track across BOTH mobile and web
+- GDPR compliant
+
+---
+
+STEP 3: After Decisions 6-9 are made, create their decision documents.
+
+- /00-project/decisions/DEC-012-hosting-deployment.md
+- /00-project/decisions/DEC-013-image-storage.md
+- /00-project/decisions/DEC-014-push-notifications.md
+- /00-project/decisions/DEC-015-analytics-telemetry.md
+
+Each decision file should include:
+- Context (why this decision matters, requirements from documents)
+- Options considered with pros/cons
+- Decision made and rationale
+- User's stated reasoning
+- Cost implications (specific to chosen hosting/infra)
+- Review trigger (when to revisit this decision)
+
+Update /00-project/project-status.md.
+Tell the user: "Infrastructure decisions complete. Start a new session for Session C."
+```
+
+---
+
+# SESSION C: Tooling Decisions (10-12) + Architecture Document
+
+```
+Read CLAUDE.md and check /00-project/project-status.md for current progress.
+Read ALL existing decision files in /00-project/decisions/ to understand 
+the full stack already chosen.
+
+TASK: Facilitate Tech Stack Decisions — Part 3: Tooling (Decisions 10-12), 
+then create the architecture document.
+
+Continue the tech decision process. Core stack and infrastructure are decided.
+
+STEP 2 (continued): Walk through Decisions 10-12 one at a time.
+
+### Decision 10: In-App Purchases & Subscription Management
+Options to evaluate:
+- RevenueCat (wraps Apple/Google billing, free tier up to $2.5K MRR)
+- Direct Apple StoreKit + Google Play Billing
+- Adapty
+- Qonversion
+
+Requirements: €2.99/month and €24.99/year premium subscription.
+Apple and Google take 30% (15% for small business program).
+Web-based subscription purchase may be considered in future (to avoid store fees).
+
+### Decision 11: CI/CD Pipeline
+Options to evaluate:
+- GitHub Actions
+- Azure DevOps Pipelines
+- Bitrise (mobile-focused)
+- Codemagic (Flutter/mobile focused)
+- Fastlane (mobile deployment automation)
+
+Consider: Need CI/CD for mobile builds (Android + iOS), web deployment, 
+and backend deployment. Ideally one pipeline system for all projects.
+
+Questions:
+- Are you using GitHub, GitLab, or Azure DevOps for source control?
+
+### Decision 12: Error Monitoring
+Options to evaluate:
+- Sentry (free tier: 5K events/month)
+- Firebase Crashlytics (free)
+- AppCenter (Microsoft, being retired — avoid)
+- Bugsnag
+
+Requirements: Solo developer needs automatic crash reporting.
+Can't rely on users reporting bugs.
+Need error tracking on mobile AND web AND backend.
+
+---
+
+STEP 3: After Decisions 10-12 are made, create their decision documents.
+
+- /00-project/decisions/DEC-016-subscriptions-iap.md
+- /00-project/decisions/DEC-017-ci-cd.md
+- /00-project/decisions/DEC-018-error-monitoring.md
+
+---
+
+STEP 4: Create the architecture document.
+
+Read ALL 12 decision files in /00-project/decisions/.
+
+Create /03-product/technical/architecture.md using agent @product-architect.
+
+This document should:
+- Reference all 12 decision files
+- Show how the chosen technologies fit together with mermaid diagrams:
+
+  1. System Architecture Diagram — Show all projects and how they connect:
+     Mobile App (Android/iOS) ←→ Backend API ←→ Database
+     Web App (Admin → future user-facing) ←→ Backend API ←→ Image Storage
+
+  2. Multi-Project Structure — How the codebase is organized:
+     /repo-root (or separate repos — based on user's preference)
+     ├── /mobile-app        (chosen mobile framework)
+     ├── /web-app            (chosen web framework)
+     ├── /backend-api        (chosen backend framework)
+     ├── /shared             (shared models, DTOs, validation — if applicable)
+     └── /infrastructure     (deployment configs, CI/CD)
+
+  3. Deployment Topology Diagram — What runs where, which cloud services
+  4. Data Flow Diagram — User action → API → database → response
+  5. Auth Flow Diagram — How auth works across mobile AND web
+  6. API Architecture — How endpoints are organized, versioning strategy
+
+- Define coding conventions and patterns for EACH project
+- Define the multi-role data architecture (driver now, other roles later)
+- Define how mobile and web apps share the same API (contract, DTOs, versioning)
+- Define the admin web app's MVP scope (what the founder can do in it)
+- Estimate monthly infrastructure costs at 100, 1K, and 10K users
+- List technical risks and mitigations
+
+Questions to ask the user about architecture:
+- Monorepo (all projects in one repository) or separate repos per project?
+- For the admin web MVP, what features do you need? (user management, analytics 
+  dashboard, content moderation, challenge management, etc.)
+
+---
+
+STEP 5: Update everything.
+
+Update /00-project/project-status.md with all new deliverables.
+
+Update CLAUDE.md:
+- Replace any "Tech stack TBD" references with the actual chosen technologies
+- Update the @developer agent section with the finalized tech stack
+- Add the multi-project structure to the project description
+
+Update /00-project/agents/developer.md:
+- Replace the Tech Stack table with the actual chosen technologies
+- Update Code Standards section with conventions for each project
+
+Tell me what the recommended next tasks are.
+```
