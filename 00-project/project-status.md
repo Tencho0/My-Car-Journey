@@ -54,6 +54,10 @@
 | `/00-project/decisions/DEC-009-backend-approach.md` | @product-architect + @developer | 2026-03-08 |
 | `/00-project/decisions/DEC-010-database.md` | @product-architect + @developer | 2026-03-09 |
 | `/00-project/decisions/DEC-011-authentication.md` | @product-architect + @developer | 2026-03-09 |
+| `/00-project/decisions/DEC-012-hosting-deployment.md` | @product-architect + @developer | 2026-03-09 |
+| `/00-project/decisions/DEC-013-image-storage.md` | @product-architect + @developer | 2026-03-09 |
+| `/00-project/decisions/DEC-014-push-notifications.md` | @product-architect + @developer | 2026-03-09 |
+| `/00-project/decisions/DEC-015-analytics-telemetry.md` | @product-architect + @developer | 2026-03-09 |
 
 ---
 
@@ -63,10 +67,10 @@
 |---|---|---|
 | Customer interviews (15-20 needed) | @customer-analyst | Recruitment — guide is ready, interviews not yet conducted |
 | Product Requirements Document (PRD) | @product-architect | DONE — `/03-product/product-requirements-document.md` |
-| Tech stack decision — Core stack (DEC-007 to DEC-011) | @product-architect + @developer | **DONE** — Decisions 1-5 complete. Session B pending (hosting, CI/CD, image storage, analytics, monitoring). |
-| Technical architecture | @product-architect | Tech stack decision |
-| Database schema design | @product-architect | Tech stack decision |
-| API specification | @product-architect | Tech stack decision, database schema |
+| Tech stack decision — All decisions (DEC-007 to DEC-015) | @product-architect + @developer | **DONE** — Core stack (DEC-007 to DEC-011) + Infrastructure (DEC-012 to DEC-015) all complete. |
+| Technical architecture | @product-architect | **UNBLOCKED** — all tech stack decisions complete (DEC-007 to DEC-015) |
+| Database schema design | @product-architect | **UNBLOCKED** — all tech stack decisions complete |
+| API specification | @product-architect | Database schema design |
 | User journeys | @product-architect | DONE — 7 journeys + index in `/03-product/user-journeys/` |
 | User stories per epic | @product-architect | — (PRD done, journeys done) |
 | Functional specs per feature | @product-architect | DONE — all 9 specs v2.0 (updated with journey insights) in `/03-product/functional-specs/` |
@@ -80,7 +84,7 @@
 
 | Blocker | Impact | Resolution Path |
 |---|---|---|
-| **Tech stack — core decisions DONE, infrastructure pending** | Core stack decided (DEC-007 to DEC-011). Remaining: hosting details, CI/CD, image storage, analytics, monitoring (Session B). Core decisions unblock: technical architecture, database schema, API spec. | Session B to finalize infrastructure decisions. Core stack no longer a blocker for schema and API design. |
+| ~~**Tech stack — ALL DECISIONS COMPLETE**~~ | All tech stack decisions finalized (DEC-007 to DEC-015). Core stack + infrastructure fully decided. Unblocks: technical architecture, database schema, API spec. | **RESOLVED** — No longer a blocker. |
 | **Customer interviews not conducted** | All strategy documents are pre-validation; assumptions remain unvalidated | @customer-analyst to recruit 15-20 Bulgarian car enthusiasts and conduct interviews using the ready guide |
 
 ---
@@ -88,13 +92,14 @@
 ## Next Recommended Tasks
 
 1. **Conduct customer interviews** — @customer-analyst — Recruit from Bulgarian car Facebook groups and car meets. Use `/01-discovery/customers/interview-guide.md`. Target: 15-20 interviews. This validates every assumption in the strategy documents.
-2. **Decide tech stack** — @product-architect — Evaluate cross-platform options. Produce decision document at `/03-product/technical/architecture.md`. This unblocks all technical deliverables.
-3. **Write user stories** — @product-architect — Use `/write-stories` command. PRD + functional specs (v2.0) + user journeys are all done. Break each epic into implementable stories with acceptance criteria.
-4. **Name the product** — @brand-architect — Use `/name-product` command. Inputs ready: positioning strategy, value proposition.
-5. **Design database schema** — @product-architect — 12 entities identified across functional specs v2.0 (User, AuthToken, PasswordResetToken, LoginAttempt, Vehicle, Expense, FuelEntry, TimelineEntry, TimelinePhoto, Reminder, Challenge, ChallengeParticipant, ChallengeBadge). Requires tech stack decision.
-6. **Design API specification** — @product-architect — 50+ endpoints identified across functional specs v2.0. Requires tech stack decision and database schema.
-7. **Plan go-to-market** — @strategist — Use `/plan-gtm` command. Can proceed now but stronger after interview validation.
-8. **Write test scenarios** — @qa — Use `/write-tests` command. Functional specs v2.0 provide comprehensive acceptance criteria for test coverage.
+2. ~~**Decide tech stack**~~ — **DONE** — All 9 tech decisions finalized (DEC-007 to DEC-015). Technical architecture, database schema, and API spec are now unblocked.
+3. **Design technical architecture** — @product-architect — Overall system architecture document incorporating all tech stack decisions. Unblocked by DEC-007 through DEC-015.
+4. **Design database schema** — @product-architect — 12+ entities identified across functional specs v2.0. Unblocked by tech stack decisions.
+5. **Design API specification** — @product-architect — 50+ endpoints identified across functional specs v2.0. Requires database schema.
+6. **Write user stories** — @product-architect — Use `/write-stories` command. PRD + functional specs (v2.0) + user journeys are all done. Break each epic into implementable stories with acceptance criteria.
+7. **Name the product** — @brand-architect — Use `/name-product` command. Inputs ready: positioning strategy, value proposition.
+8. **Plan go-to-market** — @strategist — Use `/plan-gtm` command. Can proceed now but stronger after interview validation.
+9. **Write test scenarios** — @qa — Use `/write-tests` command. Functional specs v2.0 provide comprehensive acceptance criteria for test coverage.
 
 ---
 
@@ -113,12 +118,16 @@
 | 9 | Backend approach | ASP.NET Core Web API — Modular Monolith, Controllers, VPS | @product-architect + @developer | 2026-03-08 | Active |
 | 10 | Database | PostgreSQL — self-hosted on VPS, EF Core + Npgsql | @product-architect + @developer | 2026-03-09 | Active |
 | 11 | Authentication | ASP.NET Identity + JWT (email+password MVP, Google/Apple OAuth later) | @product-architect + @developer | 2026-03-09 | Active |
+| 12 | Hosting & deployment | Self-managed VPS, provider TBD by developer, API + DB co-located | @product-architect + @developer | 2026-03-09 | Active |
+| 13 | Image storage | Local VPS disk (MVP) → Cloudflare R2 (future), behind `IPhotoStorageService` | @product-architect + @developer | 2026-03-09 | Active |
+| 14 | Push notifications | FCM as unified gateway (Android + iOS), `IHostedService` background job | @product-architect + @developer | 2026-03-09 | Active |
+| 15 | Analytics & telemetry | Firebase Analytics (MVP, mobile), behind `IAnalyticsService` abstraction | @product-architect + @developer | 2026-03-09 | Active |
 
 ---
 
 ## Open Questions
 
-1. ~~What is the right tech stack?~~ — **RESOLVED (core stack):** Flutter + Blazor WASM + ASP.NET Core + PostgreSQL + ASP.NET Identity. Infrastructure decisions (hosting, CI/CD, image storage, analytics, monitoring) pending Session B.
+1. ~~What is the right tech stack?~~ — **FULLY RESOLVED:** Core stack (Flutter + Blazor WASM + ASP.NET Core + PostgreSQL + ASP.NET Identity) + Infrastructure (self-managed VPS, local disk → R2, FCM, Firebase Analytics). All 9 decisions documented in DEC-007 through DEC-015.
 2. Will customers actually track expenses regularly? — Validate through interviews
 3. Is €2.99/month acceptable in the Bulgarian market? — Validate through interviews
 4. How critical is offline functionality for MVP? — Validate through interviews
