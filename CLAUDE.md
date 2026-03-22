@@ -4,7 +4,7 @@
 
 We are building a startup product: a car ownership cost tracking platform. The MVP is a mobile app for Bulgarian car enthusiasts (aged 20-40) that tracks expenses, calculates true ownership costs, maintains a vehicle timeline, and includes basic gamification.
 
-Tech stack: .NET MAUI (C#), ASP.NET Core Web API, PostgreSQL, Entity Framework Core.
+Tech stack: Flutter (Dart) + Riverpod (mobile), Blazor WebAssembly + MudBlazor (admin web), ASP.NET Core Web API modular monolith (backend), PostgreSQL + EF Core (database), ASP.NET Identity + JWT (auth).
 
 Solo developer project. MVP target: 10-14 weeks part-time.
 
@@ -88,8 +88,9 @@ See `/00-project/skills/README.md` for the full architecture documentation.
 - **Target market:** Bulgaria (launch), then Romania, then Western Europe
 - **First user:** Car enthusiasts aged 20-40 who actively maintain/modify their cars
 - **Launch approach:** B2C only, B2B modules come after 5,000-10,000 active users
-- **Tech stack:** .NET MAUI + ASP.NET Core + PostgreSQL
-- **Monetization:** Freemium (free app + premium at ~€1.49-2.99/month)
+- **Tech stack:** Flutter (Dart) + Blazor WASM + ASP.NET Core + PostgreSQL + ASP.NET Identity + JWT
+- **Infrastructure:** Self-managed VPS (EU), FCM, Firebase Analytics, RevenueCat, Sentry, GitHub Actions
+- **Monetization:** Freemium (free app + premium at €2.99/month or €24.99/year)
 - **MVP scope:** Expense tracking, cost dashboard, vehicle timeline, maintenance reminders, basic challenges
 - **Excluded from MVP:** Offline sync, OCR, bank integration, garage/dealer/fleet modules, social profiles, advanced predictions
 
@@ -137,23 +138,42 @@ Every markdown deliverable should include:
 - `/01-discovery/customers/interview-guide.md` ✅
 - `/02-strategy/lean-canvas.md` ✅
 - `/02-strategy/value-proposition.md` ✅
+- `/02-strategy/positioning-strategy.md` ✅
+- `/02-strategy/monetization-plan.md` ✅
 - `/03-product/mvp-feature-list.md` ✅
+- `/03-product/product-requirements-document.md` ✅
+- `/03-product/functional-specs/*.md` (9 specs, all v2.0) ✅
+- `/03-product/user-journeys/` (7 journeys + index) ✅
+- `/00-project/decisions/DEC-007 through DEC-018` (12 tech decisions) ✅
+- `/03-product/technical/architecture.md` ✅
+- `/03-product/technical/database-schema.md` ✅
 
 ## Current Phase
 
-Phase 1: Discovery & Validation — IN PROGRESS
+Phase 1: Discovery & Validation — IN PROGRESS (75%)
 - Customer interviews: NOT YET CONDUCTED (guide is ready)
 - Competitor research: DONE
 - Market sizing: DONE
 
-Phase 2: Strategy & Planning — PARTIALLY STARTED
+Phase 2: Strategy & Planning — IN PROGRESS (80%)
 - Lean Canvas: DONE
 - Value Proposition: DONE
-- Positioning, monetization, GTM: NOT STARTED
+- Positioning: DONE
+- Monetization: DONE
+- GTM: NOT STARTED
+
+Phase 3: Product Definition — IN PROGRESS (90%)
+- PRD: DONE
+- Functional specs: DONE (9 specs v2.0)
+- User journeys: DONE (7 journeys)
+- Tech stack decisions: DONE (DEC-007 through DEC-018)
+- Technical architecture: DONE
+- Database schema: DONE (22 tables, 9 modules)
+- API specification: NOT STARTED
+- User stories: NOT STARTED
 
 Next priority tasks:
-1. Product Requirements Document (PRD)
-2. Technical architecture & database schema
-3. Brand naming & identity
-4. Functional specs for each feature area
-5. User stories per epic
+1. API specification
+3. User stories per epic
+4. Sprint plan / development roadmap
+5. Brand naming & identity
