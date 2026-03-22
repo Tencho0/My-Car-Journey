@@ -9,7 +9,7 @@
 |---|---|---|
 | Phase 1: Discovery & Validation | In Progress | 75% |
 | Phase 2: Strategy & Planning | In Progress | 80% |
-| Phase 3: Product Definition | In Progress | 90% |
+| Phase 3: Product Definition | In Progress | 95% |
 | Phase 4: Brand & Identity | Not Started | 0% |
 | Phase 5: Development | Not Started | 0% |
 | Phase 6: Growth & Launch | Not Started | 0% |
@@ -25,6 +25,7 @@
 | `/01-discovery/research/competitor-analysis.md` | @researcher | 2026-03-06 |
 | `/01-discovery/research/market-sizing.md` | @researcher | 2026-03-06 |
 | `/01-discovery/customers/interview-guide.md` | @customer-analyst | 2026-03-06 |
+| `/01-discovery/customers/google-form-spec.md` | @customer-analyst | 2026-03-18 |
 | `/02-strategy/lean-canvas.md` | @strategist | 2026-03-06 |
 | `/02-strategy/value-proposition.md` | @strategist | 2026-03-06 |
 | `/02-strategy/positioning-strategy.md` | @strategist | 2026-03 |
@@ -63,6 +64,7 @@
 | `/00-project/decisions/DEC-018-error-monitoring.md` | @product-architect + @developer | 2026-03-22 |
 | `/03-product/technical/architecture.md` | @product-architect | 2026-03-22 |
 | `/03-product/technical/database-schema.md` | @product-architect | 2026-03-22 |
+| `/03-product/technical/api-specification.md` | @product-architect | 2026-03-22 |
 
 ---
 
@@ -71,14 +73,7 @@
 | Task | Agent | Blocked By |
 |---|---|---|
 | Customer interviews (15-20 needed) | @customer-analyst | Recruitment — guide is ready, interviews not yet conducted |
-| Product Requirements Document (PRD) | @product-architect | DONE — `/03-product/product-requirements-document.md` |
-| Tech stack decision — All decisions (DEC-007 to DEC-018) | @product-architect + @developer | **DONE** — Core stack (DEC-007 to DEC-011) + Infrastructure (DEC-012 to DEC-015) + Tooling (DEC-016 to DEC-018) all complete. |
-| Technical architecture | @product-architect | **DONE** — `/03-product/technical/architecture.md` |
-| Database schema design | @product-architect | **DONE** — `/03-product/technical/database-schema.md` — 22 tables, 9 modules, all spec entities mapped |
-| API specification | @product-architect | **UNBLOCKED** — database schema complete |
-| User journeys | @product-architect | DONE — 7 journeys + index in `/03-product/user-journeys/` |
-| User stories per epic | @product-architect | — (PRD done, journeys done) |
-| Functional specs per feature | @product-architect | DONE — all 9 specs v2.0 (updated with journey insights) in `/03-product/functional-specs/` |
+| User stories per epic | @product-architect | — (PRD done, journeys done, specs done) |
 | Go-to-market plan | @strategist | — |
 | Product naming | @brand-architect | Positioning strategy (done), value proposition (done) |
 | Brand identity | @brand-architect | Product naming |
@@ -100,12 +95,13 @@
 2. ~~**Decide tech stack**~~ — **DONE** — All 12 tech decisions finalized (DEC-007 to DEC-018).
 3. ~~**Design technical architecture**~~ — **DONE** — `/03-product/technical/architecture.md`. Incorporates all 12 decisions, monorepo structure, deployment topology, data flows, auth flows, API design, admin dashboard scope, coding conventions, cost estimates.
 4. ~~**Design database schema**~~ — **DONE** — `/03-product/technical/database-schema.md`. 22 tables across 9 modules (Auth, Vehicles, Expenses, Fuel, Timeline, Reminders, Subscriptions, Challenges, Analytics). All functional spec entities mapped. Extension points for B2B, fleet, offline sync documented.
-5. **Design API specification** — @product-architect — 50+ endpoints identified across functional specs v2.0. **UNBLOCKED** — database schema complete.
+5. ~~**Design API specification**~~ — **DONE** — `/03-product/technical/api-specification.md`. 86 endpoints across 12 controller groups (Auth, Vehicles, Expenses, Fuel, Dashboard, Timeline, Reminders, Challenges, Subscriptions, Share, Admin, Health). Full DTO reference, push notification triggers, rate limiting, coverage matrix mapping all specs/journeys/tables to endpoints.
 6. **Write user stories** — @product-architect — Use `/write-stories` command. PRD + functional specs (v2.0) + user journeys are all done. Break each epic into implementable stories with acceptance criteria.
 7. **Create sprint plan / development roadmap** — @product-architect — Requires user stories. Define sprint order and feature sequence.
 8. **Name the product** — @brand-architect — Use `/name-product` command. Inputs ready: positioning strategy, value proposition.
 9. **Plan go-to-market** — @strategist — Use `/plan-gtm` command. Can proceed now but stronger after interview validation.
 10. **Write test scenarios** — @qa — Use `/write-tests` command. Functional specs v2.0 provide comprehensive acceptance criteria for test coverage.
+11. **Create wireframes** — @brand-architect / @product-architect — Key screen wireframes during development phase.
 
 ---
 
@@ -123,7 +119,7 @@
 | 8 | Web framework | Blazor WebAssembly + MudBlazor | @product-architect + @developer | 2026-03-08 | Active |
 | 9 | Backend approach | ASP.NET Core Web API — Modular Monolith, Controllers, VPS | @product-architect + @developer | 2026-03-08 | Active |
 | 10 | Database | PostgreSQL — self-hosted on VPS, EF Core + Npgsql | @product-architect + @developer | 2026-03-09 | Active |
-| 11 | Authentication | ASP.NET Identity + JWT (email+password MVP, Google/Apple OAuth later) | @product-architect + @developer | 2026-03-09 | Active |
+| 11 | Authentication | ASP.NET Identity + JWT (email+password + Google/Apple OAuth in MVP) | @product-architect + @developer | 2026-03-09 | Active |
 | 12 | Hosting & deployment | Self-managed VPS, provider TBD by developer, API + DB co-located | @product-architect + @developer | 2026-03-09 | Active |
 | 13 | Image storage | Local VPS disk (MVP) → Cloudflare R2 (future), behind `IPhotoStorageService` | @product-architect + @developer | 2026-03-09 | Active |
 | 14 | Push notifications | FCM as unified gateway (Android + iOS), `IHostedService` background job | @product-architect + @developer | 2026-03-09 | Active |

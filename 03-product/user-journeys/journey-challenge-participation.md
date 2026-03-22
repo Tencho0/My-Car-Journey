@@ -26,6 +26,8 @@ related-specs: challenges-gamification.md, cost-dashboard.md
 
 ---
 
+> **⚠️ Deferred to v2:** This journey applies to v2. Not part of MVP launch. The journey map is retained for future implementation.
+
 ## Journey: Challenge Participation
 
 ### Goal

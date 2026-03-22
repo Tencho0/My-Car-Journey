@@ -44,7 +44,7 @@ All entities identified across all 9 functional specs. This informs the database
 | `ChallengeParticipant` | challenges-gamification | User's current standing in a challenge |
 | `ChallengeResult` | challenges-gamification | Final standings snapshot at month end |
 
-**Total: 14 entities**
+**Initial discovery: 14 core entities.** The authoritative schema is now in `/03-product/technical/database-schema.md` with 22 tables across 9 modules.
 
 ### Entity Relationship Summary
 
@@ -172,7 +172,7 @@ All endpoints identified across all 9 specs. This informs the API specification 
 |--------|----------|-------------|
 | GET | `/api/vehicles/{vehicleId}/share-stats` | share-export |
 
-**Total: 52 API endpoints**
+**Initial discovery: 52 API endpoints.** The authoritative endpoint list is now in `/03-product/technical/api-specification.md` with 86 endpoints across 12 controller groups.
 
 ---
 
@@ -197,8 +197,8 @@ Collected from all specs. These need resolution before or during development.
 
 ## Next Steps
 
-1. **Write user stories** per epic -- `/write-stories` for each feature area
-2. **Design database schema** -- use the 14 entities above as starting point
-3. **Design API specification** -- use the 52 endpoints above as starting point
-4. **Name the product** -- `/name-product` command (inputs ready)
-5. **Write test scenarios** -- `/write-tests` for each spec
+1. **Write user stories** per epic — `/write-stories` for each feature area
+2. ~~**Design database schema**~~ ✅ Done — `/03-product/technical/database-schema.md` (22 tables, 9 modules)
+3. ~~**Design API specification**~~ ✅ Done — `/03-product/technical/api-specification.md` (86 endpoints, 12 controller groups)
+4. **Name the product** — `/name-product` command (inputs ready)
+5. **Write test scenarios** — `/write-tests` for each spec

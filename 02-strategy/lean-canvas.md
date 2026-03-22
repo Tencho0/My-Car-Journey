@@ -7,8 +7,8 @@
 - Concept Document: `/00-project/concept-document.md`
 - Competitor Analysis: `/01-discovery/research/competitor-analysis.md`
 - Market Sizing: `/01-discovery/research/market-sizing.md`
-- Positioning Strategy: `/02-strategy/positioning-strategy.md`
-- Monetization Plan: `/02-strategy/monetization-plan.md`
+- *This document informed the positioning strategy at `/02-strategy/positioning-strategy.md`*
+- *This document informed the monetization plan at `/02-strategy/monetization-plan.md`*
 
 ---
 
@@ -89,7 +89,7 @@ It addresses the #1 problem directly (not knowing costs) with a clear, emotional
 |---|---|---|
 | No visibility into true costs | Automated cost aggregation and analytics | Cost dashboard: monthly total, cost/km, category breakdown, trends |
 | No organized car history | Chronological visual record of everything | Vehicle timeline with photos, notes, service records |
-| Can't compare costs | Anonymized benchmarking against same-model owners | Model benchmarks: "Your car costs X% more/less than average" |
+| Can't compare costs | Anonymized benchmarking against same-model owners | Model benchmarks: "Your car costs X% more/less than average" *(seeded with public data at launch; meaningful feature in v2)* |
 
 **Additional solution components (MVP):**
 - Multi-vehicle support (enthusiasts often own multiple cars)
@@ -150,7 +150,7 @@ Offline sync, receipt OCR, bank integration, income tracking, garage/dealer/flee
 - Fleet subscriptions: €3-5/vehicle/month
 
 **Revenue projections (conservative):**
-- Year 1 ARR: ~€10K (Bulgaria B2C only)
+- Year 1 ARR: ~€13,500 (see `/02-strategy/monetization-plan.md` for detailed projections)
 - Year 2 ARR: ~€55K-78K (Bulgaria + Romania, B2B start)
 - Year 3 ARR: ~€144K-264K (multi-market, full B2B)
 
@@ -165,7 +165,7 @@ Offline sync, receipt OCR, bank integration, income tracking, garage/dealer/flee
 
 | Cost | Amount | Notes |
 |---|---|---|
-| Cloud hosting (backend + database) | €20-50/month | Tech stack TBD — see technical architecture decision |
+| Cloud hosting (backend + database) | €20-50/month | Resolved — see DEC-007 through DEC-018 |
 | Domain + SSL | ~€2/month | Amortized annual |
 | App Store fees (Apple + Google) | €25/year + €8.33/month (amortized) | One-time €25 (Google) + €99/year (Apple) |
 | Email/notification service | €0-20/month | Free tier initially |

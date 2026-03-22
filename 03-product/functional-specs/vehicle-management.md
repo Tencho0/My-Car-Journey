@@ -205,10 +205,10 @@
 ## 7. Non-Functional Requirements
 
 - **Performance:** Vehicle list loads in < 1 second. Vehicle switching is instant (cached data first). Photo compression happens client-side before upload.
-- **Offline behavior:** Vehicle profiles cached locally for read access. Write operations require internet for MVP. Tech stack TBD — see architecture decision.
+- **Offline behavior:** Vehicle profiles cached locally for read access. Write operations require internet for MVP. Resolved — see DEC-007 through DEC-018.
 - **Accessibility:** All form fields labeled. Photo area has text alternative for screen readers. Minimum touch targets: 44x44pt.
 - **Localization:** Make/model names are universal (not translated). UI text in Bulgarian by default. License plate hint shows Bulgarian format.
-- **Image handling:** Photos compressed client-side. Cloud storage with CDN for retrieval. Thumbnail versions generated for list views. Tech stack TBD.
+- **Image handling:** Photos compressed client-side. Cloud storage with CDN for retrieval. Thumbnail versions generated for list views. Local VPS disk (MVP) with client-side compression. See DEC-013.
 
 ---
 

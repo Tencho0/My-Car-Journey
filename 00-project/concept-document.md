@@ -72,11 +72,12 @@ The consumer-facing mobile application. Core experience for individual users.
 - Shareable vehicle card for social media
 
 **Premium features (paid tier):**
-- Advanced analytics (predictive costs, depreciation tracking, keep-vs-sell insights)
+- Advanced analytics (predictive costs, keep-vs-sell insights)
 - Detailed exportable reports (PDF service history, tax reports)
 - Unlimited photo storage on vehicle timeline
 - Document storage (insurance, registration, inspection dates)
-- Ad-free experience
+
+Note: The app contains no advertising in any tier. Revenue comes exclusively from premium subscriptions.
 
 ### Module 2: Garage Integration (Phase 2)
 Connects auto repair shops with vehicle owners on the platform.

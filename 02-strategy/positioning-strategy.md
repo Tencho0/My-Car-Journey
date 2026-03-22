@@ -75,7 +75,7 @@ The vehicle timeline, photo documentation, modification tracking, and challenges
 
 **Why it matters:** Knowing your own costs is useful. Knowing how you compare to others is powerful. It answers "is my mechanic overcharging?" and "is this car a money pit compared to alternatives?"
 
-*Note: This differentiator requires critical mass of users. Seed with publicly available average cost data for popular models at launch. Becomes genuinely powerful at 1,000+ active users.*
+*Note: This differentiator requires critical mass of users. Seeded with publicly available average cost data for popular models at launch. Full benchmarking becomes a v2 feature when user data reaches meaningful scale (1,000+ active users).*
 
 ---
 

@@ -91,7 +91,9 @@ See `/00-project/skills/README.md` for the full architecture documentation.
 - **Tech stack:** Flutter (Dart) + Blazor WASM + ASP.NET Core + PostgreSQL + ASP.NET Identity + JWT
 - **Infrastructure:** Self-managed VPS (EU), FCM, Firebase Analytics, RevenueCat, Sentry, GitHub Actions
 - **Monetization:** Freemium (free app + premium at €2.99/month or €24.99/year)
-- **MVP scope:** Expense tracking, cost dashboard, vehicle timeline, maintenance reminders, basic challenges
+- **Auth:** Google Sign-In and Apple Sign-In in MVP. No Facebook OAuth.
+- **MVP scope:** Expense tracking, cost dashboard, vehicle timeline, maintenance reminders
+- **Deferred to v2:** Challenges/gamification, model benchmarks
 - **Excluded from MVP:** Offline sync, OCR, bank integration, garage/dealer/fleet modules, social profiles, advanced predictions
 
 ## Folder Structure
@@ -136,6 +138,7 @@ Every markdown deliverable should include:
 - `/01-discovery/research/competitor-analysis.md` ✅
 - `/01-discovery/research/market-sizing.md` ✅
 - `/01-discovery/customers/interview-guide.md` ✅
+- `/01-discovery/customers/google-form-spec.md` ✅
 - `/02-strategy/lean-canvas.md` ✅
 - `/02-strategy/value-proposition.md` ✅
 - `/02-strategy/positioning-strategy.md` ✅
@@ -147,6 +150,7 @@ Every markdown deliverable should include:
 - `/00-project/decisions/DEC-007 through DEC-018` (12 tech decisions) ✅
 - `/03-product/technical/architecture.md` ✅
 - `/03-product/technical/database-schema.md` ✅
+- `/03-product/technical/api-specification.md` ✅
 
 ## Current Phase
 
@@ -162,18 +166,19 @@ Phase 2: Strategy & Planning — IN PROGRESS (80%)
 - Monetization: DONE
 - GTM: NOT STARTED
 
-Phase 3: Product Definition — IN PROGRESS (90%)
+Phase 3: Product Definition — IN PROGRESS (95%)
 - PRD: DONE
 - Functional specs: DONE (9 specs v2.0)
 - User journeys: DONE (7 journeys)
 - Tech stack decisions: DONE (DEC-007 through DEC-018)
 - Technical architecture: DONE
 - Database schema: DONE (22 tables, 9 modules)
-- API specification: NOT STARTED
+- API specification: DONE (86 endpoints, 12 controller groups)
 - User stories: NOT STARTED
 
 Next priority tasks:
-1. API specification
-3. User stories per epic
-4. Sprint plan / development roadmap
-5. Brand naming & identity
+1. User stories per epic
+2. Sprint plan / development roadmap
+3. Brand naming & identity
+4. Go-to-market plan
+5. Conduct customer interviews

@@ -228,7 +228,7 @@ Rich timeline with variety. Filter options become useful. The timeline is genuin
 - **Offline behavior:** Cached timeline entries viewable offline. Cached photo thumbnails displayed. New entries require internet for MVP.
 - **Accessibility:** Each entry card has descriptive label for screen readers: "[Date] — [Category] — [Description] — [Amount]". Photos have alt text: "Photo [N] for [description]".
 - **Localization:** Category names in Bulgarian. Date format: dd.MM.yyyy. Currency: лв. Notes and descriptions in user's language.
-- **Image handling:** Client-side compression before upload. Thumbnails (~200px wide) for feed view. Full-resolution for detail view. CDN for fast retrieval. Tech stack TBD for storage provider.
+- **Image handling:** Client-side compression before upload. Thumbnails (~200px wide) for feed view. Full-resolution for detail view. CDN for fast retrieval. Local VPS disk (MVP), Cloudflare R2 (future). See DEC-013.
 - **Analytics events:** timeline_viewed, timeline_entry_created, timeline_entry_with_photos, timeline_entry_without_photos, timeline_photo_added, timeline_photo_limit_hit, timeline_filtered, timeline_searched, timeline_entry_deleted.
 
 ---

@@ -252,7 +252,7 @@ If "Yes — Log expense":
 ## 7. Non-Functional Requirements
 
 - **Performance:** Reminders list loads in < 1 second. Notification scheduling is server-side and reliable.
-- **Push notifications:** Server-side scheduling via APNs (iOS) + FCM (Android). Notifications must be delivered reliably — maintenance reminders are high-trust features. Tech stack TBD for notification service.
+- **Push notifications:** Server-side scheduling via APNs (iOS) + FCM (Android). Notifications must be delivered reliably — maintenance reminders are high-trust features. FCM via IHostedService background job. See DEC-014.
 - **Offline behavior:** Reminders list is cached for offline viewing. Creating/editing reminders requires internet.
 - **Accessibility:** Status badges have descriptive text (not color alone): "Overdue", "Due soon", "All clear". Reminder detail is fully accessible.
 - **Localization:** Reminder names can be in any language (user input). System-generated text (status, notifications) in Bulgarian by default. Date format: dd.MM.yyyy.

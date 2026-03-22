@@ -104,30 +104,30 @@ Suggested next commands or actions.
 
 ## Command-to-Deliverable Mapping
 
-| Command | Agent | Skills Used | Output File |
-|---|---|---|---|
-| `/research-competitors` | @researcher | competitor-analysis | `/01-discovery/research/competitor-analysis.md` |
-| `/size-market` | @researcher | market-sizing | `/01-discovery/research/market-sizing.md` |
-| `/mine-reviews` | @researcher | app-review-mining | `/01-discovery/research/app-review-analysis.md` |
-| `/prep-interviews` | @customer-analyst | interview-script | `/01-discovery/customers/interview-guide.md` |
-| `/analyze-interviews` | @customer-analyst | interview-analysis, validation-scoring | `/01-discovery/customers/interview-notes-summary.md` |
-| `/create-personas` | @customer-analyst | persona-creation, jtbd-mapping | `/01-discovery/customers/personas.md` |
-| `/build-canvas` | @strategist | lean-canvas | `/02-strategy/lean-canvas.md` |
-| `/define-positioning` | @strategist | positioning, value-proposition | `/02-strategy/positioning-strategy.md` |
-| `/plan-monetization` | @strategist | monetization-strategy, pricing-strategy | `/02-strategy/monetization-plan.md` |
-| `/plan-gtm` | @strategist | gtm-strategy, channel-strategy | `/02-strategy/go-to-market-plan.md` |
-| `/write-prd` | @product-architect | create-prd, prioritization | `/03-product/product-requirements-document.md` |
-| `/write-stories` | @product-architect | user-stories | `/03-product/user-stories/*.md` |
-| `/write-spec` | @product-architect | functional-spec | `/03-product/functional-specs/*.md` |
-| `/design-db` | @product-architect | db-schema | `/03-product/technical/database-schema.md` |
-| `/design-api` | @product-architect | api-design | `/03-product/technical/api-specification.md` |
-| `/name-product` | @brand-architect | product-naming | `/04-brand/naming-exploration.md` |
-| `/build-brand` | @brand-architect | brand-identity, messaging-framework | `/04-brand/brand-identity.md` |
-| `/plan-launch` | @growth-lead | launch-planning, community-strategy | `/06-growth/launch-plan.md` |
-| `/plan-growth` | @growth-lead | growth-experiments, channel-strategy | `/06-growth/growth-experiments.md` |
-| `/setup-legal` | @ops-legal | company-registration, gdpr-checklist | `/07-legal-ops/company-registration-guide.md` |
-| `/write-privacy` | @ops-legal | privacy-policy, gdpr-checklist | `/07-legal-ops/privacy-policy.md` |
-| `/build-pitch` | @ops-legal | pitch-deck, revenue-modeling | `/07-legal-ops/pitch-deck.md` |
+| Command | Agent | Skills Used | Output File | Status |
+|---|---|---|---|---|
+| `/research-competitors` | @researcher | competitor-analysis | `/01-discovery/research/competitor-analysis.md` | 📋 Planned |
+| `/size-market` | @researcher | market-sizing | `/01-discovery/research/market-sizing.md` | 📋 Planned |
+| `/mine-reviews` | @researcher | app-review-mining | `/01-discovery/research/app-review-analysis.md` | 📋 Planned |
+| `/prep-interviews` | @customer-analyst | interview-script | `/01-discovery/customers/interview-guide.md` | ✅ Implemented |
+| `/analyze-interviews` | @customer-analyst | interview-analysis, validation-scoring | `/01-discovery/customers/interview-notes-summary.md` | 📋 Planned |
+| `/create-personas` | @customer-analyst | persona-creation, jtbd-mapping | `/01-discovery/customers/personas.md` | 📋 Planned |
+| `/build-canvas` | @strategist | lean-canvas | `/02-strategy/lean-canvas.md` | 📋 Planned |
+| `/define-positioning` | @strategist | positioning, value-proposition | `/02-strategy/positioning-strategy.md` | ✅ Implemented |
+| `/plan-monetization` | @strategist | monetization-strategy, pricing-strategy | `/02-strategy/monetization-plan.md` | 📋 Planned |
+| `/plan-gtm` | @strategist | gtm-strategy, channel-strategy | `/02-strategy/go-to-market-plan.md` | ✅ Implemented |
+| `/write-prd` | @product-architect | create-prd, prioritization | `/03-product/product-requirements-document.md` | ✅ Implemented |
+| `/write-stories` | @product-architect | user-stories | `/03-product/user-stories/*.md` | ✅ Implemented |
+| `/write-spec` | @product-architect | functional-spec | `/03-product/functional-specs/*.md` | ✅ Implemented |
+| `/design-db` | @product-architect | db-schema | `/03-product/technical/database-schema.md` | 📋 Planned |
+| `/design-api` | @product-architect | api-design | `/03-product/technical/api-specification.md` | 📋 Planned |
+| `/name-product` | @brand-architect | product-naming | `/04-brand/naming-exploration.md` | ✅ Implemented |
+| `/build-brand` | @brand-architect | brand-identity, messaging-framework | `/04-brand/brand-identity.md` | 📋 Planned |
+| `/plan-launch` | @growth-lead | launch-planning, community-strategy | `/06-growth/launch-plan.md` | 📋 Planned |
+| `/plan-growth` | @growth-lead | growth-experiments, channel-strategy | `/06-growth/growth-experiments.md` | 📋 Planned |
+| `/setup-legal` | @ops-legal | company-registration, gdpr-checklist | `/07-legal-ops/company-registration-guide.md` | 📋 Planned |
+| `/write-privacy` | @ops-legal | privacy-policy, gdpr-checklist | `/07-legal-ops/privacy-policy.md` | 📋 Planned |
+| `/build-pitch` | @ops-legal | pitch-deck, revenue-modeling | `/07-legal-ops/pitch-deck.md` | 📋 Planned |
 
 ---
 

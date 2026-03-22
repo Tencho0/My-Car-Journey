@@ -255,7 +255,7 @@ Quick-Add Sheet:
 ## 7. Non-Functional Requirements
 
 - **Performance:** Quick-add sheet opens in < 300ms. Expense save completes in < 1 second (API response). Dashboard updates instantly after save (optimistic UI update, don't wait for server confirmation). App cold start to quick-add save: under 15 seconds median (Journey 2 target).
-- **Offline behavior:** MVP requires internet for save. Tech stack TBD — if offline queue is feasible, implement it (saves locally, syncs when connected). This is the #1 feature that benefits from offline support.
+- **Offline behavior:** MVP requires internet connection for all operations. Offline support is not planned for MVP (see MVP feature list W1).
 - **Accessibility:** Category icons have accessible labels. Amount field announces currency. Save confirmation is both visual (animation) and haptic. Minimum touch targets: 44x44pt for all interactive elements.
 - **Localization:** Category names in Bulgarian by default (Гориво, Поддръжка, Модификации, Застраховка, Данък, Гуми, Паркиране, Глоби, Автомивка, Друго). Amount formatting: Bulgarian convention (period or comma as decimal separator accepted). Currency display: "127.50 лв".
 - **Analytics events:** expense_add_started, expense_category_selected, expense_saved, expense_edited, expense_deleted, quick_add_opened, quick_add_dismissed, more_details_expanded, fuel_detailed_entry_chosen. Track time from quick_add_opened to expense_saved.

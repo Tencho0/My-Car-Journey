@@ -3,7 +3,7 @@
 **File:** `/03-product/functional-specs/onboarding-auth.md`
 **Produced by:** @product-architect
 **Date:** 2026-03-07
-**Version:** 2.0 — Updated with user journey insights
+**Version:** 2.1 — Removed Facebook OAuth; Google + Apple confirmed for MVP
 **Source PRD:** `/03-product/product-requirements-document.md` — Section 6.1 (M1, M10)
 **Related features:** M1 (User Authentication), M10 (Onboarding Flow)
 **Related journeys:** `/03-product/user-journeys/journey-first-time-experience.md`, `/03-product/user-journeys/journey-premium-upgrade.md`
@@ -29,8 +29,8 @@ Target: Under 3 minutes total. Optimal: under 90 seconds with OAuth.
 1. User opens the app for the first time
 2. System shows Welcome screen with a single, clear value proposition: "Finally know what your car costs." — no feature lists, no multi-slide carousel
 3. User taps "Get Started"
-4. System shows Auth screen — OAuth buttons (Google, Apple, Facebook) prominent and primary; email registration secondary
-5a. User taps OAuth (Google/Apple/Facebook) — single tap, auto-fills name and email (~10 seconds)
+4. System shows Auth screen — OAuth buttons (Google, Apple) prominent and primary; email registration secondary
+5a. User taps OAuth (Google/Apple) — single tap, auto-fills name and email (~10 seconds)
 5b. User taps "Sign up with email" — minimal form: email, password, name (~30 seconds)
 6. System creates account, logs user in. Brief success animation (0.5s). Immediately transitions to "Add Your Car"
 7. System shows "Add Your Car" screen with make/model/year pickers. Popular Bulgarian makes at top: BMW, VW, Audi, Mercedes, Opel, Toyota (these account for 60%+ of the target segment)
@@ -50,7 +50,7 @@ Target: Under 3 minutes total. Optimal: under 90 seconds with OAuth.
 
 ### Alternative Paths
 
-- **Path A: OAuth registration** — User taps Google/Apple/Facebook on step 4. OAuth provider handles authentication. On success, user is logged in and proceeds to step 7. Email is pre-filled from OAuth profile. No password needed. Target: 70%+ of registrations via OAuth.
+- **Path A: OAuth registration** — User taps Google/Apple on step 4. OAuth provider handles authentication. On success, user is logged in and proceeds to step 7. Email is pre-filled from OAuth profile. No password needed. Target: 70%+ of registrations via OAuth.
 - **Path B: User skips vehicle setup** — "Skip" link available on step 7. If skipped, user lands on an empty dashboard with prominent CTA: "Add your first car to get started." Illustration of a car, not blank space. Skipping is tracked in analytics.
 - **Path C: User skips first expense** — "Skip" link on step 13. User lands on dashboard with vehicle but no expenses. Shows: "Your car's story starts here. Log your first expense." with CTA button.
 - **Path D: User already has account** — Taps "Log In" on Welcome screen. Enters email + password (or OAuth). Lands on dashboard (or empty state if no vehicles).
@@ -126,7 +126,7 @@ Target: Under 3 minutes total. Optimal: under 90 seconds with OAuth.
 **Layout:**
 - App logo (top, small)
 - "Create Your Account" heading
-- OAuth buttons row (Google, Apple on iOS, Facebook) — **prominent, primary position, above the fold**
+- OAuth buttons row (Google, Apple on iOS) — **prominent, primary position, above the fold**
 - Divider: "or"
 - "Sign up with email" secondary link (not a full form by default — tapping expands the email form)
 - When email form expands: email field, password field (with show/hide toggle), name field
@@ -142,7 +142,6 @@ Target: Under 3 minutes total. Optimal: under 90 seconds with OAuth.
 |---------|--------|--------|
 | OAuth button (Google) | Tap | Opens Google OAuth flow — single tap, auto-fills name and email |
 | OAuth button (Apple) | Tap | Opens Apple Sign-In flow (iOS only) |
-| OAuth button (Facebook) | Tap | Opens Facebook OAuth flow |
 | "Sign up with email" | Tap | Expands email/password/name form fields |
 | Email field | Type | Validates format on blur |
 | Password field | Type | Shows strength indicator (weak/medium/strong) |
@@ -176,7 +175,7 @@ Target: Under 3 minutes total. Optimal: under 90 seconds with OAuth.
 - "Forgot password?" link (right-aligned below password)
 - "Log In" primary button
 - Divider: "or continue with"
-- OAuth buttons: Google, Apple (iOS only), Facebook
+- OAuth buttons: Google, Apple (iOS only)
 - "Don't have an account? Sign Up" link (bottom)
 
 **Interactions:**
@@ -361,7 +360,7 @@ This is NOT a separate screen — it's the regular Dashboard in its "1 expense" 
 
 **Entities involved:**
 
-- `User` — id, email, password_hash, display_name, avatar_url, email_verified, role (enum: driver, garage_owner, dealer, fleet_manager — default: driver), created_at, updated_at, last_login_at, auth_provider (email, google, apple, facebook), locale, currency_preference, distance_unit, onboarding_completed (boolean), onboarding_skipped_at_step (nullable string)
+- `User` — id, email, password_hash, display_name, avatar_url, email_verified, role (enum: driver, garage_owner, dealer, fleet_manager — default: driver), created_at, updated_at, last_login_at, auth_provider (email, google, apple), locale, currency_preference, distance_unit, onboarding_completed (boolean), onboarding_skipped_at_step (nullable string)
 - `AuthToken` — id, user_id, token, refresh_token, expires_at, created_at
 - `PasswordResetToken` — id, user_id, token, expires_at, used
 - `LoginAttempt` — id, user_id, ip_address, success, created_at (for lockout tracking)
@@ -408,11 +407,11 @@ This is NOT a separate screen — it's the regular Dashboard in its "1 expense" 
 ## 7. Non-Functional Requirements
 
 - **Performance:** Registration/login API response < 2 seconds. OAuth flow < 5 seconds total (including provider). Entire onboarding flow (registration to dashboard) must be completable in under 3 minutes (Journey 1 target). Optimal with OAuth: under 90 seconds.
-- **Security:** Passwords hashed (tech stack TBD — see architecture decision). HTTPS only. Tokens stored securely in platform keychain/keystore. No passwords stored in plaintext or logs.
+- **Security:** Passwords hashed using ASP.NET Identity (bcrypt). See DEC-011. HTTPS only. Tokens stored securely in platform keychain/keystore. No passwords stored in plaintext or logs.
 - **Offline behavior:** Login requires internet. If user has a valid cached session, app opens to last cached state with a "No connection" banner. No offline registration.
 - **Accessibility:** All form fields have labels. Error messages are associated with fields (screen reader compatible). Minimum touch target: 44x44pt. OAuth buttons have descriptive labels for screen readers.
 - **Localization:** All UI text in Bulgarian by default (detect from device locale). English as secondary. Date format: dd.MM.yyyy (Bulgarian standard). Currency: лв (BGN) default. Popular Bulgarian car makes prioritized in vehicle picker.
-- **Analytics events:** onboarding_started, auth_method_selected (email/google/apple/facebook), account_created, vehicle_added, vehicle_skipped, expense_added, expense_skipped, onboarding_completed, dashboard_first_view. Track timestamps for each step to measure funnel performance.
+- **Analytics events:** onboarding_started, auth_method_selected (email/google/apple), account_created, vehicle_added, vehicle_skipped, expense_added, expense_skipped, onboarding_completed, dashboard_first_view. Track timestamps for each step to measure funnel performance.
 
 ---
 
@@ -427,7 +426,7 @@ This is NOT a separate screen — it's the regular Dashboard in its "1 expense" 
   - `POST /api/auth/refresh` — refresh token
   - `POST /api/auth/password-reset/request` — send reset email
   - `POST /api/auth/password-reset/confirm` — set new password
-  - `POST /api/auth/oauth/{provider}` — OAuth flow (provider: google, apple, facebook)
+  - `POST /api/auth/oauth/{provider}` — OAuth flow (provider: google, apple)
   - `POST /api/auth/verify-email` — verify email token
   - `GET /api/users/me` — get current user profile
   - `PUT /api/users/me` — update profile
@@ -453,7 +452,7 @@ This is NOT a separate screen — it's the regular Dashboard in its "1 expense" 
 | # | Question | Impact | Resolution |
 |---|----------|--------|------------|
 | OQ-1 | Should we require email verification before allowing premium subscription? | Prevents fraud on premium accounts | Decide during payment integration |
-| OQ-2 | Which OAuth providers are most popular among Bulgarian car enthusiasts? Google and Facebook likely top. Is Apple Sign-In worth the effort for MVP? | Apple requires Apple Sign-In if any OAuth is offered on iOS | Research App Store requirements — may be mandatory |
+| OQ-2 | Which OAuth providers to support? Google Sign-In and Apple Sign-In are included in MVP (Apple requires it if any OAuth is offered on iOS). Facebook is not included. | Apple requires Apple Sign-In if any OAuth is offered on iOS | Resolved — Google and Apple in MVP. No Facebook. |
 | OQ-3 | Should make/model lists be hardcoded or fetched from an API? | Affects onboarding offline capability and data freshness | Recommend: ship with a static list of top 50 makes + models for Bulgarian market. Add API endpoint for updates later. |
 | OQ-4 | What analytics events should fire during onboarding? | Critical for measuring activation rate (target: 60%+) | Proposed events listed in Section 7 NFRs |
 | OQ-5 | Should the welcome screen have a single screen or a brief carousel? | Journey 1 strongly recommends single screen for speed. But carousel could communicate more. | Recommend single screen per Journey 1 analysis. Test post-launch if activation is below 60%. |
@@ -471,3 +470,4 @@ This is NOT a separate screen — it's the regular Dashboard in its "1 expense" 
 |---|---|---|
 | 1.0 | 2026-03-06 | Initial spec |
 | 2.0 | 2026-03-07 | Regenerated with user journey insights. Key changes: single welcome screen (not carousel), OAuth as primary auth, minimum vehicle fields (make/model/year only), delayed notification permission, dashboard reveal design, role field for future multi-role support, analytics events, empty state and drop-off mitigation details from Journey 1. |
+| 2.1 | 2026-03-23 | Removed Facebook OAuth references. Google and Apple Sign-In confirmed as MVP OAuth providers per DEC-011 v1.1. |

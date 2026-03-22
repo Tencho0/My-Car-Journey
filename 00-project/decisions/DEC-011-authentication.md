@@ -13,7 +13,7 @@
 The platform requires authentication that works across both clients (Flutter mobile app, Blazor WASM web app) through the same ASP.NET Core API. Requirements:
 
 - Email + password registration and login (MVP)
-- OAuth providers: Google first, then Apple Sign-In (post-MVP, added iteratively)
+- OAuth providers: Google Sign-In and Apple Sign-In (MVP)
 - Password reset flow
 - Session persistence (users stay logged in on mobile)
 - Multi-role from day one: `driver` (MVP), `garage_owner`, `dealer`, `fleet_manager` (Phase 2-3)
@@ -43,7 +43,7 @@ Auth must be API-centric — both Flutter and Blazor call the same ASP.NET Core 
 
 **Cons:**
 - More initial setup than managed auth (JWT issuance, refresh token logic, password reset flow). Developer is comfortable with this.
-- OAuth provider configuration is more work than Firebase's one-click setup. Mitigated by deferring OAuth to post-MVP.
+- OAuth provider configuration is more work than Firebase's one-click setup. Mitigated by using well-documented Microsoft.AspNetCore.Authentication packages.
 
 ### Option B: Firebase Auth
 
@@ -95,17 +95,17 @@ Auth must be API-centric — both Flutter and Blazor call the same ASP.NET Core 
 - **Claims:** Role, user ID, subscription status embedded in JWT
 - **Session persistence:** Flutter stores refresh token securely (flutter_secure_storage). Blazor stores in browser (localStorage or cookie).
 - **Account deletion:** GDPR-compliant endpoint to delete user and all associated data
+- **Google Sign-In** — via `Microsoft.AspNetCore.Authentication.Google`. Link to existing account if email matches. Primary registration method.
+- **Apple Sign-In** — via `Microsoft.AspNetCore.Authentication.Apple`. Required by Apple if any social login is offered on iOS.
 
 ### Post-MVP (iterative)
 
-- **Google Sign-In** — first OAuth provider. Add via `Microsoft.AspNetCore.Authentication.Google`. Link to existing account if email matches.
-- **Apple Sign-In** — add if/when social login is introduced on iOS (Apple requires it if any social login is offered).
 - **Multi-role activation** — `garage_owner`, `dealer`, `fleet_manager` roles activated when B2B modules are built (Phase 2-3). Role assignment via admin panel or B2B onboarding flow.
 - **MFA** — not in MVP. Consider for B2B users in Phase 2-3 where security expectations are higher. ASP.NET Identity has built-in TOTP MFA support when needed.
 
 ### What We're NOT Building
 
-- No Facebook OAuth (low priority, can add later if demand exists)
+- No Facebook OAuth (not planned)
 - No phone/SMS authentication (complexity, cost of SMS providers)
 - No magic link authentication (email+password is sufficient)
 - No anonymous/guest accounts (users must register to track data)
@@ -174,3 +174,4 @@ Revisit this decision if:
 | Version | Date | Changes |
 |---|---|---|
 | 1.0 | 2026-03-09 | Initial decision |
+| 1.1 | 2026-03-23 | Moved Google Sign-In and Apple Sign-In from Post-MVP to MVP. Removed Facebook OAuth entirely. Aligned with onboarding spec and API spec. |

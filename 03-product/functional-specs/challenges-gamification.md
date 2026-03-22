@@ -10,6 +10,8 @@
 
 ---
 
+> **⚠️ Deferred to v2:** This feature is planned for v2. Not included in MVP launch. The specification is retained for future implementation.
+
 ## 1. Overview
 
 **What this feature does:** Provides monthly challenges where users compete anonymously on metrics like cost per km, fuel efficiency, and expense logging consistency. Includes leaderboards, rank tracking, and badges for top performers. Free users can view leaderboards; premium users can actively compete.

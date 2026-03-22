@@ -58,7 +58,7 @@ The split follows one rule: **free gives you awareness, premium gives you intell
 | Vehicle profile | Add up to 2 vehicles |
 | Vehicle timeline | Chronological history, up to 5 photos total |
 | Maintenance reminders | Up to 3 active reminders |
-| Fuel tracking | Basic fuel logging (total cost, no consumption calculation) |
+| Fuel tracking | Fuel logging with basic consumption calculation (L/100km per fill-up) |
 | Basic challenges | View leaderboards (can't compete) |
 
 **Why this is generous:** A user can fully track their expenses and see their monthly total for free. This is already more than most people do. It solves the basic problem.
@@ -70,7 +70,7 @@ The split follows one rule: **free gives you awareness, premium gives you intell
 | **Cost per kilometer** | Full cost/km calculation with trends | The core intelligence metric — changes decisions |
 | **Advanced analytics** | Year-over-year trends, category trends, monthly comparisons, spending forecasts | Depth that turns data into insight |
 | **Model benchmarks** | "Your car costs X% more/less than average" | Unique — nobody else offers this |
-| **Fuel consumption** | L/100km tracking, efficiency trends, fill-up analytics | Enthusiasts obsess over this |
+| **Fuel consumption trends** | Consumption trends over time, efficiency analytics, comparison with other owners of the same model | Enthusiasts obsess over this |
 | **Unlimited vehicles** | No cap on number of vehicles | Multi-car enthusiasts need this |
 | **Unlimited photos** | No cap on timeline photos | Document every detail of the build |
 | **Unlimited reminders** | No cap on maintenance reminders | Peace of mind for complex vehicles |

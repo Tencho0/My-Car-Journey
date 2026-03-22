@@ -114,7 +114,7 @@ This is the native OS share sheet — not a custom screen. The app generates an 
 | BR-4 | Card photo uses the vehicle's profile photo | If no photo: silhouette placeholder. Nudge: "Add a photo to make your card stand out." |
 | BR-5 | Stats shown on card are contextual — show what's most impressive | If user has modifications with photos → highlight those. If user has months of data → show total tracked. If premium with cost/km → show that. |
 | BR-6 | Card image format: PNG or JPEG, optimized for social media | Recommended dimensions: 1080x1350 (Instagram portrait) or 1080x1080 (square). High quality. |
-| BR-7 | Card generation happens client-side or server-side — tech stack TBD | If client-side: faster, works offline. If server-side: consistent quality, easier to update templates. |
+| BR-7 | Card generation happens client-side or server-side — decision pending, evaluate during development | If client-side: faster, works offline. If server-side: consistent quality, easier to update templates. |
 | BR-8 | One card design for MVP. Multiple templates in future. | Keep it simple — one well-designed template beats three mediocre ones. |
 | BR-9 | Cost per km stat only appears on card for premium users | Free users see: total tracked, expenses count, months tracked. Premium adds: cost/km. |
 | BR-10 | Share event is tracked in analytics | Track: share_card_generated, share_card_shared (with destination if detectable), share_card_saved. Critical for measuring organic growth channel. |

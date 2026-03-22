@@ -146,7 +146,7 @@ ASP.NET Identity creates this table automatically. We extend it with custom colu
 | `access_failed_count` | `INTEGER` | NO | `0` | | |
 | `display_name` | `VARCHAR(50)` | YES | | | YES |
 | `avatar_url` | `VARCHAR(500)` | YES | | Photo storage URL | |
-| `auth_provider` | `VARCHAR(20)` | NO | `'email'` | `CHECK (auth_provider IN ('email', 'google', 'apple', 'facebook'))` | |
+| `auth_provider` | `VARCHAR(20)` | NO | `'email'` | `CHECK (auth_provider IN ('email', 'google', 'apple'))` | |
 | `locale` | `VARCHAR(5)` | NO | `'bg'` | `CHECK (locale IN ('bg', 'en'))` | |
 | `currency_preference` | `VARCHAR(3)` | NO | `'BGN'` | `CHECK (currency_preference IN ('BGN', 'EUR'))` | |
 | `distance_unit` | `VARCHAR(5)` | NO | `'km'` | `CHECK (distance_unit IN ('km', 'mi'))` | |
@@ -534,6 +534,8 @@ Tracks subscription state changes over time. Each row is a state transition even
 
 ### 3.8 Challenges Module
 
+> **Note:** Challenge tables are deferred to v2. These tables are created post-launch.
+
 #### Table: `challenges`
 
 Admin-created monthly challenges.
@@ -718,7 +720,7 @@ Server-side analytics event store. Complements Firebase Analytics (mobile client
 
 | Enum Name | Values | Used In |
 |---|---|---|
-| **auth_provider** | `email`, `google`, `apple`, `facebook` | `asp_net_users.auth_provider` |
+| **auth_provider** | `email`, `google`, `apple` | `asp_net_users.auth_provider` |
 | **locale** | `bg`, `en` | `asp_net_users.locale` |
 | **currency** | `BGN`, `EUR` | `asp_net_users.currency_preference`, `expenses.currency` |
 | **distance_unit** | `km`, `mi` | `asp_net_users.distance_unit` |

@@ -213,7 +213,7 @@ Our opportunity is to enter via the "car expense tracker" category for discovera
 - **No user base:** Starting from zero — benchmarking features need data to be useful
 - **Unvalidated assumptions:** No customer interviews yet; demand is hypothesized
 - **Manual data entry:** All competitors face this — no OCR or bank integration in MVP
-- **Tech stack TBD:** Technical architecture not yet finalized; could affect timeline
+- **Tech stack resolved:** See `/00-project/decisions/` (DEC-007 through DEC-018)
 
 ### Opportunities
 - **Category creation:** "Car ownership intelligence" is an unclaimed category
@@ -252,7 +252,7 @@ Our opportunity is to enter via the "car expense tracker" category for discovera
 | Expense categories breadth | Drivvo | Cover all major categories from day one |
 | UI cleanliness | Simply Auto | Invest in design quality — modern, intuitive, enthusiast-friendly |
 | Maintenance reminders | Drivvo / Simply Auto | Mileage-based and date-based reminders as MVP feature |
-| Cross-platform | Drivvo / Simply Auto | Tech stack TBD — see technical architecture decision |
+| Cross-platform | Drivvo / Simply Auto | Resolved — see `/00-project/decisions/` (DEC-007 through DEC-018) |
 
 ---
 

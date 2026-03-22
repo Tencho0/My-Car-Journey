@@ -26,7 +26,7 @@
 
 **Effort estimates:** S (Small) = 1-3 days, M (Medium) = 3-7 days, L (Large) = 1-3 weeks
 
-**Tech stack:** TBD — see technical architecture decision. Effort estimates are framework-agnostic and assume cross-platform mobile app + backend API + relational database.
+**Tech stack:** Decided — Flutter (Dart) + Riverpod (mobile), ASP.NET Core Web API modular monolith (backend), PostgreSQL + EF Core (database). See DEC-007 through DEC-018.
 
 ---
 
@@ -36,7 +36,7 @@ These are non-negotiable for MVP launch. Without any one of them, the product fa
 
 | # | Feature | Description | Pain/Gain Addressed | Effort | Notes |
 |---|---|---|---|---|---|
-| M1 | **User authentication** | Registration (email + password), login, password reset, session management | Foundation | M | Consider OAuth (Google/Apple/Facebook) for reduced friction. Tech stack TBD. |
+| M1 | **User authentication** | Registration (email + password), login, password reset, session management | Foundation | M | Google Sign-In and Apple Sign-In included in MVP. No Facebook OAuth. See DEC-011. |
 | M2 | **Vehicle profile management** | Add/edit/delete vehicles. Fields: make, model, year, fuel type, license plate, odometer, photo. Multi-vehicle support. | F6, G5 | M | Free tier: up to 2 vehicles. Premium: unlimited. |
 | M3 | **Expense tracking** | Log expenses across categories: fuel, maintenance, modifications, insurance, tax, tires, parking, fines, car wash, other. Fields: amount, date, category, subcategory, odometer (optional), notes. | P1, P2, G1, G8 | L | This is the core interaction. Must be fast (<10 seconds per entry). Quick-add mode with smart defaults. |
 | M4 | **Fuel entry (specialized)** | Dedicated fuel logging: liters, price per liter, total cost, odometer reading, full/partial fill, station (optional). Auto-calculate consumption (L/100km). | F2, G2 | M | Fuel is the most frequent expense. Dedicated flow reduces friction. |
@@ -57,10 +57,10 @@ These significantly enhance the experience and support retention/conversion but 
 
 | # | Feature | Description | Pain/Gain Addressed | Effort | Notes |
 |---|---|---|---|---|---|
-| S1 | **Photo attachments on expenses** | Attach 1-3 photos to any expense or timeline entry (receipt, before/after, work done). | G5, P3 | M | Storage: Tech stack TBD. Free: 5 photos total. Premium: unlimited. Compress on upload. |
+| S1 | **Photo attachments on expenses** | Attach 1-3 photos to any expense or timeline entry (receipt, before/after, work done). | G5, P3 | M | Storage: Local VPS disk (MVP), Cloudflare R2 (future). See DEC-013. Free: 5 photos total. Premium: unlimited. Compress on upload. |
 | S2 | **Spending trends** | Year-over-year comparison, category trends over time, monthly spending graph (6-12 months). Premium feature. | P2, G7 | M | Requires 2+ months of data to be useful. Show "unlock after 2 months" for new users. |
 | S3 | **Quick-add widget** | Home screen widget or shortcut to log an expense in 2-3 taps (amount + category, auto-date, default vehicle). | P8, G8 | M | Critical for retention. Every tap you remove increases the chance they'll keep logging. Platform-specific implementation. |
-| S4 | **Basic challenges** | Monthly challenges: lowest cost/km, best fuel efficiency, most expenses logged. Leaderboard showing anonymous rankings. | G9 | M | Free: view leaderboards. Premium: compete and earn badges. Start with 2-3 simple challenges. |
+| S4 | **Basic challenges** | Monthly challenges: lowest cost/km, best fuel efficiency, most expenses logged. Leaderboard showing anonymous rankings. | G9 | M | Free: view leaderboards. Premium: compete and earn badges. Start with 2-3 simple challenges. **Deferred to v2 — not included in MVP launch.** |
 | S5 | **Shareable vehicle card** | Generate a visual card image: car photo, name, key stats (total cost, cost/km, mods count). One-tap share to Instagram/WhatsApp/Facebook. | G6, S1 | M | Organic growth driver. Design must be share-worthy (not a boring stat dump). Include subtle app branding. |
 | S6 | **Expense categories with icons** | Visual category system with custom icons. Pre-defined categories (fuel, maintenance, mods, insurance, tax, tires, parking, fines, car wash) + custom "other" with user-defined subcategories. | G8 | S | Better than plain text lists. Makes the app feel polished. |
 | S7 | **Dashboard currency formatting** | Proper лв and € formatting. Auto-conversion display (show both currencies). | Foundation | S | Bulgarian users think in лв. Keep it local. |
@@ -169,17 +169,17 @@ How features support the freemium conversion funnel:
 
 ## 9. Technical Considerations
 
-*Note: Tech stack has not been finalized. These are framework-agnostic considerations.*
+*Note: Tech stack decisions are finalized — see DEC-007 through DEC-018.*
 
 | Area | Consideration | Decision Needed |
 |---|---|---|
-| **Cross-platform** | iOS + Android from single codebase | Tech stack TBD — see technical architecture decision |
-| **Backend API** | RESTful API for data sync, auth, benchmarks | Tech stack TBD |
-| **Database** | Relational DB for structured expense/vehicle data | Tech stack TBD |
-| **Image storage** | Cloud storage for vehicle and expense photos | Tech stack TBD — consider cost at scale |
-| **Push notifications** | Required for maintenance reminders | Platform-specific (APNs + FCM) regardless of stack |
+| **Cross-platform** | iOS + Android from single codebase | Flutter (Dart) + Riverpod — see DEC-007 |
+| **Backend API** | RESTful API for data sync, auth, benchmarks | ASP.NET Core Web API modular monolith — see DEC-009 |
+| **Database** | Relational DB for structured expense/vehicle data | PostgreSQL + EF Core + Npgsql — see DEC-010 |
+| **Image storage** | Cloud storage for vehicle and expense photos | Local VPS disk (MVP), Cloudflare R2 (future) — see DEC-013 |
+| **Push notifications** | Required for maintenance reminders | FCM (Firebase Cloud Messaging) — see DEC-014 |
 | **In-app purchases** | Apple IAP + Google Play Billing for premium subscription | Required — 30% commission factored into revenue model |
-| **Analytics** | Track activation, retention, feature usage, paywall triggers | Choose analytics provider during tech architecture phase |
+| **Analytics** | Track activation, retention, feature usage, paywall triggers | Firebase Analytics — see DEC-015 |
 | **Localization** | Bulgarian primary, English secondary. Architecture must support i18n from day one. | Build with localization framework from start |
 | **Data privacy** | GDPR compliance required. User data export/delete capabilities. | Design into data model from start |
 
@@ -208,9 +208,9 @@ How features support the freemium conversion funnel:
 
 ## Next Steps
 
-1. Finalize technical architecture and tech stack decision
-2. Write Product Requirements Document (PRD) with detailed specifications → `/03-product/product-requirements-document.md`
-3. Create user stories per epic (auth, vehicles, expenses, dashboard, timeline, reminders, gamification) → `/03-product/user-stories/`
-4. Write functional specs for each feature area → `/03-product/functional-specs/`
-5. Design database schema → `/03-product/technical/database-schema.md`
-6. Create API specification → `/03-product/technical/api-specification.md`
+1. ~~Finalize technical architecture and tech stack decision~~ ✅ Done — DEC-007 through DEC-018
+2. ~~Write Product Requirements Document (PRD)~~ ✅ Done — `/03-product/product-requirements-document.md`
+3. Create user stories per epic (auth, vehicles, expenses, dashboard, timeline, reminders) → `/03-product/user-stories/`
+4. ~~Write functional specs for each feature area~~ ✅ Done — `/03-product/functional-specs/` (9 specs, v2.0)
+5. ~~Design database schema~~ ✅ Done — `/03-product/technical/database-schema.md` (22 tables, 9 modules)
+6. ~~Create API specification~~ ✅ Done — `/03-product/technical/api-specification.md` (86 endpoints, 12 controllers)

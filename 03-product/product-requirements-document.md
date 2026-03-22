@@ -108,8 +108,8 @@ These are things we are **deliberately not doing** in the MVP. They are not over
 | Expenses logged per active user per week | 0 | 2+ | In-app analytics | Month 3 post-launch |
 | Premium conversion rate (of MAU) | 0% | 5%+ | Subscription analytics | Month 6 post-launch |
 | Premium conversion rate (of MAU) | 0% | 7.5% | Subscription analytics | Month 12 post-launch |
-| Monthly recurring revenue | €0 | €270+ | Payment provider | Month 6 post-launch |
-| Monthly recurring revenue | €0 | €810+ | Payment provider | Month 12 post-launch |
+| Monthly recurring revenue | €0 | €360 | Payment provider | Month 6 post-launch | See `/02-strategy/monetization-plan.md` |
+| Monthly recurring revenue | €0 | €1,125 | Payment provider | Month 12 post-launch | See `/02-strategy/monetization-plan.md` |
 | Share/referral rate | 0% | 5%+ of users share vehicle card | In-app analytics | Month 6 post-launch |
 
 **Kill criteria:** If, 3 months post-launch, 30-day retention is below 15% AND premium conversion is below 3%, reconsider the core hypothesis before investing further.
@@ -231,7 +231,7 @@ A 25-35 year old male who owns a used BMW E46/E90, is active in BMW Club Bulgari
 
 | # | Feature | User Story | Acceptance Criteria |
 |---|---|---|---|
-| M1 | **User authentication** | As a user, I want to create an account and log in securely so my data is protected and synced. | Registration via email+password. Login, logout, password reset. Session persistence. Consider OAuth (Google/Apple/Facebook) for reduced friction. |
+| M1 | **User authentication** | As a user, I want to create an account and log in securely so my data is protected and synced. | Registration via email+password. Login, logout, password reset. Session persistence. Google Sign-In and Apple Sign-In included in MVP. No Facebook OAuth. |
 | M2 | **Vehicle profile management** | As a car owner, I want to add my car's details so the app knows what I drive. | Add/edit/delete vehicles. Fields: make, model, year, fuel type, license plate (optional), current odometer, photo. Free: 2 vehicles. Premium: unlimited. |
 | M3 | **Expense tracking** | As a car owner, I want to log any car expense quickly so I can see where my money goes. | Log expense with: amount, date, category, subcategory, odometer (optional), notes. Categories: fuel, maintenance, modifications, insurance, tax, tires, parking, fines, car wash, other. Entry must complete in <10 seconds via quick-add flow with smart defaults. Unlimited entries in free tier. |
 | M4 | **Fuel entry (specialized)** | As a driver, I want a dedicated fuel logging flow so I can track consumption accurately. | Dedicated fuel form: liters, price/liter, total cost (auto-calculate), odometer reading, full/partial fill, station name (optional). Auto-calculate L/100km between fill-ups. Shows consumption trend. |
@@ -249,7 +249,7 @@ A 25-35 year old male who owns a used BMW E46/E90, is active in BMW Club Bulgari
 | S1 | **Photo attachments** | As an enthusiast, I want to attach photos to expenses so I can document work done on my car. | Attach 1-3 photos per expense/timeline entry. Camera capture or gallery selection. Compress on upload. Free: 5 photos total across all vehicles. Premium: unlimited. |
 | S2 | **Spending trends** | As a user, I want to see how my spending changes over time so I can spot patterns. | Year-over-year comparison, category trend lines, monthly spending graph (6-12 months). Premium feature. Requires 2+ months of data. Show "unlock after 2 months of tracking" for new users. |
 | S3 | **Quick-add widget** | As a frequent user, I want to log an expense from my home screen in 2 taps. | Home screen widget or app shortcut. Pre-filled: today's date, default vehicle. User enters: amount + category. Optional: note. Saves in <5 seconds. Platform-specific implementation required. |
-| S4 | **Basic challenges** | As a competitive car enthusiast, I want to compete with others on cost efficiency. | Monthly challenges: lowest cost/km, best fuel efficiency, most expenses logged. Anonymous leaderboard. Free: view leaderboards. Premium: compete and earn badges. Start with 2-3 challenges. Reset monthly. |
+| S4 | **Basic challenges** | As a competitive car enthusiast, I want to compete with others on cost efficiency. | Monthly challenges: lowest cost/km, best fuel efficiency, most expenses logged. Anonymous leaderboard. Free: view leaderboards. Premium: compete and earn badges. Start with 2-3 challenges. Reset monthly. **Deferred to v2.** |
 | S5 | **Shareable vehicle card** | As a proud car owner, I want to share my car's stats on social media. | Generate a visual card image: car photo, name/model, key stats (total cost, cost/km if premium, mods count, months tracked). One-tap share to Instagram/WhatsApp/Facebook. Includes subtle app branding (logo + download link). Design must be share-worthy. |
 | S6 | **Expense category icons** | As a user, I want visual categories so expense types are instantly recognizable. | Custom icon per category. Pre-defined 10 categories with icons. Custom "other" subcategories with generic icon. Used in timeline, dashboard breakdown, and expense entry. |
 | S7 | **Currency formatting** | As a Bulgarian user, I want to see costs in лева so numbers feel natural. | Proper лв formatting (e.g., 847.50 лв). Optional € display. Settings control which currency is primary. Auto-conversion display available. |
@@ -273,7 +273,7 @@ A 25-35 year old male who owns a used BMW E46/E90, is active in BMW Club Bulgari
 
 #### 6.2 User Flows
 
-**Critical user journeys (to be detailed in `/03-product/user-flows.md`):**
+**Critical user journeys (to be detailed in `/03-product/user-journeys/flows-index.md`):**
 
 **Flow 1: First-Time User (Onboarding → Aha Moment)**
 ```
@@ -330,7 +330,7 @@ User sees dashboard monthly total (free) → Locked section: "Your cost per km: 
 
 5. **Bulgarian first.** All UI text, categories, currency formatting, and date formats default to Bulgarian. English is a secondary language option, not the primary.
 
-**Key screens (to be wireframed in `/03-product/wireframes.md`):**
+**Key screens — wireframes to be created during development phase. No wireframes exist yet:**
 - Dashboard (the hero screen — monthly total, breakdown, trends)
 - Vehicle timeline (scrollable feed with photos)
 - Quick-add expense (minimal form)
@@ -346,9 +346,9 @@ User sees dashboard monthly total (free) → Locked section: "Your cost per km: 
 
 #### 6.4 Technical Approach
 
-**Tech stack status: PENDING DECISION**
+**Tech stack status: DECIDED**
 
-The technology stack has not been finalized. A dedicated technical architecture decision document will be produced at `/03-product/technical/architecture.md` evaluating options against the following requirements. This PRD intentionally does not prescribe specific technologies.
+All technical decisions are finalized. See `/00-project/decisions/` (DEC-007 through DEC-018) and `/03-product/technical/architecture.md` for details.
 
 **Technical requirements:**
 
@@ -357,7 +357,7 @@ The technology stack has not been finalized. A dedicated technical architecture 
 | **Cross-platform mobile** | Single codebase producing both iOS and Android apps | P0 — Must |
 | **Backend API** | RESTful (or equivalent) API for authentication, data sync, user management, subscription validation, and benchmark calculations | P0 — Must |
 | **Relational database** | Structured storage for users, vehicles, expenses, reminders, challenges. Must support efficient queries for dashboard aggregation and timeline retrieval. | P0 — Must |
-| **Authentication service** | Email+password registration, OAuth (Google/Apple/Facebook), session management, password reset | P0 — Must |
+| **Authentication service** | Email+password registration, OAuth (Google, Apple), session management, password reset | P0 — Must |
 | **Image storage** | Cloud storage for vehicle photos and expense attachments. Must handle compression on upload and efficient retrieval. Consider cost at scale. | P1 — Should |
 | **Push notifications** | APNs (iOS) + FCM (Android) for maintenance reminders, challenge updates, and engagement nudges | P0 — Must |
 | **In-app purchases** | Apple IAP + Google Play Billing for premium subscription management. 30% platform commission factored into revenue model. | P0 — Must |
@@ -369,21 +369,12 @@ The technology stack has not been finalized. A dedicated technical architecture 
 **Solo developer constraints that shape the solution:**
 
 - **Prefer simplicity.** Choose proven, well-documented technologies with strong community support. Avoid bleeding-edge or complex architectures.
-- **Minimize infrastructure.** Use managed services where possible (managed database, managed auth, CDN for images). Don't self-host what can be managed.
+- **Minimize infrastructure.** MVP uses self-managed infrastructure (VPS, self-hosted PostgreSQL, local image storage) for cost control. Architecture must support migration to managed services without code changes when scale justifies it.
 - **Single deploy pipeline.** One build process for both platforms. Avoid maintaining separate codebases.
 - **Operational overhead.** The founder is the sole operator. Monitoring, error reporting, and automated alerts are required from day one.
 - **Cost sensitivity.** Infrastructure costs must stay under €50-130/month pre-revenue. Use free tiers where possible.
 
-**Technical decisions pending:**
-
-| Decision | Options to Evaluate | Decides |
-|---|---|---|
-| Mobile framework | Cross-platform options (evaluate trade-offs: native feel, community support, dev speed, solo dev feasibility) | `/03-product/technical/architecture.md` |
-| Backend framework | Evaluate options based on: API speed, auth libraries, ORM support, hosting costs, developer familiarity | `/03-product/technical/architecture.md` |
-| Database | Evaluate relational options based on: hosting cost, managed availability, tooling, ORM compatibility | `/03-product/technical/architecture.md` |
-| Auth provider | Build vs. managed service (trade-off: control vs. development speed) | `/03-product/technical/architecture.md` |
-| Hosting/cloud | Evaluate based on: cost at low scale, managed services, European data residency (GDPR) | `/03-product/technical/architecture.md` |
-| Image storage | Evaluate based on: cost per GB, CDN, upload/compress pipeline | `/03-product/technical/architecture.md` |
+**All technical decisions resolved:** Mobile framework (DEC-007), web framework (DEC-008), backend (DEC-009), database (DEC-010), auth (DEC-011), hosting (DEC-012), image storage (DEC-013), push notifications (DEC-014), analytics (DEC-015), subscriptions (DEC-016), CI/CD (DEC-017), error monitoring (DEC-018).
 
 ---
 

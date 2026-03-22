@@ -57,7 +57,7 @@ flowchart TD
     B --> C[Welcome Screen<br/>Value proposition in 1 sentence]
     C --> D{Create Account}
     D -->|Email + Password| E[Registration Form]
-    D -->|Google/Apple/Facebook| F[OAuth One-Tap]
+    D -->|Google/Apple| F[OAuth One-Tap]
     E --> G[Account Created]
     F --> G
     G --> H[Add Your Car<br/>Make / Model / Year]
@@ -93,8 +93,8 @@ flowchart TD
 | Step | User Action | System Response | Screen | Emotional State |
 |------|------------|----------------|--------|-----------------|
 | 1 | Opens app for the first time | Shows welcome screen with car illustration and one-line value proposition: "Finally know what your car costs." | Welcome Screen | Curious, evaluating |
-| 2 | Taps "Get Started" | Shows account creation options: Google, Apple, Facebook OAuth buttons (prominent) + email registration (secondary) | Auth Screen | Slightly impatient — wants this to be fast |
-| 3a | Taps Google/Apple/Facebook | OAuth flow — single tap, auto-fills name and email | OAuth Popup | Relief — "that was easy" |
+| 2 | Taps "Get Started" | Shows account creation options: Google, Apple OAuth buttons (prominent) + email registration (secondary) | Auth Screen | Slightly impatient — wants this to be fast |
+| 3a | Taps Google/Apple | OAuth flow — single tap, auto-fills name and email | OAuth Popup | Relief — "that was easy" |
 | 3b | Taps "Sign up with email" | Shows minimal form: email, password, name | Registration Form | Mild friction — typing is work |
 | 4 | Account created | Brief success animation (0.5s). Immediately transitions to "Add Your Car" screen with make/model/year pickers. | Vehicle Add Screen | Anticipation — "let's set up my car" |
 | 5 | Selects make from scrollable list (popular BG makes at top: BMW, VW, Audi, Mercedes, Opel, Toyota) | Filters models for selected make | Vehicle Add Screen | Engaged — finding their car |
@@ -113,7 +113,7 @@ flowchart TD
 ### Key Moments
 
 **Moment 1: Account creation (Step 3)**
-This is the first gate. Every second of friction here costs users. OAuth (Google/Apple/Facebook) must be the primary, most visible option. Email registration is secondary. The goal: account created in under 10 seconds. If this takes longer than 30 seconds, expect 30-40% drop-off.
+This is the first gate. Every second of friction here costs users. OAuth (Google/Apple) must be the primary, most visible option. Email registration is secondary. The goal: account created in under 10 seconds. If this takes longer than 30 seconds, expect 30-40% drop-off.
 
 **Moment 2: Vehicle setup (Steps 5-7)**
 The user is personalizing the app — this should feel satisfying, not bureaucratic. Show popular Bulgarian car makes first (BMW, VW, Audi, Mercedes, Opel, Toyota account for 60%+ of the target segment). Auto-suggest models. Make the photo optional but encourage it — a car with a photo feels personal, a car without one feels like a database entry.
@@ -141,7 +141,7 @@ Empty states are critical in this journey because everything starts at zero.
 | Risk Point | Why They Might Leave | Severity | Mitigation |
 |-----------|---------------------|----------|------------|
 | **Welcome screen** | Value proposition unclear or uninteresting | Medium | One sentence max. Lead with the emotional hook: "Finally know what your car costs." No feature lists. |
-| **Account creation** | Too much friction, don't want to create yet another account | High | OAuth (Google/Apple/Facebook) as primary CTAs. Email as fallback. No email verification required to start (verify later). |
+| **Account creation** | Too much friction, don't want to create yet another account | High | OAuth (Google/Apple) as primary CTAs. Email as fallback. No email verification required to start (verify later). |
 | **Vehicle setup** | Too many fields, can't find their car model, feels like a form | High | Minimum viable fields: make + model + year only. Everything else optional. Popular makes at the top. Type-ahead search for models. |
 | **First expense entry** | Don't have a recent expense in mind, feels like homework | High | Suggest a common expense: "What did you last spend on your car? Fuel? A car wash? Parking?" Pre-fill category suggestions. Allow "approximate" — accuracy doesn't matter for the first entry. |
 | **Dashboard shows tiny amount** | One expense looks unimpressive — "so what?" | Medium | Messaging matters: "This is just the start. Most owners are shocked when they see the monthly total." Encourage adding 2-3 more right away: "Add a few more expenses to see the bigger picture." |
@@ -210,3 +210,4 @@ The micro aha happens at Step 13: seeing the first number on the dashboard. The 
 | Version | Date | Changes |
 |---|---|---|
 | 1.0 | 2026-03-07 | Initial journey map. Pre-validation — customer interviews not yet conducted. |
+| 1.1 | 2026-03-23 | Removed Facebook OAuth references. Google and Apple confirmed as MVP OAuth providers per DEC-011 v1.1. |
